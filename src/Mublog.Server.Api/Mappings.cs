@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace mublog_server.Api
+namespace Mublog.Server.Api
 {
     public class Mappings : Profile
     {

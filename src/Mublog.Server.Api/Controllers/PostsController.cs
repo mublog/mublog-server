@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Logging;
-using mublog_server.Api.Mock;
+using Mublog.Server.Api.Mock;
 
-namespace mublog_server.Api.Controllers
+namespace Mublog.Server.Api.Controllers
 {
     [ApiController]
     [ApiVersion("1")]

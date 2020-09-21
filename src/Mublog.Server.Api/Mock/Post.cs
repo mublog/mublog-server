@@ -1,6 +1,6 @@
 using System;
 
-namespace mublog_server.Api.Mock
+namespace Mublog.Server.Api.Mock
 {
     public class Post
     {
