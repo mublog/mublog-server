@@ -12,8 +12,6 @@ namespace Mublog.Server.PublicApi
     {
         public static void Main(string[] args)
         {
-            
-            
             IConfigurationRoot configuration;
 
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
