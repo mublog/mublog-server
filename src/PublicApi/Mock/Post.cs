@@ -6,7 +6,7 @@ namespace Mublog.Server.PublicApi.Mock
     {
         public Guid Id { get; set; }
         public User User { get; set; }
-        public string text { get; set; }
+        public string Text { get; set; }
         public DateTime Datetime { get; set; }
     }
 }

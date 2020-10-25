@@ -1,6 +1,6 @@
 using AutoMapper;
 
-namespace Mublog.Server.Application.Common
+namespace Mublog.Server.Application.Common.Mappings
 {
     public interface IMapFrom<T>
     {

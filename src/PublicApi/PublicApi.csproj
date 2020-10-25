@@ -1,31 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Mublog.Server.PublicApi</RootNamespace>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+<!--        <GenerateDocumentationFile>true</GenerateDocumentationFile>-->
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-      <PackageReference Include="FluentValidation" Version="9.2.2" />
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.2.0" />
+      <PackageReference Include="FluentValidation" Version="9.3.0-preview3" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="9.3.0-preview3" />
       <PackageReference Include="MediatR" Version="9.0.0" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.2.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0-rc.2.20475.17" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
-      <PackageReference Include="Serilog" Version="2.10.0" />
-      <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
-      <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
-      <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc2" />
+      <PackageReference Include="Serilog" Version="2.10.1-dev-01249" />
+      <PackageReference Include="Serilog.AspNetCore" Version="3.4.1-dev-00180" />
+      <PackageReference Include="Serilog.Settings.Configuration" Version="3.2.0-dev-00244" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="4.0.0-dev-00839" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\mublog-servers\src\Domain\Domain.csproj" />
+      <ProjectReference Include="..\Application\Application.csproj" />
       <ProjectReference Include="..\Core\Core.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>

@@ -30,8 +30,8 @@ namespace Mublog.Server.PublicApi.Controllers
         {
             var respone = new List<Post>();
             
-            respone.Add(new Post{Datetime = DateTime.UtcNow.AddMonths(1), Id = Guid.NewGuid(), text = "Mistakes were made.", User = new User{Alias = "bitsuki", Name = "Illya"}});
-            respone.Add(new Post{Datetime = DateTime.UtcNow, Id = Guid.NewGuid(), text = "anime is gay ![img](https://i.imgur.com/4egyF3G.jpg)", User = new User{Alias = "max", Name = "Max"}});
+            respone.Add(new Post{Datetime = DateTime.UtcNow.AddMonths(1), Id = Guid.NewGuid(), Text = "Mistakes were made.", User = new User{Alias = "illya", Name = "Illya"}});
+            respone.Add(new Post{Datetime = DateTime.UtcNow, Id = Guid.NewGuid(), Text = "anime is gay ![img](https://i.imgur.com/4egyF3G.jpg)", User = new User{Alias = "max", Name = "Max"}});
 
             return Ok(respone);
         }

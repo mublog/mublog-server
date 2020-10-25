@@ -1,5 +1,5 @@
 
-namespace Mublog.Server.Application.Common.Behaviours
+namespace Mublog.Server.Application.Common.Mappings
 {
     public static class MappingExtensions
     {
