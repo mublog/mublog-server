@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Mublog.Server.Infrastructure.Validators.Interfaces;
 using Mublog.Server.PublicApi.DTOs.V1.Requests;
-using Mublog.Server.PublicApi.Validators.Interfaces;
 
 namespace Mublog.Server.PublicApi.Controllers
 {

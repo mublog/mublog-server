@@ -1,4 +1,4 @@
-namespace Mublog.Server.PublicApi.Validators.Interfaces
+namespace Mublog.Server.Infrastructure.Validators.Interfaces
 {
     public interface IEmailValidator : IValidator<string>
     {

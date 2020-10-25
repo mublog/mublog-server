@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Mublog.Server.PublicApi.Validators;
-using Mublog.Server.PublicApi.Validators.Interfaces;
+using Mublog.Server.Infrastructure.Validators;
+using Mublog.Server.Infrastructure.Validators.Interfaces;
 
 namespace Mublog.Server.PublicApi.Installers
 {

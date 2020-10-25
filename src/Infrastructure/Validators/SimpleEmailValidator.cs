@@ -1,6 +1,6 @@
-using Mublog.Server.PublicApi.Validators.Interfaces;
+using Mublog.Server.Infrastructure.Validators.Interfaces;
 
-namespace Mublog.Server.PublicApi.Validators
+namespace Mublog.Server.Infrastructure.Validators
 {
     public class SimpleEmailValidator : IEmailValidator
     {

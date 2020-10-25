@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mublog.Server.PublicApi.Data
+namespace Mublog.Server.Infrastructure.Data
 {
     public class IdentityContext : IdentityDbContext
     {
