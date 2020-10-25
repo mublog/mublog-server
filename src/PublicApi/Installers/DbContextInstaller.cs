@@ -9,7 +9,7 @@ namespace Mublog.Server.PublicApi.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<AppDbContext>(options =>
+            services.AddDbContext<IdentityContext>(options =>
                 options.UseNpgsql(DbConnectionStringBuilder.Build()));
         }
     }

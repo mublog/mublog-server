@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Mublog.Server.PublicApi.Data
 {
-    public class AppDbContext : IdentityDbContext
+    public class IdentityContext : IdentityDbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
             
         }

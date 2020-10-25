@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <RootNamespace>Mublog.Server.PublicApi</RootNamespace>
+        <AssemblyName>MublogServerPublicApi</AssemblyName>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 

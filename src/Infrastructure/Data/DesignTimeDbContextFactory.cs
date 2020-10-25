@@ -6,9 +6,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Mublog.Server.PublicApi.Data
 {
-    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<IdentityContext>
     {
-        public AppDbContext CreateDbContext(string[] args)
+        public IdentityContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration;
             
@@ -19,10 +19,10 @@ namespace Mublog.Server.PublicApi.Data
                 configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Mublog.Api/appsettings.json").Build();
             
-            var builder = new DbContextOptionsBuilder<AppDbContext>();
+            var builder = new DbContextOptionsBuilder<IdentityContext>();
             var connectionString = configuration.GetConnectionString(DbConnectionStringBuilder.Build());
             builder.UseNpgsql(connectionString);
-            return new AppDbContext(builder.Options);
+            return new IdentityContext(builder.Options);
         }
     }
 }
