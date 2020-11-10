@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Mublog.Server.PublicApi.Mock;
 
 namespace Mublog.Server.PublicApi.Controllers
 {
@@ -28,12 +26,7 @@ namespace Mublog.Server.PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetAll()
         {
-            var respone = new List<Post>();
-            
-            respone.Add(new Post{Datetime = DateTime.UtcNow.AddMonths(1), Id = Guid.NewGuid(), Text = "Mistakes were made.", User = new User{Alias = "illya", Name = "Illya"}});
-            respone.Add(new Post{Datetime = DateTime.UtcNow, Id = Guid.NewGuid(), Text = "anime is gay ![img](https://i.imgur.com/4egyF3G.jpg)", User = new User{Alias = "max", Name = "Max"}});
-
-            return Ok(respone);
+            throw new NotImplementedException();
         }
     }
 }    

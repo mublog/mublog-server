@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Mublog.Server.Infrastructure.Validators.Interfaces;
 using Mublog.Server.PublicApi.DTOs.V1.Requests;
 
 namespace Mublog.Server.PublicApi.Controllers
@@ -17,21 +16,14 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class AuthController : ControllerBase
     {
-        private readonly ILogger<AuthController> _logger;
+        private readonly ILogger _logger;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IEmailValidator _emailValidator;
 
 
-        public AuthController
-        (
-            ILogger<AuthController> logger,
-            UserManager<IdentityUser> userManager,
-            IEmailValidator emailValidator
-        )
+        public AuthController(ILogger logger)
         {
             _logger = logger;
-            _userManager = userManager;
-            _emailValidator = emailValidator;
+            
         }
 
 
@@ -47,16 +39,8 @@ namespace Mublog.Server.PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto request)
         {
-            if (!_emailValidator.IsValid(request.Email))
-            {
-                ModelState.AddModelError("", $"The email address is not invalid {request.Email}");
-                return BadRequest(ModelState);
-            }
 
             
-            
-            // await _userManager.CreateAsync();
-
             return Ok();
         }
     }
