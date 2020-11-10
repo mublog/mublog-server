@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Mublog.Server.Infrastructure</RootNamespace>
-        <AssemblyName>MublogServerInfrastructure</AssemblyName>
+        <AssemblyName>Mublog.Server.Infrastructure</AssemblyName>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
@@ -11,10 +11,10 @@
       <PackageReference Include="AutoMapper" Version="10.1.1" />
       <PackageReference Include="FluentValidation" Version="9.3.0-preview3" />
       <PackageReference Include="MediatR" Version="9.0.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0-rc.2.20475.6" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0-rc.2.20475.5" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0-rc.2.20475.5" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.0-rc2" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     </ItemGroup>

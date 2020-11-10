@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>Mublog.Server.Application</RootNamespace>
-        <AssemblyName>MublogServerApplication</AssemblyName>
+        <AssemblyName>Mublog.Server.Application</AssemblyName>
         <LangVersion>9</LangVersion>
     </PropertyGroup>
 
@@ -14,7 +14,7 @@
       <PackageReference Include="FluentValidation" Version="9.3.0-preview3" />
       <PackageReference Include="MediatR" Version="9.0.0" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0-rc.2.20475.5" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
     </ItemGroup>
 
     <ItemGroup>

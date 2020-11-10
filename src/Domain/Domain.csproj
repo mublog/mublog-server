@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <RootNamespace>Mublog.Server.Domain</RootNamespace>
-        <AssemblyName>MublogServerDomain</AssemblyName>
+        <AssemblyName>Mublog.Server.Domain</AssemblyName>
         <LangVersion>9</LangVersion>
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
