@@ -6,8 +6,9 @@ namespace Mublog.Server.Domain.Entities
     {
         public int PublicId { get; set; }
         public string Content { get; set; }
+        public int OwnerId { get; set; }
         public User Owner { get; set; }
-        public List<Media> Mediae { get; set; }
-        public List<User> Likes { get; set; }
+        public ICollection<Media> Mediae { get; set; }
+        public ICollection<User> Likes { get; set; }
     }
 }

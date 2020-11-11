@@ -10,8 +10,8 @@ namespace Mublog.Server.Domain.Entities
         public Media ProfileImage { get; set; }
         public Media HeaderImage { get; set; }
         public UserState UserState { get; set; }
-        public List<Post> Posts { get; set; }
-        public List<Post> LikedPosts { get; set; }
-        public List<Media> Mediae { get; set; }
+        public ICollection<Post> Posts { get; set; }
+        public ICollection<Post> LikedPosts { get; set; }
+        public ICollection<Media> Mediae { get; set; }
     }
 }

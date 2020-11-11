@@ -22,6 +22,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.Property(m => m.PublicId)
                 .IsRequired()
                 .ValueGeneratedOnAdd()
+                .IsRequired()
                 .HasColumnName("public_id");
             
             builder.Property(m => m.MediaType)
@@ -29,6 +30,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
                 .HasColumnName("media_type");
 
             builder.Property(m => m.OwnerId)
+                .IsRequired()
                 .HasColumnName("owner_id");
             
             builder.HasOne(m => m.Owner)
