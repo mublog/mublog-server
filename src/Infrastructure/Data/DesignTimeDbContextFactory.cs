@@ -3,12 +3,14 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Mublog.Server.Infrastructure.Common.Config;
 
 namespace Mublog.Server.Infrastructure.Data
 {
-    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<IdentityContext>
+    public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
-        public IdentityContext CreateDbContext(string[] args)
+        
+        public AppDbContext CreateDbContext(string[] args)
         {
             IConfigurationRoot configuration;
             
@@ -19,10 +21,10 @@ namespace Mublog.Server.Infrastructure.Data
                 configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Mublog.Api/appsettings.json").Build();
             
-            var builder = new DbContextOptionsBuilder<IdentityContext>();
+            var builder = new DbContextOptionsBuilder<AppDbContext>();
             var connectionString = configuration.GetConnectionString(DbConnectionStringBuilder.Build());
             builder.UseNpgsql(connectionString);
-            return new IdentityContext(builder.Options);
+            return new AppDbContext(builder.Options);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Mublog.Server.PublicApi.Installers
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<IdentityContext>()
+                .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
         }
     }

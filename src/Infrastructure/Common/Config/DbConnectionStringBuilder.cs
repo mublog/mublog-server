@@ -1,8 +1,8 @@
 using System;
 
-namespace Mublog.Server.Infrastructure.Data
+namespace Mublog.Server.Infrastructure.Common.Config
 {
-    public class DbConnectionStringBuilder
+    public class DbConnectionStringBuilder // : IDbConnectionStringBuilder
     {
         public static string Build()
         {
