@@ -16,14 +16,13 @@ namespace Mublog.Server.Infrastructure.Data
             
             if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
                 configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Mublog.Api/appsettings.Development.json").Build();
+                    .AddJsonFile(@Directory.GetCurrentDirectory() + "/../PublicApi/appsettings.Development.json").Build();
             else
                 configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(@Directory.GetCurrentDirectory() + "/../Mublog.Api/appsettings.json").Build();
+                    .AddJsonFile(@Directory.GetCurrentDirectory() + "/../PublicApi/appsettings.json").Build();
             
             var builder = new DbContextOptionsBuilder<AppDbContext>();
-            var connectionString = configuration.GetConnectionString(DbConnectionStringBuilder.Build());
-            builder.UseNpgsql(connectionString);
+            builder.UseNpgsql(DbConnectionStringBuilder.Build());
             return new AppDbContext(builder.Options);
         }
     }

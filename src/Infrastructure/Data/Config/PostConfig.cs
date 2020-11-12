@@ -14,15 +14,13 @@ namespace Mublog.Server.Infrastructure.Data.Config
                 .HasName("id");
 
             builder.Property(p => p.CreatedDate)
-                .ValueGeneratedOnAdd()
                 .HasColumnName("date_created");
 
             builder.Property(p => p.UpdatedDate)
-                .ValueGeneratedOnAddOrUpdate()
                 .HasColumnName("date_updated");
 
             builder.Property(p => p.PublicId)
-                .ValueGeneratedOnAdd()
+                .UseIdentityByDefaultColumn()
                 .IsRequired()
                 .HasColumnName("public_id");
 

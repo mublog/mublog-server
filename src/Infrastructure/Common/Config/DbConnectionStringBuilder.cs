@@ -10,7 +10,7 @@ namespace Mublog.Server.Infrastructure.Common.Config
             if (string.IsNullOrWhiteSpace(host)) throw new Exception("Environment variable POSTGRES_HOST was not found or is empty.");
             
             var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
-            if (string.IsNullOrWhiteSpace(host)) throw new Exception("Environment variable POSTGRES_PORT was not found or is empty.");
+            if (string.IsNullOrWhiteSpace(port)) port = "5432";
             
             var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
             if (string.IsNullOrWhiteSpace(database)) throw new Exception("Environment variable POSTGRES_DB was not found or is empty.");

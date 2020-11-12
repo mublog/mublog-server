@@ -16,11 +16,9 @@ namespace Mublog.Server.Infrastructure.Data.Config
                 .HasName("id");
 
             builder.Property(u => u.CreatedDate)
-                .ValueGeneratedOnAdd()
                 .HasColumnName("date_created");
 
             builder.Property(u => u.UpdatedDate)
-                .ValueGeneratedOnAddOrUpdate()
                 .HasColumnName("date_updated");
             
             builder.Property(u => u.Username)
@@ -41,18 +39,26 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.Property(u => u.ProfileImageId)
                 .HasColumnName("profile_image_id");
 
-            builder.HasOne(u => u.ProfileImage)
-                .WithOne(m => m.Owner)
-                .HasForeignKey<User>(u => u.ProfileImageId)
-                .HasConstraintName("profile_image_media");
+            builder.Navigation(u => u.ProfileImage)
+                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty)
+                .HasField("profile_image_id");
+            
+            // builder.HasOne(u => u.ProfileImage)
+            //     .WithOne(m => m.Owner)
+            //     .HasForeignKey<User>(u => u.ProfileImageId)
+            //     .HasConstraintName("profile_image_media");
 
             builder.Property(u => u.HeaderImageId)
                 .HasColumnName("header_image_id");
 
-            builder.HasOne(u => u.HeaderImage)
-                .WithOne(m => m.Owner)
-                .HasForeignKey<User>(u => u.HeaderImageId)
-                .HasConstraintName("header_image_media");
+            builder.Navigation(u => u.HeaderImage)
+                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty)
+                .HasField("header_image_id");
+            
+            // builder.HasOne(u => u.HeaderImage)
+            //     .WithOne(m => m.Owner)
+            //     .HasForeignKey<User>(u => u.HeaderImageId)
+            //     .HasConstraintName("header_image_media");
 
             builder.Property(u => u.UserState)
                 .HasDefaultValue(UserState.Active)

@@ -30,7 +30,7 @@ namespace Mublog.Server.PublicApi
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
             
-            DbConnectionStringBuilder.Build();
+            var conncetion = DbConnectionStringBuilder.Build();
 
             CreateHostBuilder(args).Build().Run();
         }
