@@ -1,14 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Mublog.Server.Domain.Entities;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
-    class UserRepository : ARepository
+    public class UserRepository
     {
-        public User GetByUsername(string name) => this.context.Users.Where(u => u.Username == name).FirstOrDefault();
+        private readonly AppDbContext _db;
+
+        public UserRepository(AppDbContext db)
+        {
+            _db = db;
+        }
+
+        public IQueryable<User> GetAll() => _db.Users;
+        public async Task<User> GetByUsername(string name) => await _db.Users.FirstOrDefaultAsync(u => u.Username == name);
 
     }
 }
