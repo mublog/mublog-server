@@ -8,6 +8,8 @@ namespace Mublog.Server.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Media> builder)
         {
+            builder.ToTable("mediae");
+            
             builder.HasKey(m => m.Id)
                 .HasName("id");
 
@@ -36,14 +38,16 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.HasOne(m => m.Owner)
                 .WithMany(u => u.Mediae)
                 .HasForeignKey(m => m.OwnerId)
-                .IsRequired();
+                .IsRequired()
+                .HasConstraintName("owner_user");
 
             builder.Property(m => m.PostId)
                 .HasColumnName("post_id");
 
             builder.HasOne(m => m.ParentPost)
                 .WithMany(u => u.Mediae)
-                .HasForeignKey(m => m.PostId);
+                .HasForeignKey(m => m.PostId)
+                .HasConstraintName("parent_post_post");
         }
     }
 }

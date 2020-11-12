@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Mublog.Server.Domain.Entities
@@ -6,6 +7,7 @@ namespace Mublog.Server.Domain.Entities
     {
         public int PublicId { get; set; }
         public string Content { get; set; }
+        public DateTime PostEditedDate { get; set; }
         public int OwnerId { get; set; }
         public User Owner { get; set; }
         public ICollection<Media> Mediae { get; set; }
