@@ -17,7 +17,8 @@ namespace Mublog.Server.Infrastructure.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Media> Mediae { get; set; }
+        public DbSet<PostImage> PostImages { get; set; }
+        public DbSet<ProfileImage> ProfileImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

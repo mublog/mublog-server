@@ -38,27 +38,11 @@ namespace Mublog.Server.Infrastructure.Data.Config
 
             builder.Property(u => u.ProfileImageId)
                 .HasColumnName("profile_image_id");
-
-            builder.Navigation(u => u.ProfileImage)
-                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty)
-                .HasField("profile_image_id");
             
-            // builder.HasOne(u => u.ProfileImage)
-            //     .WithOne(m => m.Owner)
-            //     .HasForeignKey<User>(u => u.ProfileImageId)
-            //     .HasConstraintName("profile_image_media");
-
-            builder.Property(u => u.HeaderImageId)
-                .HasColumnName("header_image_id");
-
-            builder.Navigation(u => u.HeaderImage)
-                .UsePropertyAccessMode(PropertyAccessMode.PreferProperty)
-                .HasField("header_image_id");
-            
-            // builder.HasOne(u => u.HeaderImage)
-            //     .WithOne(m => m.Owner)
-            //     .HasForeignKey<User>(u => u.HeaderImageId)
-            //     .HasConstraintName("header_image_media");
+            builder.HasOne(u => u.ProfileImage)
+                .WithOne(pi => pi.Owner)
+                .HasForeignKey<User>(u => u.ProfileImageId)
+                .HasConstraintName("user_profile_image");
 
             builder.Property(u => u.UserState)
                 .HasDefaultValue(UserState.Active)

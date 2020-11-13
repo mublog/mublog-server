@@ -4,11 +4,11 @@ using Mublog.Server.Domain.Entities;
 
 namespace Mublog.Server.Infrastructure.Data.Config
 {
-    public class MediaConfig : IEntityTypeConfiguration<Media>
+    public class PostImageConfig : IEntityTypeConfiguration<PostImage>
     {
-        public void Configure(EntityTypeBuilder<Media> builder)
+        public void Configure(EntityTypeBuilder<PostImage> builder)
         {
-            builder.ToTable("mediae");
+            builder.ToTable("post_image");
             
             builder.HasKey(m => m.Id)
                 .HasName("id");
@@ -20,7 +20,6 @@ namespace Mublog.Server.Infrastructure.Data.Config
                 .HasColumnName("date_updated");
 
             builder.Property(m => m.PublicId)
-                .IsRequired()
                 .IsRequired()
                 .HasColumnName("public_id");
             

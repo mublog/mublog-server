@@ -8,7 +8,7 @@ namespace Mublog.Server.PublicApi.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<MediaRepository>();
+            services.AddScoped<PostImageRepository>();
         }
     }
 }

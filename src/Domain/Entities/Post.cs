@@ -10,7 +10,7 @@ namespace Mublog.Server.Domain.Entities
         public DateTime PostEditedDate { get; set; }
         public int OwnerId { get; set; }
         public User Owner { get; set; }
-        public ICollection<Media> Mediae { get; set; }
+        public ICollection<PostImage> Mediae { get; set; }
         public ICollection<User> Likes { get; set; }
     }
 }
