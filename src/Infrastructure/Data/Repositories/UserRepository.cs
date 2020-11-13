@@ -5,13 +5,11 @@ using Mublog.Server.Domain.Entities;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
-    public class UserRepository
+    public class UserRepository : RepositoryBase<User>
     {
-        private readonly AppDbContext _db;
 
-        public UserRepository(AppDbContext db)
+        public UserRepository(AppDbContext db) : base(db)
         {
-            _db = db;
         }
 
         public IQueryable<User> GetAll() => _db.Users;

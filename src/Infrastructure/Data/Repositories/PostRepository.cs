@@ -5,18 +5,30 @@ using Mublog.Server.Domain.Entities;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
-    public class PostRepository
+    public class PostRepository : RepositoryBase<Post>
     {
-        private readonly AppDbContext _db;
-
-        public PostRepository(AppDbContext db)
+        public PostRepository(AppDbContext db) : base(db)
         {
-            _db = db;
         }
 
-        public IQueryable<Post> GetAll() => _db.Posts;
-        public async Task<Post> GetById(int id) => await _db.Posts.FirstOrDefaultAsync(p => p.Id == id);
-        public async Task<Post> GetByPublicId(int id) => await _db.Posts.FirstOrDefaultAsync(p => p.PublicId == id);
-        public async Task<Post> GetByUserId(int id) => await _db.Posts.FirstOrDefaultAsync(p => p.OwnerId == id);     
+        public IQueryable<Post> GetAll()
+        {
+            return _db.Posts;
+        }
+        
+        public async Task<Post> GetById(int id)
+        {
+           return await _db.Posts.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<Post> GetByPublicId(int id)
+        {
+            return await _db.Posts.FirstOrDefaultAsync(p => p.PublicId == id);
+        }
+
+        public async Task<Post> GetByUserId(int id)
+        {
+            return await _db.Posts.FirstOrDefaultAsync(p => p.OwnerId == id);
+        }
     }
 }
