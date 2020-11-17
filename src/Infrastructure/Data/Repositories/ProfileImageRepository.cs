@@ -1,11 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Mublog.Server.Domain.Entities;
+using Mublog.Server.Domain.Data.Entities;
+using Mublog.Server.Domain.Data.Repositories;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
-    public class ProfileImageRepository : RepositoryBase<ProfileImage>
+    public class ProfileImageRepository : Repository<ProfileImage>, IProfileImageRepository
     {
         public ProfileImageRepository(AppDbContext db) : base(db) { }
         
