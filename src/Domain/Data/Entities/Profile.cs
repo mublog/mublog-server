@@ -3,7 +3,7 @@ using Mublog.Server.Domain.Enums;
 
 namespace Mublog.Server.Domain.Data.Entities
 {
-    public class User : BaseEntity
+    public class Profile : BaseEntity
     {
         public string Username { get; set; }
         public string DisplayName { get; set; }

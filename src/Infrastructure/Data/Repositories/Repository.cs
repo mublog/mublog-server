@@ -8,50 +8,50 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
-        protected readonly AppDbContext _db;
+        protected readonly AppDbContext Context;
 
-        protected Repository(AppDbContext db)
+        protected Repository(AppDbContext context)
         {
-            _db = db;
+            Context = context;
         }
         
         public IQueryable<T> Query()
         {
-            return _db.Set<T>();
+            return Context.Set<T>();
         }
 
         public async Task<T> FindByIdAsync(int id)
         {
-            return await _db.Set<T>().FindAsync(id);
+            return await Context.Set<T>().FindAsync(id);
         }
 
         public async Task<bool> AddAsync(T entity)
         {
-            await _db.AddAsync(entity);
+            await Context.AddAsync(entity);
             return await SaveChangesAsync();
         }
 
         public bool Update(T entity)
         {
-            _db.Update(entity);
+            Context.Update(entity);
             return SaveChanges();
         }
 
         public bool Remove(T entity)
         {
-            _db.Remove(entity);
+            Context.Remove(entity);
             return SaveChanges();
         }
 
         public bool RemoveRange(IEnumerable<T> entities)
         {
-            _db.RemoveRange(entities);
+            Context.RemoveRange(entities);
             return SaveChanges();
         }
 
-        protected virtual bool SaveChanges() => _db.SaveChanges() >= 0;
+        protected virtual bool SaveChanges() => Context.SaveChanges() >= 0;
         
-        protected virtual async Task<bool> SaveChangesAsync() => await _db.SaveChangesAsync() >= 0;
+        protected virtual async Task<bool> SaveChangesAsync() => await Context.SaveChangesAsync() >= 0;
         
     }
 }

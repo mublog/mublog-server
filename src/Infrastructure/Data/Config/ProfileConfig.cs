@@ -1,16 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Enums;
 
 namespace Mublog.Server.Infrastructure.Data.Config
 {
-    public class UserConfig : IEntityTypeConfiguration<User>
+    public class ProfileConfig : IEntityTypeConfiguration<Profile>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Profile> builder)
         {
-            builder.ToTable("users");
+            builder.ToTable("profiles");
 
             builder.HasKey(u => u.Id)
                 .HasName("id");
@@ -41,7 +40,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             
             builder.HasOne(u => u.ProfileImage)
                 .WithOne(pi => pi.Owner)
-                .HasForeignKey<User>(u => u.ProfileImageId)
+                .HasForeignKey<Profile>(u => u.ProfileImageId)
                 .HasConstraintName("user_profile_image");
 
             builder.Property(u => u.UserState)

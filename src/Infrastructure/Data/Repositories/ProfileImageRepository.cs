@@ -8,12 +8,12 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 {
     public class ProfileImageRepository : Repository<ProfileImage>, IProfileImageRepository
     {
-        public ProfileImageRepository(AppDbContext db) : base(db) { }
+        public ProfileImageRepository(AppDbContext context) : base(context) { }
         
 
         public async Task<ProfileImage> GetByPublicId(Guid id)
         {
-            return await base._db.ProfileImages.FirstOrDefaultAsync(pi => pi.PublicId == id);
+            return await Context.ProfileImages.FirstOrDefaultAsync(pi => pi.PublicId == id);
         }
     }
 }
