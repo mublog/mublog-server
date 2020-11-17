@@ -16,11 +16,8 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class PostsController : ControllerBase
     {
-        private readonly ILogger<PostsController> _logger;
-
-        public PostsController(ILogger<PostsController> logger)
+        public PostsController()
         {
-            _logger = logger;
         }
         
         

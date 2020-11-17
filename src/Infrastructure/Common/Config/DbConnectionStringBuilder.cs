@@ -1,8 +1,8 @@
 using System;
 
-namespace Mublog.Server.Infrastructure.Data
+namespace Mublog.Server.Infrastructure.Common.Config
 {
-    public class DbConnectionStringBuilder
+    public class DbConnectionStringBuilder // : IDbConnectionStringBuilder
     {
         public static string Build()
         {
@@ -10,7 +10,7 @@ namespace Mublog.Server.Infrastructure.Data
             if (string.IsNullOrWhiteSpace(host)) throw new Exception("Environment variable POSTGRES_HOST was not found or is empty.");
             
             var port = Environment.GetEnvironmentVariable("POSTGRES_PORT");
-            if (string.IsNullOrWhiteSpace(host)) throw new Exception("Environment variable POSTGRES_PORT was not found or is empty.");
+            if (string.IsNullOrWhiteSpace(port)) port = "5432";
             
             var database = Environment.GetEnvironmentVariable("POSTGRES_DB");
             if (string.IsNullOrWhiteSpace(database)) throw new Exception("Environment variable POSTGRES_DB was not found or is empty.");
@@ -21,7 +21,7 @@ namespace Mublog.Server.Infrastructure.Data
             var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
             if (string.IsNullOrWhiteSpace(user)) throw new Exception("Environment variable POSTGRES_USER was not found or is empty.");
             
-            return $"Server={host};Port={port};Database={database};User Id={user};Password={password};";
+            return $"Server={host};Port={port};Database={database};Profile Id={user};Password={password};";
         }
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mublog.Server.Infrastructure.Data;
+using Mublog.Server.Application.Common.Interfaces;
 
 namespace Mublog.Server.PublicApi.Installers
 {
@@ -9,8 +10,8 @@ namespace Mublog.Server.PublicApi.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<IdentityContext>(options =>
-                options.UseNpgsql(DbConnectionStringBuilder.Build()));
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql());
         }
     }
 }

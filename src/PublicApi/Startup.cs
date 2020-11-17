@@ -25,7 +25,8 @@ namespace Mublog.Server.PublicApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider versionProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            IApiVersionDescriptionProvider versionProvider)
         {
             if (env.IsDevelopment())
             {
@@ -36,7 +37,7 @@ namespace Mublog.Server.PublicApi
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            
+
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
@@ -49,17 +50,14 @@ namespace Mublog.Server.PublicApi
             });
 
             // app.UseHttpsRedirection(); // Managed by NGINX
-            
+
             app.UseRouting();
 
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

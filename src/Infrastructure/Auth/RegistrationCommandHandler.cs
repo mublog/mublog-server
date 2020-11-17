@@ -28,7 +28,7 @@ namespace Mublog.Server.Infrastructure.Auth
 
             var result = await _userManager.CreateAsync(user, request.Password);
 
-            if (result.Succeeded) return await Task.FromResult(new  BaseResponse{ErrorMessage = "User registration was successful.", Error = false});
+            if (result.Succeeded) return await Task.FromResult(new  BaseResponse{ErrorMessage = "Profile registration was successful.", Error = false});
 
             var errors = "";
 

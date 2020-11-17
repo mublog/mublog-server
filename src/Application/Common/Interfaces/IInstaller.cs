@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Mublog.Server.PublicApi.Installers
+namespace Mublog.Server.Application.Common.Interfaces
 {
     public interface IInstaller
     {
