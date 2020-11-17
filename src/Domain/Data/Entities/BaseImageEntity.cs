@@ -1,9 +1,9 @@
 using System;
 using Mublog.Server.Domain.Enums;
 
-namespace Mublog.Server.Domain.Entities
+namespace Mublog.Server.Domain.Data.Entities
 {
-    public class ProfileImage : BaseEntity
+    public abstract class BaseImageEntity : BaseEntity
     {
         public Guid PublicId { get; set; }
         public MediaType MediaType { get; set; }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Mublog.Server.Domain.Enums;
 
-namespace Mublog.Server.Domain.Entities
+namespace Mublog.Server.Domain.Data.Entities
 {
     public class User : BaseEntity
     {

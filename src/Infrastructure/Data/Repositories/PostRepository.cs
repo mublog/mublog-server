@@ -1,22 +1,17 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Mublog.Server.Domain.Entities;
+using Mublog.Server.Domain.Data.Entities;
+using Mublog.Server.Domain.Data.Repositories;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
-    public class PostRepository
+    public class PostRepository : Repository<Post>, IPostRepository
     {
-        private readonly AppDbContext _db;
-
-        public PostRepository(AppDbContext db)
+        protected PostRepository(AppDbContext db) : base(db)
         {
-            _db = db;
         }
-
-        public IQueryable<Post> GetAll() => _db.Posts;
-        public async Task<Post> GetById(int id) => await _db.Posts.FirstOrDefaultAsync(p => p.Id == id);
+        
         public async Task<Post> GetByPublicId(int id) => await _db.Posts.FirstOrDefaultAsync(p => p.PublicId == id);
-        public async Task<Post> GetByUserId(int id) => await _db.Posts.FirstOrDefaultAsync(p => p.OwnerId == id);     
+        public async Task<Post> GetByUserId(int id) => await _db.Posts.FirstOrDefaultAsync(p => p.OwnerId == id);
     }
 }

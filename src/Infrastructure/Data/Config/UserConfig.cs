@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Mublog.Server.Domain.Entities;
+using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Enums;
 
 namespace Mublog.Server.Infrastructure.Data.Config

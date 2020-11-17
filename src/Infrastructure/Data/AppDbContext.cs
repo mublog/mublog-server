@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Mublog.Server.Domain.Entities;
+using Mublog.Server.Domain.Data.Entities;
 
 namespace Mublog.Server.Infrastructure.Data
 {

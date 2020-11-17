@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Mublog.Server.Domain.Entities;
+using Mublog.Server.Domain.Data.Entities;
 
 namespace Mublog.Server.Infrastructure.Data.Config
 {

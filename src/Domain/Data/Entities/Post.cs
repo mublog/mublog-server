@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Mublog.Server.Domain.Entities
+namespace Mublog.Server.Domain.Data.Entities
 {
     public class Post : BaseEntity
     {

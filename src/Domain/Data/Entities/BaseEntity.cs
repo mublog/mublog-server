@@ -1,8 +1,8 @@
 using System;
 
-namespace Mublog.Server.Domain.Entities
+namespace Mublog.Server.Domain.Data.Entities
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         public int Id { get; set; }
         public DateTime CreatedDate { get; set; }

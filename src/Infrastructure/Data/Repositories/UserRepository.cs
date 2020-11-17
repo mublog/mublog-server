@@ -1,21 +1,19 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Mublog.Server.Domain.Entities;
+using Mublog.Server.Domain.Data.Entities;
+using Mublog.Server.Domain.Data.Repositories;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
-    public class UserRepository
+    public class UserRepository : Repository<User>, IUserRepository
     {
-        private readonly AppDbContext _db;
-
-        public UserRepository(AppDbContext db)
+        protected UserRepository(AppDbContext db) : base(db)
         {
-            _db = db;
         }
 
-        public IQueryable<User> GetAll() => _db.Users;
-        public async Task<User> GetByUsername(string name) => await _db.Users.FirstOrDefaultAsync(u => u.Username == name);
-
+        public async Task<User> GetByUsername(string username)
+        {
+            return await _db.Users.FirstOrDefaultAsync(u => u.Username == username);
+        }
     }
 }
