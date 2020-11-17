@@ -9,8 +9,8 @@ namespace Mublog.Server.Domain.Data.Entities
         public string Content { get; set; }
         public DateTime PostEditedDate { get; set; }
         public int OwnerId { get; set; }
-        public User Owner { get; set; }
+        public Profile Owner { get; set; }
         public ICollection<PostImage> Mediae { get; set; }
-        public ICollection<User> Likes { get; set; }
+        public ICollection<Profile> Likes { get; set; }
     }
 }

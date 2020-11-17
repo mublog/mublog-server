@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Mublog.Server.Infrastructure.Common.Config;
-using Mublog.Server.Infrastructure.Data;
 using Serilog;
 
 namespace Mublog.Server.PublicApi
@@ -30,7 +29,7 @@ namespace Mublog.Server.PublicApi
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
             
-            var conncetion = DbConnectionStringBuilder.Build();
+            DbConnectionStringBuilder.Build();
 
             CreateHostBuilder(args).Build().Run();
         }

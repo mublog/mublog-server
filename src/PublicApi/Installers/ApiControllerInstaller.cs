@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Mublog.Server.Application.Common.Interfaces;
 
 namespace Mublog.Server.PublicApi.Installers
 {

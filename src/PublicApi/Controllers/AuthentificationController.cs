@@ -1,9 +1,8 @@
+using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Mublog.Server.PublicApi.DTOs.V1.Requests;
 
 namespace Mublog.Server.PublicApi.Controllers
@@ -16,14 +15,8 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class AuthController : ControllerBase
     {
-        private readonly ILogger _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-
-
-        public AuthController(ILogger logger)
+        public AuthController()
         {
-            _logger = logger;
-            
         }
 
 
@@ -32,16 +25,14 @@ namespace Mublog.Server.PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login()
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto request)
         {
-
-            
-            return Ok();
+            throw new NotImplementedException();
         }
     }
 }

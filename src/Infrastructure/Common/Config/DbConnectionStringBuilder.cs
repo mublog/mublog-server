@@ -21,7 +21,7 @@ namespace Mublog.Server.Infrastructure.Common.Config
             var password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD");
             if (string.IsNullOrWhiteSpace(user)) throw new Exception("Environment variable POSTGRES_USER was not found or is empty.");
             
-            return $"Server={host};Port={port};Database={database};User Id={user};Password={password};";
+            return $"Server={host};Port={port};Database={database};Profile Id={user};Password={password};";
         }
     }
 }

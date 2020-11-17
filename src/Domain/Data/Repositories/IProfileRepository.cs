@@ -3,8 +3,8 @@ using Mublog.Server.Domain.Data.Entities;
 
 namespace Mublog.Server.Domain.Data.Repositories
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IProfileRepository : IRepository<Profile>
     {
-        Task<User> GetByUsername(string username);
+        Task<Profile> GetByUsername(string username);
     }
 }

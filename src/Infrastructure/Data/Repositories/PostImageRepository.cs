@@ -9,13 +9,13 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 {
     public class PostImageRepository : Repository<PostImage>, IPostImageRepository
     {
-        protected PostImageRepository(AppDbContext db) : base(db)
+        protected PostImageRepository(AppDbContext context) : base(context)
         {
         }
 
-        public async Task<PostImage> GetByPublic(Guid id) => await _db.PostImages.FirstOrDefaultAsync(m => m.PublicId == id);
-        public IQueryable<PostImage> GetByOwner(User owner) => _db.PostImages.Where(m => m.Owner == owner);
-        public async Task<IQueryable<PostImage>> GetByPostAsync(Post post) =>  _db.PostImages.Where(pi => pi.PostId == post.Id);
-        public async Task<PostImage> GetByPostId(int postId) => await _db.PostImages.FirstOrDefaultAsync(m => m.PostId == postId);
+        public async Task<PostImage> GetByPublic(Guid id) => await Context.PostImages.FirstOrDefaultAsync(m => m.PublicId == id);
+        public IQueryable<PostImage> GetByOwner(Profile owner) => Context.PostImages.Where(m => m.Owner == owner);
+        public  IQueryable<PostImage> GetByPost(Post post) =>  Context.PostImages.Where(pi => pi.PostId == post.Id);
+        public async Task<PostImage> GetByPostId(int postId) => await Context.PostImages.FirstOrDefaultAsync(m => m.PostId == postId);
     }
 }

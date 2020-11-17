@@ -2,8 +2,6 @@ using System;
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Mublog.Server.Infrastructure.Data.Repositories;
 
 namespace Mublog.Server.PublicApi.Controllers
 {
@@ -15,12 +13,8 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class PostsController : ControllerBase
     {
-        private readonly ILogger _logger;
-
-
-        public PostsController(ILogger logger)
+        public PostsController()
         {
-            _logger = logger;
         }
         
         
