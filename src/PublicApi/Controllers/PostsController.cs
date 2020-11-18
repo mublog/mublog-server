@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Mime;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Mublog.Server.PublicApi.DTOs.V1.Responses;
 
 namespace Mublog.Server.PublicApi.Controllers
 {
@@ -23,15 +21,43 @@ namespace Mublog.Server.PublicApi.Controllers
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetAll()
+        public Task<IActionResult> GetPaginated()
         {
-            var user = new PostUserResponseDto {Name = "Flayms", Alias = "Anton", ProfileImageUrl = "https://i.imgur.com/9EZK3km.jpg"};
-            var posts = new List<PostResponseDto> {
-                new PostResponseDto {Id = 1, TextContent = "This is my first Post!", DatePosted = 1605087318, DateEdited = 1605087318, LikeAmount = 2, User = user},
-                new PostResponseDto {Id = 2, TextContent = "This is my second Post!", DatePosted = 1605087381, DateEdited = 1605087381, LikeAmount = 7, User = user}
-                };
+            throw new NotImplementedException();
+        }
 
-            return Ok(posts);
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public Task<IActionResult> Get([FromRoute] int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public Task<IActionResult> CreatePost([FromBody] Object post)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPatch("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public Task<IActionResult> Update([FromRoute] int id, [FromBody] Object dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete("{int:id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public Task<IActionResult> Delete([FromRoute] int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }    

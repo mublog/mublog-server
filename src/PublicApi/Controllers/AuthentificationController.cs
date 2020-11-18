@@ -2,6 +2,7 @@ using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Mublog.Server.PublicApi.DTOs.V1.Requests;
 
@@ -15,8 +16,11 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class AuthController : ControllerBase
     {
-        public AuthController()
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public AuthController(UserManager<IdentityUser> userManager)
         {
+            _userManager = userManager;
         }
 
 
