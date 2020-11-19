@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mublog.Server.PublicApi.Controllers
 {
+    /// <summary>
+    /// Handles all requests for posts in api v1
+    /// </summary>
     [ApiController]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/posts")]
@@ -56,6 +59,22 @@ namespace Mublog.Server.PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public Task<IActionResult> Delete([FromRoute] int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPost("posts/like/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public Task<IActionResult> LikePost([FromRoute] int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete("posts/like/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public Task<IActionResult> RemoveLike([FromRoute] int id)
         {
             throw new NotImplementedException();
         }

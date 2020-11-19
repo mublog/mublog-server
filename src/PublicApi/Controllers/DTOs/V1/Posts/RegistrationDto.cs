@@ -1,6 +1,6 @@
-namespace Mublog.Server.PublicApi.DTOs.V1.Requests
+namespace Mublog.Server.PublicApi.DTOs.V1.Posts
 {
-    public class RegistrationRequestDto
+    public class RegistrationDto
     {
         public string Email { get; set; }
         public string Username { get; set; }

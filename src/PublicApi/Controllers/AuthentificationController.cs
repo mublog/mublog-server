@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Mublog.Server.PublicApi.DTOs.V1.Requests;
+using Mublog.Server.PublicApi.DTOs.V1.Posts;
 
 namespace Mublog.Server.PublicApi.Controllers
 {
@@ -34,7 +34,7 @@ namespace Mublog.Server.PublicApi.Controllers
 
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Register([FromBody] RegistrationRequestDto request)
+        public async Task<IActionResult> Register([FromBody] RegistrationDto request)
         {
             throw new NotImplementedException();
         }
