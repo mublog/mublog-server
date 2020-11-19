@@ -26,6 +26,8 @@ namespace Mublog.Server.PublicApi
                 {
                     Title = $"µblog API V{desc.ApiVersion}",
                     Version = desc.ApiVersion.ToString(),
+                    Description = "The backend of µblog.",
+                    License = new OpenApiLicense{ Name = "MIT", Url = new Uri("https://github.com/mublog/mublog-server/blob/master/LICENSE") }
                 });
                 
                 var xmLCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
