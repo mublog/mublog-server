@@ -63,7 +63,7 @@ namespace Mublog.Server.PublicApi.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPost("posts/like/{id:int}")]
+        [HttpPost("like/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public Task<IActionResult> LikePost([FromRoute] int id)
@@ -71,7 +71,7 @@ namespace Mublog.Server.PublicApi.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete("posts/like/{id:int}")]
+        [HttpDelete("like/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public Task<IActionResult> RemoveLike([FromRoute] int id)

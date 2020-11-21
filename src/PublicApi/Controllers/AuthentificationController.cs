@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Mublog.Server.PublicApi.DTOs.V1.Posts;
+using Mublog.Server.PublicApi.Controllers.DTOs.V1.Posts;
 
 namespace Mublog.Server.PublicApi.Controllers
 {

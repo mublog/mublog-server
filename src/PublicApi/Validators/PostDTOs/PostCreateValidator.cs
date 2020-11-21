@@ -1,5 +1,6 @@
 using FluentValidation;
-using Mublog.Server.PublicApi.DTOs.V1.Posts;
+using Mublog.Server.PublicApi.Controllers.DTOs.V1.Posts;
+
 #pragma warning disable 1591
 
 namespace Mublog.Server.PublicApi.Validators.PostDTOs

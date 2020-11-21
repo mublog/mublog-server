@@ -5,7 +5,7 @@
         <RootNamespace>Mublog.Server.PublicApi</RootNamespace>
         <AssemblyName>Mublog.Server.PublicApi</AssemblyName>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Company />
+        <NoWarn>$(NoWarn);1591</NoWarn>
         <Product>µblog</Product>
     </PropertyGroup>
 
