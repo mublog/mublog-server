@@ -1,4 +1,4 @@
-namespace Mublog.Server.PublicApi.Controllers.DTOs.V1.Posts
+namespace Mublog.Server.PublicApi.Common.DTOs.V1.Posts
 {
     public class PostUserResponseDto
     {

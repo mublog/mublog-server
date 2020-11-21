@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Mublog.Server.PublicApi.Controllers
 {
     /// <summary>
-    /// Handles all requests for posts in api v1
+    ///     Handles all requests for posts in api v1
     /// </summary>
     [ApiController]
     [ApiVersion("1")]
@@ -17,11 +17,6 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class PostsController : ControllerBase
     {
-        public PostsController()
-        {
-        }
-        
-        
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public Task<IActionResult> GetPaginated()
@@ -40,7 +35,7 @@ namespace Mublog.Server.PublicApi.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public Task<IActionResult> CreatePost([FromBody] Object post)
+        public Task<IActionResult> CreatePost([FromBody] object post)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +44,7 @@ namespace Mublog.Server.PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Task<IActionResult> Update([FromRoute] int id, [FromBody] Object dto)
+        public Task<IActionResult> Update([FromRoute] int id, [FromBody] object dto)
         {
             throw new NotImplementedException();
         }
@@ -79,4 +74,4 @@ namespace Mublog.Server.PublicApi.Controllers
             throw new NotImplementedException();
         }
     }
-}    
+}

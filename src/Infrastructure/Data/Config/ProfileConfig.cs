@@ -19,7 +19,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
 
             builder.Property(u => u.UpdatedDate)
                 .HasColumnName("date_updated");
-            
+
             builder.Property(u => u.Username)
                 .IsUnicode()
                 .HasMaxLength(20)
@@ -37,7 +37,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
 
             builder.Property(u => u.ProfileImageId)
                 .HasColumnName("profile_image_id");
-            
+
             builder.HasOne(u => u.ProfileImage)
                 .WithOne(pi => pi.Owner)
                 .HasForeignKey<Profile>(u => u.ProfileImageId)

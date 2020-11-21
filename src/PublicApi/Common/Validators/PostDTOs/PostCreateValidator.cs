@@ -1,9 +1,9 @@
 using FluentValidation;
-using Mublog.Server.PublicApi.Controllers.DTOs.V1.Posts;
+using Mublog.Server.PublicApi.Common.DTOs.V1.Posts;
 
 #pragma warning disable 1591
 
-namespace Mublog.Server.PublicApi.Validators.PostDTOs
+namespace Mublog.Server.PublicApi.Common.Validators.PostDTOs
 {
     public class PostCreateValidator : AbstractValidator<PostCreateDto>
     {
@@ -11,7 +11,8 @@ namespace Mublog.Server.PublicApi.Validators.PostDTOs
         {
             RuleFor(x => x.Content).NotNull().WithMessage("Post cannot be empty");
             RuleFor(x => x.Content).NotEmpty().WithMessage("Post cannot be empty");
-            RuleFor(x => x.Content).Length(2, 1536).WithMessage("Post does not meet length requirements"); // TODO discuss max length
+            RuleFor(x => x.Content).Length(2, 1536)
+                .WithMessage("Post does not meet length requirements"); // TODO discuss max length
         }
     }
 }

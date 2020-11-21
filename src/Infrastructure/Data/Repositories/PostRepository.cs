@@ -10,8 +10,15 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         protected PostRepository(AppDbContext context) : base(context)
         {
         }
-        
-        public async Task<Post> GetByPublicId(int id) => await Context.Posts.FirstOrDefaultAsync(p => p.PublicId == id);
-        public async Task<Post> GetByUserId(int id) => await Context.Posts.FirstOrDefaultAsync(p => p.OwnerId == id);
+
+        public async Task<Post> GetByPublicId(int id)
+        {
+            return await Context.Posts.FirstOrDefaultAsync(p => p.PublicId == id);
+        }
+
+        public async Task<Post> GetByUserId(int id)
+        {
+            return await Context.Posts.FirstOrDefaultAsync(p => p.OwnerId == id);
+        }
     }
 }

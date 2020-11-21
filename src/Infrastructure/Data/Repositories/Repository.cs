@@ -14,7 +14,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         {
             Context = context;
         }
-        
+
         public IQueryable<T> Query()
         {
             return Context.Set<T>();
@@ -49,9 +49,14 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             return SaveChanges();
         }
 
-        protected virtual bool SaveChanges() => Context.SaveChanges() >= 0;
-        
-        protected virtual async Task<bool> SaveChangesAsync() => await Context.SaveChangesAsync() >= 0;
-        
+        protected virtual bool SaveChanges()
+        {
+            return Context.SaveChanges() >= 0;
+        }
+
+        protected virtual async Task<bool> SaveChangesAsync()
+        {
+            return await Context.SaveChangesAsync() >= 0;
+        }
     }
 }

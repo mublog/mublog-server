@@ -1,4 +1,4 @@
-namespace Mublog.Server.PublicApi.Controllers.DTOs.V1.Posts
+namespace Mublog.Server.PublicApi.Common.DTOs.V1.Posts
 {
     public class PostResponseDto
     {
@@ -7,6 +7,6 @@ namespace Mublog.Server.PublicApi.Controllers.DTOs.V1.Posts
         public int DatePosted { get; set; }
         public int DateEdited { get; set; }
         public int LikeAmount { get; set; }
-        public PostUserResponseDto User {get; set; }
+        public PostUserResponseDto User { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.Property(pi => pi.MediaType)
                 .IsRequired()
                 .HasColumnName("media_type");
-            
+
             builder.Property(pi => pi.OwnerId)
                 .IsRequired()
                 .HasColumnName("owner_id");

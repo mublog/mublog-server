@@ -13,9 +13,24 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         {
         }
 
-        public async Task<PostImage> GetByPublic(Guid id) => await Context.PostImages.FirstOrDefaultAsync(m => m.PublicId == id);
-        public IQueryable<PostImage> GetByOwner(Profile owner) => Context.PostImages.Where(m => m.Owner == owner);
-        public  IQueryable<PostImage> GetByPost(Post post) =>  Context.PostImages.Where(pi => pi.PostId == post.Id);
-        public async Task<PostImage> GetByPostId(int postId) => await Context.PostImages.FirstOrDefaultAsync(m => m.PostId == postId);
+        public async Task<PostImage> GetByPublic(Guid id)
+        {
+            return await Context.PostImages.FirstOrDefaultAsync(m => m.PublicId == id);
+        }
+
+        public IQueryable<PostImage> GetByOwner(Profile owner)
+        {
+            return Context.PostImages.Where(m => m.Owner == owner);
+        }
+
+        public IQueryable<PostImage> GetByPost(Post post)
+        {
+            return Context.PostImages.Where(pi => pi.PostId == post.Id);
+        }
+
+        public async Task<PostImage> GetByPostId(int postId)
+        {
+            return await Context.PostImages.FirstOrDefaultAsync(m => m.PostId == postId);
+        }
     }
 }

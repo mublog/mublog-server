@@ -28,10 +28,7 @@ namespace Mublog.Server.PublicApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
             IApiVersionDescriptionProvider versionProvider)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {

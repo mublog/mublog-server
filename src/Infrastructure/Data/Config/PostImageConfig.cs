@@ -9,7 +9,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
         public void Configure(EntityTypeBuilder<PostImage> builder)
         {
             builder.ToTable("post_image");
-            
+
             builder.HasKey(m => m.Id)
                 .HasName("id");
 
@@ -22,7 +22,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.Property(m => m.PublicId)
                 .IsRequired()
                 .HasColumnName("public_id");
-            
+
             builder.Property(m => m.MediaType)
                 .IsRequired()
                 .HasColumnName("media_type");
@@ -30,7 +30,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.Property(m => m.OwnerId)
                 .IsRequired()
                 .HasColumnName("owner_id");
-            
+
             builder.HasOne(m => m.Owner)
                 .WithMany(u => u.Mediae)
                 .HasForeignKey(m => m.OwnerId)

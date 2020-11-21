@@ -17,7 +17,7 @@ namespace Mublog.Server.PublicApi.Config
         {
             _versionProvider = versionProvider;
         }
-        
+
         public void Configure(SwaggerGenOptions options)
         {
             foreach (var desc in _versionProvider.ApiVersionDescriptions)
@@ -27,9 +27,10 @@ namespace Mublog.Server.PublicApi.Config
                     Title = $"µblog API V{desc.ApiVersion}",
                     Version = desc.ApiVersion.ToString(),
                     Description = "The backend of µblog.",
-                    License = new OpenApiLicense{ Name = "MIT", Url = new Uri("https://github.com/mublog/mublog-server/blob/master/LICENSE") }
+                    License = new OpenApiLicense
+                        {Name = "MIT", Url = new Uri("https://github.com/mublog/mublog-server/blob/master/LICENSE")}
                 });
-                
+
                 var xmLCommentFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var cmlCommentFullPath = Path.Combine(AppContext.BaseDirectory, xmLCommentFile);
                 options.IncludeXmlComments(cmlCommentFullPath);

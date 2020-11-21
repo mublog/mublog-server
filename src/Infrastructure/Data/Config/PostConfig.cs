@@ -9,7 +9,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
         public void Configure(EntityTypeBuilder<Post> builder)
         {
             builder.ToTable("posts");
-            
+
             builder.HasKey(p => p.Id)
                 .HasName("id");
 

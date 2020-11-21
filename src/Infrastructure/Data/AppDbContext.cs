@@ -30,7 +30,7 @@ namespace Mublog.Server.Infrastructure.Data
             ApplyTimeStamps();
             return base.SaveChanges();
         }
-        
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             ApplyTimeStamps();
@@ -47,12 +47,10 @@ namespace Mublog.Server.Infrastructure.Data
 
             foreach (var entityEntry in entries)
             {
-                ((BaseEntity)entityEntry.Entity).UpdatedDate = DateTime.Now;
+                ((BaseEntity) entityEntry.Entity).UpdatedDate = DateTime.Now;
 
                 if (entityEntry.State == EntityState.Added)
-                {
-                    ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
-                }
+                    ((BaseEntity) entityEntry.Entity).CreatedDate = DateTime.Now;
             }
         }
     }
