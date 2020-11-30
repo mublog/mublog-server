@@ -25,7 +25,7 @@ namespace Mublog.Server.Infrastructure.Services
             };
 
             var key = _keyService.GetKey();
-            var algorithm = _keyService.SecurityAlgorithm;
+            var algorithm = SecurityAlgorithms.HmacSha256;
             
             var signingCredentials = new SigningCredentials(key, algorithm);
 
