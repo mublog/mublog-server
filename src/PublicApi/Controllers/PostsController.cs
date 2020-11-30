@@ -49,7 +49,7 @@ namespace Mublog.Server.PublicApi.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete("{int:id}")]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

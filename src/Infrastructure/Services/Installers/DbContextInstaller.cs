@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Mublog.Server.Application.Common.Interfaces;
 using Mublog.Server.Infrastructure.Data;
 
-namespace Mublog.Server.PublicApi.Installers
+namespace Mublog.Server.Infrastructure.Services.Installers
 {
     public class DbContextInstaller : IInstaller
     {
