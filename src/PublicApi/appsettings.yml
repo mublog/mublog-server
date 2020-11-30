@@ -1,0 +1,14 @@
+AllowedHosts: "*"
+Serilog: 
+  Using:
+    - "Serilog.Sinks.Console"
+#    - "Serilog.Sinks.File"
+  WriteTo:
+    - Name: "Console"
+#    - Name: "File"
+#      Args: 
+#        path: "Logs/log.txt"
+  Enrich: 
+    - "FromLogContext"
+  Properties:
+    Application: "Mublog.Server"

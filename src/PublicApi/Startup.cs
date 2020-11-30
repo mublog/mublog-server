@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mublog.Server.Infrastructure.Services.Installers;
 using Mublog.Server.PublicApi.Common.Installers;
+using Serilog;
 
 namespace Mublog.Server.PublicApi
 {
@@ -15,6 +16,7 @@ namespace Mublog.Server.PublicApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConfigureLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -57,6 +59,13 @@ namespace Mublog.Server.PublicApi
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private void ConfigureLogger()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .CreateLogger();
         }
     }
 }
