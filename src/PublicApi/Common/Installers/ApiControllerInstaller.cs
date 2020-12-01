@@ -16,9 +16,9 @@ namespace Mublog.Server.PublicApi.Common.Installers
                 options.ReportApiVersions = true;
             });
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
-            services.AddControllers();
-
             
+            services.AddControllers()
+                .AddNewtonsoftJson();
         }
     }
 }
