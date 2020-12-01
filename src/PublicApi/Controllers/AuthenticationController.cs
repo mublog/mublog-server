@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Mublog.Server.Infrastructure.Services.Interfaces;
+using Mublog.Server.PublicApi.Common.DTOs.V1.Auth;
 using Mublog.Server.PublicApi.Common.DTOs.V1.Posts;
 
 namespace Mublog.Server.PublicApi.Controllers
@@ -30,9 +31,9 @@ namespace Mublog.Server.PublicApi.Controllers
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
         {
-            var token = _jwtService.GetTokenString("user1");
+            var token = _jwtService.GetTokenString(request.Username);
 
             return Ok(new {accessToken = token});
         }
