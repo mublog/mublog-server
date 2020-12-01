@@ -4,8 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Mublog.Server.Infrastructure.Identity;
 using Mublog.Server.Infrastructure.Services.Interfaces;
-using Mublog.Server.PublicApi.Common.DTOs.V1.Auth;
+using Mublog.Server.PublicApi.Common.DTOs.V1.Authentication;
 using Mublog.Server.PublicApi.Common.DTOs.V1.Posts;
 
 namespace Mublog.Server.PublicApi.Controllers
@@ -18,10 +19,10 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtService _jwtService;
 
-        public AuthenticationController(UserManager<IdentityUser> userManager, IJwtService jwtService)
+        public AuthenticationController(UserManager<ApplicationUser> userManager, IJwtService jwtService)
         {
             _userManager = userManager;
             _jwtService = jwtService;
