@@ -17,6 +17,8 @@ namespace Mublog.Server.PublicApi.Common.Installers
             });
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
             services.AddControllers();
+
+            
         }
     }
 }

@@ -12,7 +12,9 @@ using Serilog;
 namespace Mublog.Server.PublicApi
 {
     public class Startup
-    {
+    {        
+        readonly string DevAllowSpecificOrigins = "_devAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,6 +30,14 @@ namespace Mublog.Server.PublicApi
         {
             services.InstallInfrastructure(Configuration);
             services.InstallApi(Configuration);
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: DevAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:5500", "https://localhost:5500");
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +66,8 @@ namespace Mublog.Server.PublicApi
 
             app.UseRouting();
 
+            app.UseCors(DevAllowSpecificOrigins);
+            
             app.UseAuthentication();
 
             app.UseAuthorization();
