@@ -15,10 +15,18 @@ namespace Mublog.Server.PublicApi.Common.Installers
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.ReportApiVersions = true;
             });
-            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
             
-            services.AddControllers()
-                .AddNewtonsoftJson();
+            services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+
+            services.AddControllers();
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin", builder =>
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader());
+            });
         }
     }
 }

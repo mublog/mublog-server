@@ -2,11 +2,15 @@
 
 # Public URL
 # Publicly exposed URL for your µblog site
-publicUrl: "http://localhost:5000"
+publicUrl: "http://blog.example.com"
 
 # Allowed Hosts
 # List of hosts allowed to connect to API server directly
 allowedHosts: "*"
+
+# DB Connection Strings
+connectionStrings:
+  defaultConnection: "Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;"
 
 # Serilog Configuration
 # Configuration for logging with Serilog

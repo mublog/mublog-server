@@ -11,7 +11,7 @@ namespace Mublog.Server.Infrastructure.Services.Installers
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql());
+                options.UseNpgsql(configuration.GetConnectionString("defaultConnection")));
         }
     }
 }

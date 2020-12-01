@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mublog.Server.Infrastructure.Common.Config;
 using Mublog.Server.Infrastructure.Services.Installers;
 using Mublog.Server.PublicApi.Common.Installers;
 using Serilog;
@@ -13,15 +14,12 @@ using Serilog;
 namespace Mublog.Server.PublicApi
 {
     public class Startup
-    {        
-        // readonly string DevAllowSpecificOrigins = "_devAllowSpecificOrigins";
-
+    {
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            var test = Configuration.GetSection("AllowedHosts").Value;
-            // Configuration.GetSection("AllowedHosts").Value = "none";
             ConfigureLogger();
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -31,13 +29,6 @@ namespace Mublog.Server.PublicApi
         {
             services.InstallInfrastructure(Configuration);
             services.InstallApi(Configuration);
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowOrigin", builder =>
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +71,16 @@ namespace Mublog.Server.PublicApi
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(Configuration)
                 .CreateLogger();
+        }
+
+        private void ConfigureDbConnection()
+        {
+            var connectionString = DbConnectionStringBuilder.Build();
+            
+            if (connectionString != null)
+            {
+                Configuration.GetSection("connectionStrings").GetSection("defaultConnection").Value = connectionString;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Mublog.Server.PublicApi.Common.DTOs.V1.Auth
+namespace Mublog.Server.PublicApi.Common.DTOs.V1.Authentication
 {
     public class LoginRequestDto
     {
