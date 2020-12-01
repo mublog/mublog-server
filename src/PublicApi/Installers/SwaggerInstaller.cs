@@ -11,8 +11,9 @@ namespace Mublog.Server.PublicApi.Common.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSwaggerGen();
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
+            services.AddSwaggerGen();
         }
     }
 }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +18,7 @@ namespace Mublog.Server.PublicApi
         {
             Configuration = configuration;
             ConfigureLogger();
-            
+            ConfigureDbConnection();
         }
 
         public IConfiguration Configuration { get; }
@@ -57,7 +56,7 @@ namespace Mublog.Server.PublicApi
 
             app.UseRouting();
 
-            app.UseCors("AllowOrigin");
+            // app.UseCors("AllowOrigin");
             
             app.UseAuthentication();
 

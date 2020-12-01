@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
@@ -20,15 +22,21 @@ namespace Mublog.Server.Infrastructure.Services
             _configuration = configuration;
         }
         
-        public JwtSecurityToken GetToken(string subject)
+        public JwtSecurityToken GetToken(string username, string email = "",  IEnumerable<Claim> additionalClaims = null)
         {
-            var claims = new[]
+            var claims = new List<Claim>();
+            
+            if (additionalClaims != null)
             {
-                new Claim(JwtRegisteredClaimNames.Sub, subject)
-            };
+                claims.AddRange(additionalClaims);
+            }
+            
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, email));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, username));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
             var key = _securityKey;
-            var algorithm = SecurityAlgorithms.HmacSha256;
+            const string algorithm = SecurityAlgorithms.HmacSha256;
             
             var signingCredentials = new SigningCredentials(key, algorithm);
 
@@ -47,9 +55,9 @@ namespace Mublog.Server.Infrastructure.Services
             return token;
         }
 
-        public string GetTokenString(string subject)
+        public string GetTokenString(string username, string email = "",  IEnumerable<Claim> additionalClaims = null)
         {
-            var token = GetToken(subject);
+            var token = GetToken(username, email, additionalClaims);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

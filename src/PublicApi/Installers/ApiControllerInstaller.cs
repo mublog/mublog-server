@@ -23,9 +23,12 @@ namespace Mublog.Server.PublicApi.Common.Installers
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrigin", builder =>
-                    builder.AllowAnyOrigin()
+                    builder
+                        .AllowAnyOrigin()
                         .AllowAnyMethod()
-                        .AllowAnyHeader());
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .Build());
             });
         }
     }
