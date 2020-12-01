@@ -11,7 +11,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.ToTable("posts");
 
             builder.HasKey(p => p.Id)
-                .HasName("id");
+                .HasName("pk_post_id");
 
             builder.Property(p => p.CreatedDate)
                 .HasColumnName("date_created");
@@ -39,12 +39,12 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.HasOne(p => p.Owner)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.OwnerId)
-                .HasConstraintName("post_media_owner");
+                .HasConstraintName("fk_owner_id");
 
             builder.HasMany(p => p.Mediae)
                 .WithOne(m => m.ParentPost)
                 .HasForeignKey(m => m.PostId)
-                .HasConstraintName("child_media_constraint");
+                .HasConstraintName("fk_post_id");
 
             builder.HasMany(p => p.Likes)
                 .WithMany(u => u.LikedPosts);

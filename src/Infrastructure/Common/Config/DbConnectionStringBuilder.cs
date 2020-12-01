@@ -24,7 +24,7 @@ namespace Mublog.Server.Infrastructure.Common.Config
             if (string.IsNullOrWhiteSpace(user))
                 return null;
 
-            return $"Server={host};Port={port};Database={database};Profile Id={user};Password={password};";
+            return $"Server={host};Port={port};Database={database};User Id={user};Password={password};";
         }
     }
 }

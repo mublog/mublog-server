@@ -12,7 +12,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.ToTable("profiles");
 
             builder.HasKey(u => u.Id)
-                .HasName("id");
+                .HasName("pk_profile_id");
 
             builder.Property(u => u.CreatedDate)
                 .HasColumnName("date_created");
@@ -41,7 +41,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.HasOne(u => u.ProfileImage)
                 .WithOne(pi => pi.Owner)
                 .HasForeignKey<Profile>(u => u.ProfileImageId)
-                .HasConstraintName("user_profile_image");
+                .HasConstraintName("fk_profile_image_id");
 
             builder.Property(u => u.UserState)
                 .HasDefaultValue(UserState.Active)
@@ -51,7 +51,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.HasMany(u => u.Posts)
                 .WithOne(p => p.Owner)
                 .HasForeignKey(p => p.OwnerId)
-                .HasConstraintName("posts_post_owner");
+                .HasConstraintName("fk_post_id");
 
             builder.HasMany(u => u.LikedPosts)
                 .WithMany(p => p.Likes);
@@ -59,7 +59,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.HasMany(u => u.Mediae)
                 .WithOne(m => m.Owner)
                 .HasForeignKey(m => m.OwnerId)
-                .HasConstraintName("mediae_media_owner");
+                .HasConstraintName("fk_post_image_id");
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,8 +20,9 @@ namespace Mublog.Server.PublicApi.Controllers
     public class PostsController : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Task<IActionResult> GetPaginated()
+        public async Task<IActionResult> GetPosts()
         {
             throw new NotImplementedException();
         }
@@ -34,7 +36,6 @@ namespace Mublog.Server.PublicApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public Task<IActionResult> CreatePost([FromBody] object post)

@@ -8,8 +8,10 @@ namespace Mublog.Server.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<ProfileImage> builder)
         {
+            builder.ToTable("profile_images");
+            
             builder.HasKey(pi => pi.Id)
-                .HasName("id");
+                .HasName("pk_profile_image_id");
 
             builder.Property(pi => pi.CreatedDate)
                 .HasColumnName("date_created");
@@ -32,7 +34,7 @@ namespace Mublog.Server.Infrastructure.Data.Config
             builder.HasOne(pi => pi.Owner)
                 .WithOne(u => u.ProfileImage)
                 .HasForeignKey<ProfileImage>(pi => pi.OwnerId)
-                .HasConstraintName("profile_image_owner");
+                .HasConstraintName("fk_profile_id");
         }
     }
 }
