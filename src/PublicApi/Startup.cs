@@ -13,7 +13,7 @@ namespace Mublog.Server.PublicApi
 {
     public class Startup
     {        
-        readonly string DevAllowSpecificOrigins = "_devAllowSpecificOrigins";
+        // readonly string DevAllowSpecificOrigins = "_devAllowSpecificOrigins";
 
         public Startup(IConfiguration configuration)
         {
@@ -32,11 +32,8 @@ namespace Mublog.Server.PublicApi
             services.InstallApi(Configuration);
             services.AddCors(options =>
             {
-                options.AddPolicy(name: DevAllowSpecificOrigins,
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:5500", "https://localhost:5500");
-                    });
+                options.AddPolicy("AllowOrigin",
+                    builder => builder.WithOrigins("http://localhost:5500", "https://localhost:5500"));
             });
         }
 
@@ -66,7 +63,7 @@ namespace Mublog.Server.PublicApi
 
             app.UseRouting();
 
-            app.UseCors(DevAllowSpecificOrigins);
+            app.UseCors("AllowOrigin");
             
             app.UseAuthentication();
 
