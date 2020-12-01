@@ -16,6 +16,8 @@ namespace Mublog.Server.PublicApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            var test = Configuration.GetSection("AllowedHosts").Value;
+            // Configuration.GetSection("AllowedHosts").Value = "none";
             ConfigureLogger();
         }
 

@@ -1,14 +1,26 @@
-AllowedHosts: "*"
-Serilog: 
-  Using:
+# µblog API settings
+
+# Public URL
+# Publicly exposed URL for your µblog site
+publicUrl: "http://localhost:5000"
+
+# Allowed Hosts
+# List of hosts allowed to connect to API server directly
+allowedHosts: "*"
+
+# Serilog Configuration
+# Configuration for logging with Serilog
+# https://github.com/serilog/serilog-settings-configuration
+serilog:
+  using:
     - "Serilog.Sinks.Console"
-#    - "Serilog.Sinks.File"
-  WriteTo:
-    - Name: "Console"
-#    - Name: "File"
-#      Args: 
-#        path: "Logs/log.txt"
-  Enrich: 
+  #    - "Serilog.Sinks.File"
+  writeTo:
+    - name: "Console"
+  #    - Name: "File"
+  #      Args: 
+  #        path: "Logs/log.txt"
+  enrich:
     - "FromLogContext"
-  Properties:
-    Application: "Mublog.Server"
+  properties:
+    application: "µblog-server"

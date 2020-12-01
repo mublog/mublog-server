@@ -18,9 +18,8 @@ namespace Mublog.Server.PublicApi
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, builder) =>
                 {
-                    var env = context.HostingEnvironment;
-                    builder.AddYamlFile("appsettings.yml", optional: false)
-                        .AddYamlFile($"appsettings.{env.EnvironmentName}.yml", optional: true);
+                    builder.AddYamlFile("appsettings.yml", optional: false, reloadOnChange: true);
+                    // builder.AddYamlFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.yml", optional: true);
                 })
                 .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });

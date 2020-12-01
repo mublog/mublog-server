@@ -10,42 +10,43 @@ namespace Mublog.Server.Infrastructure.Services
 {
     public class JwtService : IJwtService
     {
-        private readonly ISecurityKeyService _keyService;
+        private readonly SecurityKey _securityKey;
 
-        public JwtService(ISecurityKeyService keyService)
+        public JwtService(SecurityKey securityKey)
         {
-            _keyService = keyService;
+            _securityKey = securityKey;
         }
         
-        public JwtSecurityToken GetToken(string subClaim)
+        public JwtSecurityToken GetToken(string subject)
         {
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, subClaim)
+                new Claim(JwtRegisteredClaimNames.Sub, subject)
             };
 
-            var key = _keyService.GetKey();
+            var key = _securityKey;
             var algorithm = SecurityAlgorithms.HmacSha256;
             
             var signingCredentials = new SigningCredentials(key, algorithm);
+
+            var now = DateTime.UtcNow;
 
             var token = new JwtSecurityToken(
                 Constants.Issuer,
                 Constants.Audience,
                 claims,
-                notBefore: DateTime.Now,
-                expires: DateTime.Now.AddDays(7),
+                notBefore: now,
+                expires: now.AddDays(7),
                 signingCredentials
             );
 
             return token;
         }
 
-        public string GetTokenString(string subClaim)
+        public string GetTokenString(string subject)
         {
-            var token = GetToken(subClaim);
+            var token = GetToken(subject);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        
     }
 }

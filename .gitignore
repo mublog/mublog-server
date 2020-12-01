@@ -468,3 +468,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# 
+*/data/*
+*/secrets/*
