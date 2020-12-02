@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mublog.Server.Domain.Data;
+using Mublog.Server.Domain.Data.Repositories;
+using Newtonsoft.Json;
 
 namespace Mublog.Server.PublicApi.Controllers
 {
@@ -19,12 +22,31 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class PostsController : ControllerBase
     {
-        [HttpGet]
-        [Authorize]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPosts()
+        private readonly IPostRepository _postRepo;
+
+        public PostsController(IPostRepository postRepo)
         {
-            throw new NotImplementedException();
+            _postRepo = postRepo;
+        }
+        
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetPosts([FromQuery] QueryParameters queryParams)
+        {
+            var posts = _postRepo.GetPaged(queryParams);
+
+            var metaData = new
+            {
+                posts.TotalCount,
+                posts.PageSize,
+                posts.CurrentPage,
+                posts.HasNext,
+                posts.HasPrevious
+            };
+            
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
+            
+            return Ok(new {Page = queryParams.Page, Size = queryParams.Size});
         }
 
         [HttpGet("{id:int}")]

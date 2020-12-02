@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Mublog.Server.Domain.Common.Helpers;
+using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
 
@@ -18,6 +20,11 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         public IQueryable<T> Query()
         {
             return Context.Set<T>();
+        }
+        
+        public PagedList<T> GetPaged(QueryParameters queryParameters)
+        {
+            return PagedList<T>.ToPagedList(Query(), queryParameters.Page, queryParameters.Size);
         }
 
         public async Task<T> FindByIdAsync(int id)

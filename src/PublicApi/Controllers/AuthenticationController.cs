@@ -60,7 +60,7 @@ namespace Mublog.Server.PublicApi.Controllers
 
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Register([FromBody] RegistrationDto request)
+        public async Task<IActionResult> Register([FromBody] RegistrationRequestDto request)
         {
             // TODO Create user service
 
