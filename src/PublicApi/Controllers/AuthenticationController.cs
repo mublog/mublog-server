@@ -56,7 +56,7 @@ namespace Mublog.Server.PublicApi.Controllers
 
             var token = _jwtService.GetTokenString(user.UserName, user.Email, claims);
 
-            return Ok(new {accessToken = token});
+            return Ok(ResponseWrapper.Success(new { accessToken = token} ));
         }
 
         [HttpPost("register")]
@@ -86,7 +86,7 @@ namespace Mublog.Server.PublicApi.Controllers
             };
 
             await _userManager.CreateAsync(user, request.Password);
-            return Ok();
+            return Ok(ResponseWrapper.Success("Account successfully created."));
         }
     }
 }
