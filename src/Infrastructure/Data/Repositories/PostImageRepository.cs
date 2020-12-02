@@ -9,7 +9,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 {
     public class PostImageRepository : Repository<PostImage>, IPostImageRepository
     {
-        protected PostImageRepository(AppDbContext context) : base(context)
+        public PostImageRepository(AppDbContext context) : base(context)
         {
         }
 

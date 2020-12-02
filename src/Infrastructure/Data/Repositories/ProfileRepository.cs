@@ -7,7 +7,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 {
     public class ProfileRepository : Repository<Profile>, IProfileRepository
     {
-        protected ProfileRepository(AppDbContext context) : base(context)
+        public ProfileRepository(AppDbContext context) : base(context)
         {
         }
 

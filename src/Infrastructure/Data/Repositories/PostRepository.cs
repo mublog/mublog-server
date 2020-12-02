@@ -7,7 +7,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 {
     public class PostRepository : Repository<Post>, IPostRepository
     {
-        protected PostRepository(AppDbContext context) : base(context)
+        public PostRepository(AppDbContext context) : base(context)
         {
         }
 
