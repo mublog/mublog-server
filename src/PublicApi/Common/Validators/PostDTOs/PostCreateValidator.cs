@@ -5,7 +5,7 @@ using Mublog.Server.PublicApi.Common.DTOs.V1.Posts;
 
 namespace Mublog.Server.PublicApi.Common.Validators.PostDTOs
 {
-    public class PostCreateValidator : AbstractValidator<PostCreateDto>
+    public class PostCreateValidator : AbstractValidator<PostCreateRequestDto>
     {
         public PostCreateValidator()
         {
