@@ -73,7 +73,7 @@ namespace Mublog.Server.PublicApi.Controllers
                 return BadRequest(ResponseWrapper.Success($"Username {request.Username} is already taken"));
             }
 
-            if (existingMail == null)
+            if (existingMail != null)
             {
                 return BadRequest(ResponseWrapper.Success($"Email {request.Email} is already in use."));
             }
