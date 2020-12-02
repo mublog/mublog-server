@@ -30,6 +30,7 @@ namespace Mublog.Server.PublicApi.Controllers
         }
         
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPosts([FromQuery] QueryParameters queryParams)
         {

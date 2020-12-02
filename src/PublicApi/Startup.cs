@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mublog.Server.Infrastructure.Common.Config;
 using Mublog.Server.Infrastructure.Services.Installers;
-using Mublog.Server.PublicApi.Common.Installers;
+using Mublog.Server.PublicApi.Installers;
 using Serilog;
 
 namespace Mublog.Server.PublicApi
@@ -56,7 +56,7 @@ namespace Mublog.Server.PublicApi
 
             app.UseRouting();
 
-            // app.UseCors("AllowOrigin");
+            app.UseCors("AllowOrigin");
             
             app.UseAuthentication();
 

@@ -5,7 +5,7 @@ using Mublog.Server.Application.Common.Interfaces;
 using Mublog.Server.PublicApi.Config;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Mublog.Server.PublicApi.Common.Installers
+namespace Mublog.Server.PublicApi.Installers
 {
     public class SwaggerInstaller : IInstaller
     {

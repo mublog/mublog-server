@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Mublog.Server.Infrastructure.Identity;
 using Mublog.Server.Infrastructure.Services.Interfaces;
+using Mublog.Server.PublicApi.Common.DTOs;
 using Mublog.Server.PublicApi.Common.DTOs.V1.Authentication;
 using Mublog.Server.PublicApi.Common.DTOs.V1.Posts;
 
@@ -41,7 +42,7 @@ namespace Mublog.Server.PublicApi.Controllers
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
             {
-                return Unauthorized("Invalid Credentials");
+                return Unauthorized(ResponseWrapper.Error("Invalid Credentials"));
             }
 
             var claims = new List<Claim>();
@@ -64,10 +65,17 @@ namespace Mublog.Server.PublicApi.Controllers
         {
             // TODO Create user service
 
-            var existingUser = await _userManager.FindByNameAsync(request.Username);
-            if (existingUser != null)
+            var existingUsername = await _userManager.FindByNameAsync(request.Username);
+            var existingMail = await _userManager.FindByEmailAsync(request.Email);
+            
+            if (existingUsername != null)
             {
-                return BadRequest($"The username {request.Username} is already taken");
+                return BadRequest(ResponseWrapper.Success($"Username {request.Username} is already taken"));
+            }
+
+            if (existingMail == null)
+            {
+                return BadRequest(ResponseWrapper.Success($"Email {request.Email} is already in use."));
             }
             
             var user = new ApplicationUser

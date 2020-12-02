@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mublog.Server.Application.Common.Interfaces;
 
-namespace Mublog.Server.PublicApi.Common.Installers
+namespace Mublog.Server.PublicApi.Installers
 {
     public class ApiControllerInstaller : IInstaller
     {
@@ -27,7 +27,7 @@ namespace Mublog.Server.PublicApi.Common.Installers
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
                         .AllowAnyHeader()
-                        .AllowCredentials()
+                        // .AllowCredentials()
                         .Build());
             });
         }

@@ -9,6 +9,8 @@ namespace Mublog.Server.PublicApi.Common.DTOs.V1.Authentication
         [Required]
         public string Username { get; set; }
         [Required]
+        public string DisplayName { get; set; }
+        [Required]
         public string Password { get; set; }
     }
 }

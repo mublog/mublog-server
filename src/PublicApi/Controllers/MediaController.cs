@@ -16,9 +16,15 @@ namespace Mublog.Server.PublicApi.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class MediaController : ControllerBase
     {
-        [HttpGet("{id}")]
+        [HttpGet("{guid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByGuid([FromRoute] string guid)
+        {
+            throw new NotImplementedException();
+        }
+        
+        [HttpDelete("{guid}")]
+        public async Task<IActionResult> DeleteImage([FromRoute] string guid)
         {
             throw new NotImplementedException();
         }

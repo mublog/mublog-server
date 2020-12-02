@@ -10,7 +10,7 @@ using Mublog.Server.Application.Common.Interfaces;
 using Mublog.Server.Infrastructure.Services;
 using Mublog.Server.Infrastructure.Services.Interfaces;
 
-namespace Mublog.Server.PublicApi.Common.Installers
+namespace Mublog.Server.PublicApi.Installers
 {
     public class AuthenticationInstaller : IInstaller
     {

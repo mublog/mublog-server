@@ -10,7 +10,6 @@ namespace Mublog.Server.PublicApi
     {
         public static void Main(string[] args)
         {
-            DbConnectionStringBuilder.Build();
             CreateHostBuilder(args).Build().Run();
         }
 
