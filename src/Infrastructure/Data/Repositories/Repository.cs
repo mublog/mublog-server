@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Mublog.Server.Domain.Common.Helpers;
 using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
@@ -24,7 +25,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         
         public PagedList<T> GetPaged(QueryParameters queryParameters)
         {
-            return PagedList<T>.ToPagedList(Query(), queryParameters.Page, queryParameters.Size);
+            return PagedList<T>.ToPagedList(Query().AsNoTracking(), queryParameters.Page, queryParameters.Size);
         }
 
         public async Task<T> FindByIdAsync(int id)
