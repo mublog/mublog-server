@@ -30,6 +30,8 @@ namespace Mublog.Server.PublicApi.Installers
                         // .AllowCredentials()
                         .Build());
             });
+
+            services.AddHttpContextAccessor();
         }
     }
 }

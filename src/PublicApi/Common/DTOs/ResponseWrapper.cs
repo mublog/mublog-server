@@ -19,7 +19,7 @@ namespace Mublog.Server.PublicApi.Common.DTOs
                 message
             };
 
-            return Success<object>(messages);
+            return Success<object>(null, messages);
         }
 
         public static ResponseWrapper<object> Success(IEnumerable<string> messages = null)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,10 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
+using Mublog.Server.Infrastructure.Services.Interfaces;
 using Mublog.Server.PublicApi.Common.DTOs;
 using Mublog.Server.PublicApi.Common.DTOs.V1.Posts;
 using Newtonsoft.Json;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
+
 
 namespace Mublog.Server.PublicApi.Controllers
 {
@@ -29,83 +31,89 @@ namespace Mublog.Server.PublicApi.Controllers
     {
         private readonly IPostRepository _postRepo;
         private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
 
-        public PostsController(IPostRepository postRepo, IMapper mapper)
+        public PostsController(IPostRepository postRepo, IMapper mapper, ICurrentUserService currentUserService)
         {
             _postRepo = postRepo;
             _mapper = mapper;
+            _currentUserService = currentUserService;
         }
-        
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPosts([FromQuery] QueryParameters queryParams = null)
         {
-            // var posts = _postRepo.GetPaged(queryParams);
-            //
-            // var metaData = new
-            // {
-            //     posts.TotalCount,
-            //     posts.PageSize,
-            //     posts.CurrentPage,
-            //     posts.HasNext,
-            //     posts.HasPrevious
-            // };
-            //
-            // Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
-            //
-            // return Ok(new {Page = queryParams.Page, Size = queryParams.Size});
+            var posts = _postRepo.GetPaged(queryParams);
 
-            var posts = new List<PostResponseDto>
+            var metaData = new
             {
-                new PostResponseDto
-                {
-                    Id = 1,
-                    TextContent = "Test 1",
-                    DateEdited = DateTime.Now,
-                    DatePosted = DateTime.Now,
-                    LikeAmount = 4,
-                    User = new PostUserResponseDto
-                    {
-                        Alias = "testuser",
-                        DisplayName = "Test User",
-                        ProfileImageUrl = "#"
-                    }
-
-                },
-                new PostResponseDto
-                {
-                    Id = 2,
-                    TextContent = "#Test 2",
-                    DateEdited = DateTime.UtcNow,
-                    DatePosted = DateTime.UtcNow,
-                    LikeAmount = 9999,
-                    User = new PostUserResponseDto
-                    {
-                        Alias = "testuser",
-                        DisplayName = "Test User",
-                        ProfileImageUrl = "#"
-                    }
-
-                }
+                posts.TotalCount,
+                posts.PageSize,
+                posts.CurrentPage,
+                posts.HasNext,
+                posts.HasPrevious
             };
 
-            return Ok(ResponseWrapper.Success<List<PostResponseDto>>(posts));
+            var response = posts.Select(p => new PostResponseDto
+                {
+                    Id = p.PublicId,
+                    TextContent = p.Content,
+                    DatePosted = p.CreatedDate,
+                    DateEdited = p.UpdatedDate,
+                    LikeAmount = 0 /*p.Likes.Count*/,
+                    User = new PostUserResponseDto
+                    {
+                        Alias = p.Owner?.Username,
+                        DisplayName = p.Owner?.DisplayName,
+                        ProfileImageUrl = ""
+                    }
+                })
+                .ToList();
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
+
+            return Ok(ResponseWrapper.Success<List<PostResponseDto>>(response));
         }
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Task<IActionResult> Get([FromRoute] int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
-            throw new NotImplementedException();
+            var post = await _postRepo.GetByPublicId(id);
+
+            if (post == null)
+            {
+                return NotFound(ResponseWrapper.Error($"Post with id {id} could not be found."));
+            }
+            
+            var response = new PostResponseDto
+            {
+                Id = post.PublicId,
+                TextContent = post.Content,
+                DatePosted = post.CreatedDate,
+                DateEdited = post.UpdatedDate,
+                LikeAmount = 0 /*p.Likes.Count*/,
+                User = new PostUserResponseDto
+                {
+                    Alias = post.Owner?.Username,
+                    DisplayName = post.Owner?.DisplayName,
+                    ProfileImageUrl = ""
+                }
+            };
+
+            return Ok(ResponseWrapper.Success(response, "Success"));
         }
 
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreatePost([FromBody] PostCreateRequestDto request)
         {
             var post = _mapper.Map<Post>(request);
+            post.Owner = await _currentUserService.GetProfile();
             var success = await _postRepo.AddAsync(post);
 
             if (!success)

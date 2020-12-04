@@ -36,7 +36,7 @@ namespace Mublog.Server.PublicApi.Installers
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
-                        // ValidateLifetime = true,
+                        ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
                         ValidIssuer = publicUrl,

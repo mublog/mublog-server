@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Mublog.Server.Application.Common.Interfaces;
 using Mublog.Server.Infrastructure.Data;
 using Mublog.Server.Infrastructure.Identity;
+using Mublog.Server.Infrastructure.Services.Interfaces;
 
 namespace Mublog.Server.Infrastructure.Services.Installers
 {
@@ -15,6 +16,8 @@ namespace Mublog.Server.Infrastructure.Services.Installers
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<ICurrentUserService, JwtSubExtractorService>();
         }
        
     }
