@@ -29,7 +29,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Common\Helpers" />
       <Folder Include="Validators" />
     </ItemGroup>
 

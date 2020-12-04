@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
+using Mublog.Server.Infrastructure.Common.Helpers;
 using Mublog.Server.Infrastructure.Services.Interfaces;
 using Mublog.Server.PublicApi.Common.DTOs;
 using Mublog.Server.PublicApi.Common.DTOs.V1.Posts;
@@ -61,8 +62,8 @@ namespace Mublog.Server.PublicApi.Controllers
                 {
                     Id = p.PublicId,
                     TextContent = p.Content,
-                    DatePosted = p.CreatedDate,
-                    DateEdited = p.UpdatedDate,
+                    DatePosted = UnixTimeHelper.GetTimeStamp(p.CreatedDate),
+                    DateEdited = UnixTimeHelper.GetTimeStamp(p.CreatedDate),
                     LikeAmount = 0 /*p.Likes.Count*/,
                     User = new PostUserResponseDto
                     {
@@ -94,8 +95,8 @@ namespace Mublog.Server.PublicApi.Controllers
             {
                 Id = post.PublicId,
                 TextContent = post.Content,
-                DatePosted = post.CreatedDate,
-                DateEdited = post.UpdatedDate,
+                DatePosted = UnixTimeHelper.GetTimeStamp(post.CreatedDate),
+                DateEdited = UnixTimeHelper.GetTimeStamp(post.UpdatedDate),
                 LikeAmount = 0 /*p.Likes.Count*/,
                 User = new PostUserResponseDto
                 {

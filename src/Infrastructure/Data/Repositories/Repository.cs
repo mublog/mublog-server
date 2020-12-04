@@ -18,40 +18,40 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             Context = context;
         }
 
-        public IQueryable<T> Query()
+        public virtual IQueryable<T> Query()
         {
             return Context.Set<T>();
         }
         
-        public PagedList<T> GetPaged(QueryParameters queryParameters)
+        public virtual PagedList<T> GetPaged(QueryParameters queryParameters)
         {
             return PagedList<T>.ToPagedList(Query().AsNoTracking(), queryParameters.Page, queryParameters.Size);
         }
 
-        public async Task<T> FindByIdAsync(int id)
+        public virtual async Task<T> FindByIdAsync(int id)
         {
             return await Context.Set<T>().FindAsync(id);
         }
 
-        public async Task<bool> AddAsync(T entity)
+        public virtual async Task<bool> AddAsync(T entity)
         {
             await Context.AddAsync(entity);
             return await SaveChangesAsync();
         }
 
-        public bool Update(T entity)
+        public virtual bool Update(T entity)
         {
             Context.Update(entity);
             return SaveChanges();
         }
 
-        public bool Remove(T entity)
+        public virtual bool Remove(T entity)
         {
             Context.Remove(entity);
             return SaveChanges();
         }
 
-        public bool RemoveRange(IEnumerable<T> entities)
+        public virtual bool RemoveRange(IEnumerable<T> entities)
         {
             Context.RemoveRange(entities);
             return SaveChanges();
