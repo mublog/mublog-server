@@ -44,6 +44,8 @@ namespace Mublog.Server.PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetPosts([FromQuery] QueryParameters queryParams = null)
         {
+            queryParams ??= new QueryParameters();
+
             var posts = _postRepo.GetPaged(queryParams);
 
             var metaData = new
