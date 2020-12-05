@@ -62,8 +62,8 @@ namespace Mublog.Server.PublicApi.Controllers
                 {
                     Id = p.PublicId,
                     TextContent = p.Content,
-                    DatePosted = UnixTimeHelper.GetTimeStamp(p.CreatedDate),
-                    DateEdited = UnixTimeHelper.GetTimeStamp(p.CreatedDate),
+                    DatePosted = p.CreatedDate.ToUnixTimeStamp(),
+                    DateEdited = p.CreatedDate.ToUnixTimeStamp(),
                     LikeAmount = 0 /*p.Likes.Count*/,
                     User = new PostUserResponseDto
                     {
@@ -95,8 +95,8 @@ namespace Mublog.Server.PublicApi.Controllers
             {
                 Id = post.PublicId,
                 TextContent = post.Content,
-                DatePosted = UnixTimeHelper.GetTimeStamp(post.CreatedDate),
-                DateEdited = UnixTimeHelper.GetTimeStamp(post.UpdatedDate),
+                DatePosted = post.CreatedDate.ToUnixTimeStamp(),
+                DateEdited = post.UpdatedDate.ToUnixTimeStamp(),
                 LikeAmount = 0 /*p.Likes.Count*/,
                 User = new PostUserResponseDto
                 {

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Mublog.Server.PublicApi.Common.DTOs
@@ -34,7 +33,7 @@ namespace Mublog.Server.PublicApi.Common.DTOs
                 message
             };
 
-            return Success<T>(data, message);
+            return Success<T>(data, messages);
         }
 
         public static ResponseWrapper<T> Success<T>(T data, IEnumerable<string> messages = null)

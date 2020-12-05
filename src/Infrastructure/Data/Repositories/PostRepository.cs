@@ -22,8 +22,8 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<Post> GetByPublicId(int id)
         {
-            return Context.Posts.First(p => p.Id == id);
-            // FirstOrDefaultAsync(p => p.PublicId == id);
+            return await Context.Posts.AsNoTracking().Include(p => p.Owner)
+                .FirstOrDefaultAsync(p => p.PublicId == id);
         }
 
         public async Task<Post> GetByUserId(int id)
