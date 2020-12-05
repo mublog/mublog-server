@@ -12,8 +12,8 @@ namespace Mublog.Server.Domain.Data.Repositories
         PagedList<T> GetPaged(QueryParameters queryParameters);
         Task<T> FindByIdAsync(int id);
         Task<bool> AddAsync(T entity);
-        bool Update(T entity);
-        bool Remove(T entity);
-        bool RemoveRange(IEnumerable<T> entities);
+        Task<bool> Update(T entity);
+        Task<bool> Remove(T entity);
+        Task<bool> RemoveRange(IEnumerable<T> entities);
     }
 }

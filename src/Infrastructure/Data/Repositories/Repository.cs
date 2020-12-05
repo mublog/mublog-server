@@ -39,22 +39,22 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             return await SaveChangesAsync();
         }
 
-        public virtual bool Update(T entity)
+        public virtual Task<bool> Update(T entity)
         {
             Context.Update(entity);
-            return SaveChanges();
+            return SaveChangesAsync();
         }
 
-        public virtual bool Remove(T entity)
+        public virtual Task<bool> Remove(T entity)
         {
             Context.Remove(entity);
-            return SaveChanges();
+            return SaveChangesAsync();
         }
 
-        public virtual bool RemoveRange(IEnumerable<T> entities)
+        public virtual Task<bool> RemoveRange(IEnumerable<T> entities)
         {
             Context.RemoveRange(entities);
-            return SaveChanges();
+            return SaveChangesAsync();
         }
 
         protected virtual bool SaveChanges()

@@ -64,6 +64,8 @@ namespace Mublog.Server.PublicApi.Controllers
             {
                 return BadRequest(ResponseWrapper.Error("Invalid request"));
             }
+
+            request.Username = request.Username.ToLower();
             
             // TODO Create user service
 

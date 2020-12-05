@@ -79,7 +79,7 @@ namespace Mublog.Server.PublicApi.Controllers
             return Ok(ResponseWrapper.Success<List<PostResponseDto>>(response));
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "GetById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get([FromRoute] int id)
@@ -131,18 +131,79 @@ namespace Mublog.Server.PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Task<IActionResult> Update([FromRoute] int id, [FromBody] object dto)
+        public async Task<IActionResult> Update([FromBody] PostUpdateDto request, [FromRoute] int id)
         {
-            throw new NotImplementedException();
+            if (request.Id != id)
+            {
+                return BadRequest(ResponseWrapper.Error($"ID {id} in route did not match ID {request.Id} in body"));
+            }
+
+            var post = await _postRepo.GetByPublicId(id);
+
+            if (post == null)
+            {
+                return NotFound(ResponseWrapper.Error($"Could not find post with ID {id}"));
+            }
+
+            if (post.Owner.Username != _currentUserService.GetUsername())
+            {
+                return Unauthorized(ResponseWrapper.Error("This post does not belong to you."));
+            }
+            
+            post.Content = request.Content;
+            post.PostEditedDate = DateTime.UtcNow;
+
+            var success = await _postRepo.Update(post);
+
+            if (!success)
+            {
+                return StatusCode(500, ResponseWrapper.Error($"An error occured pushing update to DB."));
+            }
+            
+            var response = new PostResponseDto
+            {
+                Id = post.PublicId,
+                TextContent = post.Content,
+                DatePosted = post.CreatedDate.ToUnixTimeStamp(),
+                DateEdited = post.UpdatedDate.ToUnixTimeStamp(),
+                LikeAmount = 0 /*p.Likes.Count*/,
+                User = new PostUserResponseDto
+                {
+                    Alias = post.Owner?.Username,
+                    DisplayName = post.Owner?.DisplayName,
+                    ProfileImageUrl = ""
+                }
+            };
+
+            return Ok(ResponseWrapper.Success(response));
         }
 
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            throw new NotImplementedException();
+            var post = await _postRepo.GetByPublicId(id);
+
+            if (post == null)
+            {
+                return NotFound(ResponseWrapper.Error($"Could not find post with ID {id}"));
+            }
+            
+            if (post.Owner.Username != _currentUserService.GetUsername())
+            {
+                return Unauthorized(ResponseWrapper.Error("This post does not belong to you."));
+            }
+            
+            var success = await _postRepo.Remove(post);
+
+            if (!success)
+            {
+                return StatusCode(500, ResponseWrapper.Error($"An error occured pushing update to DB."));
+            }
+
+            return Ok(ResponseWrapper.Success("Successfully removed post."));
         }
 
         [HttpPost("like/{id:int}")]
