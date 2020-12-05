@@ -9,5 +9,11 @@ namespace Mublog.Server.Infrastructure.Common.Helpers
             var dateTimeOffset = new DateTimeOffset(dateTime);
             return dateTimeOffset.ToUnixTimeSeconds();
         }
+
+        public static long ToUnixTimeStamp(this DateTime dateTime)
+        {
+            var dateTimeOffset = new DateTimeOffset(dateTime);
+            return dateTimeOffset.ToUnixTimeSeconds();
+        }
     }
 }
