@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,14 @@ namespace Mublog.Server.Domain.Common.Helpers
         {
             var count = source.Count();
             var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+
+            return new PagedList<T>(items, count, pageNumber, pageSize);
+        }
+        
+        public static PagedList<T> ToPagedList(IList<T> source, int pageNumber, int pageSize)
+        {
+            var count = source.Count;
+            var items = source.ToList();
 
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }

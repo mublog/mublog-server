@@ -15,7 +15,10 @@ namespace Mublog.Server.Infrastructure.Services.Installers
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("defaultConnection")));
+            {
+                options.UseNpgsql(configuration.GetConnectionString("defaultConnection"));
+                options.EnableSensitiveDataLogging();
+            });
 
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<IPostImageRepository, PostImageRepository>();

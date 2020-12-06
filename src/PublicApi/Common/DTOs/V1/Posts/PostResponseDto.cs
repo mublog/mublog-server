@@ -9,6 +9,7 @@ namespace Mublog.Server.PublicApi.Common.DTOs.V1.Posts
         public long DatePosted { get; set; }
         public long DateEdited { get; set; }
         public int LikeAmount { get; set; }
+        public bool Liked { get; set; }
         public PostUserResponseDto User { get; set; }
     }
 }

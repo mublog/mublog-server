@@ -46,29 +46,31 @@ namespace Mublog.Server.PublicApi.Controllers
         public async Task<IActionResult> GetPosts([FromQuery] QueryParameters queryParams = null)
         {
             queryParams ??= new QueryParameters();
+            var user = await _currentUserService.GetProfile();
 
-            var posts = _postRepo.GetPaged(queryParams);
+            var postsWithLikes = _postRepo.GetPagedWithLikes(queryParams, user);
 
             var metaData = new
             {
-                posts.TotalCount,
-                posts.PageSize,
-                posts.CurrentPage,
-                posts.HasNext,
-                posts.HasPrevious
+                postsWithLikes.TotalCount,
+                postsWithLikes.PageSize,
+                postsWithLikes.CurrentPage,
+                postsWithLikes.HasNext,
+                postsWithLikes.HasPrevious
             };
 
-            var response = posts.Select(p => new PostResponseDto
+            var response = postsWithLikes.Select(p => new PostResponseDto
                 {
                     Id = p.PublicId,
                     TextContent = p.Content,
                     DatePosted = p.CreatedDate.ToUnixTimeStamp(),
                     DateEdited = p.CreatedDate.ToUnixTimeStamp(),
                     LikeAmount = 0 /*p.Likes.Count*/,
+                    Liked = p.Liked,
                     User = new PostUserResponseDto
                     {
-                        Alias = p.Owner?.Username,
-                        DisplayName = p.Owner?.DisplayName,
+                        Alias = p.Owner?.Username ?? "unknown",
+                        DisplayName = p.Owner?.DisplayName ?? "Unknown",
                         ProfileImageUrl = ""
                     }
                 })
@@ -84,7 +86,8 @@ namespace Mublog.Server.PublicApi.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var post = await _postRepo.GetByPublicId(id);
+            var username = _currentUserService.GetUsername();
+            var post = await _postRepo.GetByPublicId(id, username);
 
             if (post == null)
             {
@@ -98,10 +101,11 @@ namespace Mublog.Server.PublicApi.Controllers
                 DatePosted = post.CreatedDate.ToUnixTimeStamp(),
                 DateEdited = post.UpdatedDate.ToUnixTimeStamp(),
                 LikeAmount = 0 /*p.Likes.Count*/,
+                Liked = post.Liked,
                 User = new PostUserResponseDto
                 {
-                    Alias = post.Owner?.Username,
-                    DisplayName = post.Owner?.DisplayName,
+                    Alias = post.Owner?.Username ?? "unknown",
+                    DisplayName = post.Owner?.DisplayName ?? "Unknown",
                     ProfileImageUrl = ""
                 }
             };
@@ -128,6 +132,7 @@ namespace Mublog.Server.PublicApi.Controllers
         }
 
         [HttpPatch("{id:int}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -167,6 +172,7 @@ namespace Mublog.Server.PublicApi.Controllers
                 DatePosted = post.CreatedDate.ToUnixTimeStamp(),
                 DateEdited = post.UpdatedDate.ToUnixTimeStamp(),
                 LikeAmount = 0 /*p.Likes.Count*/,
+                Liked = post.Liked,
                 User = new PostUserResponseDto
                 {
                     Alias = post.Owner?.Username,
@@ -179,6 +185,7 @@ namespace Mublog.Server.PublicApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -200,26 +207,60 @@ namespace Mublog.Server.PublicApi.Controllers
 
             if (!success)
             {
-                return StatusCode(500, ResponseWrapper.Error($"An error occured pushing update to DB."));
+                return StatusCode(500, ResponseWrapper.Error("An error occured pushing update to DB."));
             }
 
             return Ok(ResponseWrapper.Success("Successfully removed post."));
         }
 
         [HttpPost("like/{id:int}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Task<IActionResult> LikePost([FromRoute] int id)
+        public async Task<IActionResult> LikePost([FromRoute] int id)
         {
-            throw new NotImplementedException();
+            var post = await _postRepo.GetByPublicId(id);
+
+            if (post == null)
+            {
+                return NotFound(ResponseWrapper.Error($"Could not find post with ID {id}"));
+            }
+
+            var user = await _currentUserService.GetProfile();
+
+            var success = await _postRepo.AddLike(post, user);
+
+            if (!success)
+            {
+                return StatusCode(500, ResponseWrapper.Error("An error occured pushing update to DB."));
+            }
+
+            return Ok(ResponseWrapper.Success($"Added like to post {post.PublicId}"));
         }
 
         [HttpDelete("like/{id:int}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public Task<IActionResult> RemoveLike([FromRoute] int id)
+        public async Task<IActionResult> RemoveLike([FromRoute] int id)
         {
-            throw new NotImplementedException();
+            var post = await _postRepo.GetByPublicId(id);
+
+            if (post == null)
+            {
+                return NotFound(ResponseWrapper.Error($"Could not find post with ID {id}"));
+            }
+
+            var user = await _currentUserService.GetProfile();
+
+            var success = await _postRepo.RemoveLike(post, user);
+
+            if (!success)
+            {
+                return StatusCode(500, ResponseWrapper.Error("An error occured pushing update to DB."));
+            }
+
+            return Ok(ResponseWrapper.Success($"Removed like from post {post.PublicId}"));
         }
     }
 }
