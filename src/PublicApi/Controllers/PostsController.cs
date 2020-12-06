@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -78,7 +77,7 @@ namespace Mublog.Server.PublicApi.Controllers
 
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metaData));
 
-            return Ok(ResponseWrapper.Success<List<PostResponseDto>>(response));
+            return Ok(ResponseWrapper.Success(response));
         }
 
         [HttpGet("{id:int}", Name = "GetById")]

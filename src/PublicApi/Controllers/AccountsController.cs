@@ -106,7 +106,7 @@ namespace Mublog.Server.PublicApi.Controllers
 
             if (!identityResult.Succeeded)
             {
-                _profileRepo.Remove(profile);
+                await _profileRepo.Remove(profile);
                 return StatusCode(500, identityResult.Errors.Select(e => (e.ToString() ?? string.Empty).ToList()));
             }
             

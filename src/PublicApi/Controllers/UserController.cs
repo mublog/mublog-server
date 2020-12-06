@@ -1,7 +1,6 @@
 using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mublog.Server.Domain.Data.Repositories;
@@ -19,12 +18,10 @@ namespace Mublog.Server.PublicApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IProfileRepository _profileRepo;
-        private readonly IMapper _mapper;
 
-        public UserController(IProfileRepository profileRepo, IMapper mapper)
+        public UserController(IProfileRepository profileRepo)
         {
             _profileRepo = profileRepo;
-            _mapper = mapper;
         }
         
         [HttpGet("{username}")]
@@ -50,7 +47,7 @@ namespace Mublog.Server.PublicApi.Controllers
                 FollowingCount = 0
             };
 
-            return Ok(ResponseWrapper.Success<UserResponseDto>(response));
+            return Ok(ResponseWrapper.Success(response));
         }
 
         // [HttpGet("{username}/image")]

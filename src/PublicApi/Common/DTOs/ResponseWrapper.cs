@@ -13,7 +13,7 @@ namespace Mublog.Server.PublicApi.Common.DTOs
     {
         public static ResponseWrapper<object> Success(string message)
         {
-            var messages = new string[]
+            var messages = new[]
             {
                 message
             };
@@ -28,19 +28,19 @@ namespace Mublog.Server.PublicApi.Common.DTOs
 
         public static ResponseWrapper<T> Success<T>(T data, string message)
         {
-            var messages = new string[]
+            var messages = new[]
             {
                 message
             };
 
-            return Success<T>(data, messages);
+            return Success(data, messages);
         }
 
         public static ResponseWrapper<T> Success<T>(T data, IEnumerable<string> messages = null)
         {
             if (messages == null)
             {
-                messages = new string[]
+                messages = new[]
                 {
                     "Success"
                 };
@@ -56,7 +56,7 @@ namespace Mublog.Server.PublicApi.Common.DTOs
 
         public static ResponseWrapper<object> Error(string error)
         {
-            var errors = new string[]
+            var errors = new[]
             {
                 error
             };

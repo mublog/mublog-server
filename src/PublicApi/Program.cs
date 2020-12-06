@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Mublog.Server.Infrastructure.Common.Config;
 using Serilog;
 
 namespace Mublog.Server.PublicApi

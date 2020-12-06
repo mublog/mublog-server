@@ -45,7 +45,7 @@ namespace Mublog.Server.PublicApi.Installers
                     };
                 });
 
-            services.AddSingleton<SecurityKey>(_securityKey);
+            services.AddSingleton(_securityKey);
             services.AddSingleton<IJwtService, JwtService>();
         }
         
