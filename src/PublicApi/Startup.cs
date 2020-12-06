@@ -57,6 +57,9 @@ namespace Mublog.Server.PublicApi
             app.UseRouting();
 
             app.UseCors("AllowOrigin");
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             
             app.UseAuthentication();
 

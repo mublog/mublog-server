@@ -16,6 +16,8 @@ connectionStrings:
 # Configuration for logging with Serilog
 # https://github.com/serilog/serilog-settings-configuration
 serilog:
+  minimumLevel:
+    default: "Information"
   using:
     - "Serilog.Sinks.Console"
   #    - "Serilog.Sinks.File"
