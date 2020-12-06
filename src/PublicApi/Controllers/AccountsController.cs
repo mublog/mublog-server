@@ -17,17 +17,17 @@ namespace Mublog.Server.PublicApi.Controllers
 {
     [ApiController]
     [ApiVersion("1")]
-    [Route("api/v{version:apiVersion}/auth")]
+    [Route("api/v{version:apiVersion}/accounts")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public class AuthenticationController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtService _jwtService;
         private readonly IProfileRepository _profileRepo;
 
-        public AuthenticationController(UserManager<ApplicationUser> userManager, IJwtService jwtService, IProfileRepository profileRepo)
+        public AccountsController(UserManager<ApplicationUser> userManager, IJwtService jwtService, IProfileRepository profileRepo)
         {
             _userManager = userManager;
             _jwtService = jwtService;
