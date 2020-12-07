@@ -1,7 +1,11 @@
 using System;
+using System.IO;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
+using Mublog.Server.PublicApi.Common.Helpers;
 
 namespace Mublog.Server.PublicApi.V1.Controllers
 {
@@ -15,9 +19,40 @@ namespace Mublog.Server.PublicApi.V1.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class MediaController : ControllerBase
     {
+
+        [HttpPost, RequestSizeLimit(5242880)]
+        public async Task<IActionResult> Upload()
+        {
+            var guid = new Guid();
+            
+            try
+            {
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("wwwroot", "media");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+                if (file.Length <= 0) return BadRequest(ResponseWrapper.Error("Could not read file"));
+                
+                var fileName = guid.ToString();
+                var fullPath = Path.Combine(pathToSave, fileName);
+                var dbPath = Path.Combine(folderName, fileName);
+
+                await using var stream = new FileStream(fullPath, FileMode.Create);
+                await file.CopyToAsync(stream);
+
+                return Ok(ResponseWrapper.Success(new {mediaId = fileName}));
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ResponseWrapper.Error(ex.Message));
+            }
+        }
+        
+    
         [HttpGet("{guid}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetByGuid([FromRoute] string guid)
+        public async Task<IActionResult> GetInfoByGuid([FromRoute] string guid)
         {
             throw new NotImplementedException();
         }
