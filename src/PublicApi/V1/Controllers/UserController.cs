@@ -1,4 +1,3 @@
-using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -28,21 +27,22 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetUser([FromRoute] string username)
         {
-            var profile = await _profileRepo.GetByUsername(username.ToLower());
+            username = username.ToLower();
+            
+            var profile = await _profileRepo.GetByUsername(username);
 
             if (profile == null)
             {
-                return NotFound(ResponseWrapper.Error($"User {username.ToLower()} does not exist."));
+                return NotFound(ResponseWrapper.Error($"User {username} does not exist."));
             }
-
-            // var response = _mapper.Map<UserResponseDto>(profile);
-
+            
             var response = new UserResponseDto
             {
                 Username = profile.Username,
                 DisplayName = profile.DisplayName,
                 Description = "",
-                ProfileImageId = Guid.NewGuid().ToString(),
+                ProfileImageId = "",
+                HeaderImageId = "",
                 FollowersCount = 0,
                 FollowingCount = 0
             };
@@ -50,10 +50,36 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             return Ok(ResponseWrapper.Success(response));
         }
 
-        // [HttpGet("{username}/image")]
-        // public async Task<IActionResult> GetProfileImage([FromRoute] string username)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        [HttpGet("follow/{username}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> FollowUser([FromRoute] string username)
+        {
+            return BadRequest(ResponseWrapper.Error("Method not implemented yet"));
+        }
+        
+        [HttpDelete("follow/{username}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UnfollowUser([FromRoute] string username)
+        {
+            return BadRequest(ResponseWrapper.Error("Method not implemented yet"));
+        }
+        
+        [HttpGet("{username}/followers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetFollowers([FromRoute] string username)
+        {
+            return BadRequest(ResponseWrapper.Error("Method not implemented yet"));
+        }
+        
+        [HttpGet("{username}/following")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetFollowing([FromRoute] string username)
+        {
+            return BadRequest(ResponseWrapper.Error("Method not implemented yet"));
+        }
     }
 }
