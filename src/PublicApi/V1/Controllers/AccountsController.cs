@@ -170,6 +170,25 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             return Ok(ResponseWrapper.Success("Display Name was successfully updated."));
         }
 
+        [HttpPost("email/change")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ChangeEmail([FromBody] ChangeEmailRequestDto request)
+        {
+            return BadRequest("Method not implemented yet");
+            
+            var username = _currentUserService.GetUsername();
+            var user = await _currentUserService.GetProfile();
+
+            if (user == null)
+            {
+                return BadRequest($"Account for {username} does not exist.");
+            }
+            
+            // var result = await _userManager.ChangeEmailAsync(user, request.Email)
+        }
+
         [HttpPost("password/change")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
