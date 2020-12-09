@@ -209,7 +209,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             return Ok(ResponseWrapper.Success("Password has been changed."));
         }
 
-        [HttpPost("delete")]
+        [HttpDelete]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
