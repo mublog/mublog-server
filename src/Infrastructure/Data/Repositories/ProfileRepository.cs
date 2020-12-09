@@ -13,7 +13,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<Profile> GetByUsername(string username)
         {
-            return await Context.Profiles.AsNoTracking().FirstOrDefaultAsync(p => p.Username == username);
+            return await Context.Profiles.FirstOrDefaultAsync(p => p.Username == username);
         }
     }
 }
