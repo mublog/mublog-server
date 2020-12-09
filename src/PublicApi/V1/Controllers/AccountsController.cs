@@ -120,7 +120,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             return Ok(ResponseWrapper.Success("Account successfully created."));
         }
 
-        [HttpPost("token/refresh")]
+        [HttpGet("token")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -143,7 +143,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             return Ok(ResponseWrapper.Success(new { accessToken = token} ));
         }
 
-        [HttpPost("displayname/change")]
+        [HttpPatch("displayname")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -170,7 +170,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             return Ok(ResponseWrapper.Success("Display Name was successfully updated."));
         }
 
-        [HttpPost("email/change")]
+        [HttpPatch("email")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -189,7 +189,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             // var result = await _userManager.ChangeEmailAsync(user, request.Email)
         }
 
-        [HttpPost("password/change")]
+        [HttpPatch("password")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
