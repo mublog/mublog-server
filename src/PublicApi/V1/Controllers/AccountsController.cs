@@ -27,12 +27,18 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IJwtService _jwtService;
         private readonly IProfileRepository _profileRepo;
+        private readonly ICurrentUserService _currentUserService;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, IJwtService jwtService, IProfileRepository profileRepo)
+        public AccountsController
+            (UserManager<ApplicationUser> userManager,
+            IJwtService jwtService,
+            IProfileRepository profileRepo,
+            ICurrentUserService currentUserService)
         {
             _userManager = userManager;
             _jwtService = jwtService;
             _profileRepo = profileRepo;
+            _currentUserService = currentUserService;
         }
 
 
@@ -116,10 +122,107 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
         [HttpPost("token/refresh")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshToken()
         {
-            throw new NotImplementedException();
+            var username = _currentUserService.GetUsername();
+            var user = await _currentUserService.GetIdentity();
+
+            if (user == null)
+            {
+                return BadRequest(ResponseWrapper.Error($"Account for {username} does not exist."));
+            }
+            
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var claims = userRoles.Select(role => new Claim(ClaimTypes.Role, role)).ToList();
+
+            var token = _jwtService.GetTokenString(user.UserName, user.Email, claims);
+            
+            return Ok(ResponseWrapper.Success(new { accessToken = token} ));
         }
+
+        [HttpPost("displayname/change")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ChangeDisplayName([FromBody] ChangeDisplayNameRequestDto request)
+        {
+            var username = _currentUserService.GetUsername();
+            var profile = await _currentUserService.GetProfile();
+
+            if (profile == null)
+            {
+                return BadRequest(ResponseWrapper.Error($"Account for {username} does not exist."));
+            }
+
+            profile.DisplayName = request.DisplayName;
+
+            var success = await _profileRepo.Update(profile);
+
+            if (!success)
+            {
+                return StatusCode(500,
+                    ResponseWrapper.Error("An error occured while pushing the changed to the database."));
+            }
+
+            return Ok(ResponseWrapper.Success("Display Name was successfully updated."));
+        }
+
+        [HttpPost("password/change")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto request)
+        {
+            var user = await _currentUserService.GetIdentity();
+
+            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword1, request.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+
+                return BadRequest(ResponseWrapper.Error(errors));
+            }
+
+            return Ok(ResponseWrapper.Success("Password has been changed."));
+        }
+
+        [HttpPost("delete")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> RemoveAccount()
+        {
+            var user = await _currentUserService.GetIdentity();
+            var profile = await _currentUserService.GetProfile();
+            var username = _currentUserService.GetUsername();
+
+            if (user == null || profile == null)
+            {
+                return BadRequest($"Account for {username} does not exist.");
+            }
+
+            var identityResult = await _userManager.DeleteAsync(user);
+            var profileResult = await _profileRepo.Remove(profile);
+
+            if (!profileResult)
+            {
+                return StatusCode(500,
+                    ResponseWrapper.Error("An error occured removing the profile from the database"));
+            }
+
+            if (!identityResult.Succeeded)
+            {
+                var errors = identityResult.Errors.Select(e => e.Description);
+
+                return BadRequest(ResponseWrapper.Error(errors));
+            }
+
+            return Ok(ResponseWrapper.Success($"Successfully deleted account for {username}."));
+        }
+        
     }
 }
