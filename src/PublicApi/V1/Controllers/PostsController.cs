@@ -134,7 +134,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update([FromBody] PostUpdateDto request, [FromRoute] int id)
+        public async Task<IActionResult> Update([FromBody] PostUpdateRequestDto request, [FromRoute] int id)
         {
             if (request.Id != id)
             {
