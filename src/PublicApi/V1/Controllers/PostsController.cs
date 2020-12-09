@@ -214,6 +214,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [HttpPost("like/{id:int}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> LikePost([FromRoute] int id)
         {
@@ -239,6 +240,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [HttpDelete("like/{id:int}")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoveLike([FromRoute] int id)
         {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -111,6 +112,14 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             }
             
             return Ok(ResponseWrapper.Success("Account successfully created."));
+        }
+
+        [HttpPost("token/refresh")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> RefreshToken()
+        {
+            throw new NotImplementedException();
         }
     }
 }

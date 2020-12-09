@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -15,12 +16,16 @@ namespace Mublog.Server.PublicApi.V1.Controllers
     [ApiController]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/media")]
+    [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class MediaController : ControllerBase
     {
 
         [HttpPost, RequestSizeLimit(5242880)]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Upload()
         {
             var guid = new Guid();
@@ -51,6 +56,9 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         
     
         [HttpGet("{guid}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetInfoByGuid([FromRoute] string guid)
         {

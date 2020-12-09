@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mublog.Server.Domain.Data.Repositories;
@@ -50,8 +51,10 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             return Ok(ResponseWrapper.Success(response));
         }
 
-        [HttpGet("follow/{username}")]
+        [HttpPost("follow/{username}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> FollowUser([FromRoute] string username)
         {
@@ -59,7 +62,9 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         }
         
         [HttpDelete("follow/{username}")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UnfollowUser([FromRoute] string username)
         {
