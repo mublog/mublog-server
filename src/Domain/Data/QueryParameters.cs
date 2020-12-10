@@ -2,15 +2,15 @@ namespace Mublog.Server.Domain.Data
 {
     public class QueryParameters
     {
-        private const int MaxPageSize = 50;
+        protected virtual int MaxPageSize { get; set; } = 50;
         
-        private int _size = 10;
+        protected virtual int InitialSize { get; set; } = 10;
         
-        public int Page { get; set; } = 1;
-        public int Size
+        public virtual int Page { get; set; } = 1;
+        public virtual int Size
         {
-            get => _size;
-            set => _size = value < MaxPageSize  ? value : MaxPageSize;
+            get => InitialSize;
+            set => InitialSize = value < MaxPageSize  ? value : MaxPageSize;
         }
     }
 }

@@ -2,11 +2,9 @@ using System;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
 using Mublog.Server.Infrastructure.Common.Helpers;
@@ -29,21 +27,37 @@ namespace Mublog.Server.PublicApi.V1.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPostRepository _postRepo;
-        private readonly IMapper _mapper;
+        private readonly IProfileRepository _profileRepo;
+        private readonly AutoMapper.IMapper _mapper;
         private readonly ICurrentUserService _currentUserService;
 
-        public PostsController(IPostRepository postRepo, IMapper mapper, ICurrentUserService currentUserService)
+        public PostsController(
+            IPostRepository postRepo,
+            IProfileRepository profileRepo,
+            AutoMapper.IMapper mapper, 
+            ICurrentUserService currentUserService)
         {
             _postRepo = postRepo;
+            _profileRepo = profileRepo;
             _mapper = mapper;
             _currentUserService = currentUserService;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPosts([FromQuery] QueryParameters queryParams = null)
+        public async Task<IActionResult> GetPosts([FromQuery] ExternalPostQueryParameters externalQueryParams = null)
         {
-            queryParams ??= new QueryParameters();
+            externalQueryParams ??= new ExternalPostQueryParameters();
+
+            Profile profile = null;
+            
+            if (externalQueryParams.Username != null)
+            {
+                profile = await _profileRepo.GetByUsername(externalQueryParams.Username);
+            }
+            
+            var queryParams = externalQueryParams.GetInternalParams(profile);
+
             var user = await _currentUserService.GetProfile();
 
             var postsWithLikes = _postRepo.GetPagedWithLikes(queryParams, user);
@@ -82,7 +96,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [HttpGet("{id:int}", Name = "GetById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get([FromRoute] int id)
+        public async Task<IActionResult> GetByPublicId([FromRoute] int id)
         {
             var username = _currentUserService.GetUsername();
             var post = await _postRepo.GetByPublicId(id, username);

@@ -24,21 +24,32 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
                 queryParameters.Page, queryParameters.Size);
         }
 
-        public PagedList<PostWithLike> GetPagedWithLikes(QueryParameters queryParameters, Profile user = null)
+        public PagedList<PostWithLike> GetPagedWithLikes(PostQueryParameters queryParameters, Profile user = null)
         {
             PagedList<Post> posts;
+            
+            IQueryable<Post> postSet;
 
+            if (queryParameters.Profile != null)
+            {
+                postSet = Context.Posts.Where(p => p.OwnerId == queryParameters.Profile.Id);
+            }
+            else
+            {
+                postSet = Context.Posts;
+            }
+            
             if (user != null)
             {
                 posts = PagedList<Post>.ToPagedList(
-                    Context.Posts.Include(p => p.Owner)
+                    postSet.Include(p => p.Owner)
                         .Include(p => p.Likes),
                     queryParameters.Page, queryParameters.Size);
             }
             else
             {
                 posts = PagedList<Post>.ToPagedList(
-                    Context.Posts.AsNoTracking().Include(p => p.Owner),
+                    postSet.AsNoTracking().Include(p => p.Owner),
                     queryParameters.Page, queryParameters.Size);
             }
 
@@ -86,12 +97,6 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
             return postWithLike;
         }
-
-        public async Task<Post> GetByUserId(int id)
-        {
-            return await Context.Posts.FirstOrDefaultAsync(p => p.OwnerId == id);
-        }
-
         public async Task<bool> AddLike(Post post, Profile user) =>
             await AddLike(post.PublicId, user);
         
