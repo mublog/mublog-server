@@ -32,11 +32,12 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
             if (queryParameters.Profile != null)
             {
-                postSet = Context.Posts.Where(p => p.OwnerId == queryParameters.Profile.Id);
+                postSet = Context.Posts.Where(p => p.OwnerId == queryParameters.Profile.Id)
+                    .OrderBy(p => p.Id);
             }
             else
             {
-                postSet = Context.Posts;
+                postSet = Context.Posts.OrderBy(p => p.Id);
             }
             
             if (user != null)
