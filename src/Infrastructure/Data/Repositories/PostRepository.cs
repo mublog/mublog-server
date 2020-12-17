@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Mublog.Server.Domain.Common.Helpers;
 using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
@@ -12,10 +14,12 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
     public class PostRepository : Repository<Post>, IPostRepository
     {
         private readonly AutoMapper.IMapper _mapper;
+        private readonly ILogger<PostRepository> _logger;
 
-        public PostRepository(AppDbContext context, AutoMapper.IMapper mapper) : base(context)
+        public PostRepository(AppDbContext context, AutoMapper.IMapper mapper, ILogger<PostRepository> logger) : base(context)
         {
             _mapper = mapper;
+            _logger = logger;
         }
 
         public override PagedList<Post> GetPaged(QueryParameters queryParameters)
@@ -27,7 +31,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         public PagedList<PostWithLike> GetPagedWithLikes(PostQueryParameters queryParameters, Profile user = null)
         {
             PagedList<Post> posts;
-            
+
             IQueryable<Post> postSet;
 
             if (queryParameters.Profile != null)
@@ -39,7 +43,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             {
                 postSet = Context.Posts.OrderBy(p => p.Id);
             }
-            
+
             if (user != null)
             {
                 posts = PagedList<Post>.ToPagedList(
@@ -54,7 +58,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
                     queryParameters.Page, queryParameters.Size);
             }
 
-            
+
             var postWithLikes = _mapper.Map<List<PostWithLike>>(posts.ToList());
 
             if (user != null)
@@ -79,7 +83,8 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<PostWithLike> GetByPublicId(int id, string username = null)
         {
-            var post = await Context.Posts.AsNoTracking()
+            var post = await Context.Posts
+                .AsNoTracking()
                 .Include(p => p.Owner).Include(p => p.Likes)
                 .FirstOrDefaultAsync(p => p.PublicId == id);
 
@@ -98,9 +103,10 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
             return postWithLike;
         }
+
         public async Task<bool> AddLike(Post post, Profile user) =>
             await AddLike(post.PublicId, user);
-        
+
         public async Task<bool> AddLike(int publicId, Profile user)
         {
             var post = await Context.Posts.Include(p => p.Likes)
@@ -112,7 +118,21 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
             return await Update(post);
         }
-        
+
+        public override async Task<bool> Remove(Post entity)
+        {
+            try
+            {
+                await Context.Database.ExecuteSqlInterpolatedAsync($"DELETE FROM public.posts WHERE \"Id\" = {entity.Id};");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
+                return false;
+            }
+            return true;
+        }
+
         public async Task<bool> RemoveLike(Post post, Profile user) =>
             await RemoveLike(post.PublicId, user);
 

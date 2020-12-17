@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 using Mublog.Server.PublicApi.Common.Helpers;
 
 namespace Mublog.Server.PublicApi.V1.Controllers
@@ -40,7 +39,6 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 
                 var fileName = guid.ToString();
                 var fullPath = Path.Combine(pathToSave, fileName);
-                var dbPath = Path.Combine(folderName, fileName);
 
                 await using var stream = new FileStream(fullPath, FileMode.Create);
                 await file.CopyToAsync(stream);

@@ -203,7 +203,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var post = await _postRepo.GetByPublicId(id);
+            var post = (Post) await _postRepo.GetByPublicId(id);
 
             if (post == null)
             {

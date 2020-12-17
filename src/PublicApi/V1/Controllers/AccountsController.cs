@@ -223,7 +223,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             {
                 return BadRequest($"Account for {username} does not exist.");
             }
-
+            
             var identityResult = await _userManager.DeleteAsync(user);
             var profileResult = await _profileRepo.Remove(profile);
 
