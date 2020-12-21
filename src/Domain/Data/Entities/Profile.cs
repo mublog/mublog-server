@@ -13,5 +13,7 @@ namespace Mublog.Server.Domain.Data.Entities
         public ICollection<Post> Posts { get; set; }
         public ICollection<Post> LikedPosts { get; set; }
         public ICollection<PostImage> Mediae { get; set; }
+        public ICollection<Profile> Followers { get; set; }
+        public ICollection<Profile> Following { get; set; }
     }
 }

@@ -7,7 +7,7 @@ namespace Mublog.Server.Infrastructure.Services.Interfaces
     public interface ICurrentUserService
     {
         string GetUsername();
-        Task<ApplicationUser> GetIdentity();
+        Task<Account> GetAccount();
         Task<Profile> GetProfile();
     }
 }

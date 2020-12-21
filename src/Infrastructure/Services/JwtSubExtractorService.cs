@@ -1,7 +1,7 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
 using Mublog.Server.Infrastructure.Identity;
@@ -14,13 +14,11 @@ namespace Mublog.Server.Infrastructure.Services
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProfileRepository _profileRepo;
-        private readonly UserManager<ApplicationUser> _userManager;
 
-        public JwtSubExtractorService(IHttpContextAccessor httpContextAccessor, IProfileRepository profileRepo, UserManager<ApplicationUser> userManager)
+        public JwtSubExtractorService(IHttpContextAccessor httpContextAccessor, IProfileRepository profileRepo)
         {
             _httpContextAccessor = httpContextAccessor;
             _profileRepo = profileRepo;
-            _userManager = userManager;
         }
         
         public string GetUsername()
@@ -34,11 +32,9 @@ namespace Mublog.Server.Infrastructure.Services
             return username;
         }
 
-        public async Task<ApplicationUser> GetIdentity()
+        public async Task<Account> GetAccount()
         {
-            var username = GetUsername();
-
-            return await _userManager.FindByNameAsync(username);
+            throw new NotImplementedException();
         }
 
         public async Task<Profile> GetProfile()

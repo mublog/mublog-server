@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mublog.Server.Application.Common.Interfaces;
-using Mublog.Server.Infrastructure.Data;
-using Mublog.Server.Infrastructure.Identity;
 using Mublog.Server.Infrastructure.Services;
 using Mublog.Server.Infrastructure.Services.Interfaces;
 
@@ -14,10 +11,6 @@ namespace Mublog.Server.Infrastructure.Common.Config.Installers
         
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>()
-                .AddDefaultTokenProviders();
-
             services.AddScoped<ICurrentUserService, JwtSubExtractorService>();
         }
        

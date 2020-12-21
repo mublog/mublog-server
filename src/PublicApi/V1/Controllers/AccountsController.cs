@@ -24,13 +24,13 @@ namespace Mublog.Server.PublicApi.V1.Controllers
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public class AccountsController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<Account> _userManager;
         private readonly IJwtService _jwtService;
         private readonly IProfileRepository _profileRepo;
         private readonly ICurrentUserService _currentUserService;
 
         public AccountsController
-            (UserManager<ApplicationUser> userManager,
+            (UserManager<Account> userManager,
             IJwtService jwtService,
             IProfileRepository profileRepo,
             ICurrentUserService currentUserService)
@@ -58,7 +58,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             var claims = userRoles.Select(role => new Claim(ClaimTypes.Role, role)).ToList();
 
-            var token = _jwtService.GetTokenString(user.UserName, user.Email, claims);
+            var token = _jwtService.GetTokenString(user.Username, user.Email, claims);
 
             return Ok(ResponseWrapper.Success(new { accessToken = token} ));
         }
@@ -95,11 +95,10 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 DisplayName = request.DisplayName
             };
             
-            var user = new ApplicationUser
+            var user = new Account
             {
-                UserName = request.Username,
+                Username = request.Username,
                 Email = request.Email,
-                SecurityStamp = Guid.NewGuid().ToString()
             };
 
             var profileSuccess = await _profileRepo.AddAsync(profile);
@@ -127,7 +126,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         public async Task<IActionResult> RefreshToken()
         {
             var username = _currentUserService.GetUsername();
-            var user = await _currentUserService.GetIdentity();
+            var user = await _currentUserService.GetAccount();
 
             if (user == null)
             {
@@ -138,7 +137,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             var claims = userRoles.Select(role => new Claim(ClaimTypes.Role, role)).ToList();
 
-            var token = _jwtService.GetTokenString(user.UserName, user.Email, claims);
+            var token = _jwtService.GetTokenString(user.Username, user.Email, claims);
             
             return Ok(ResponseWrapper.Success(new { accessToken = token} ));
         }
@@ -195,7 +194,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestDto request)
         {
-            var user = await _currentUserService.GetIdentity();
+            var user = await _currentUserService.GetAccount();
 
             var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword1, request.NewPassword);
 
@@ -215,7 +214,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RemoveAccount()
         {
-            var user = await _currentUserService.GetIdentity();
+            var user = await _currentUserService.GetAccount();
             var profile = await _currentUserService.GetProfile();
             var username = _currentUserService.GetUsername();
 
