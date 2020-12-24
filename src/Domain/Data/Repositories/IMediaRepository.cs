@@ -4,8 +4,8 @@ using Mublog.Server.Domain.Data.Entities;
 
 namespace Mublog.Server.Domain.Data.Repositories
 {
-    public interface IProfileImageRepository : IRepository<ProfileImage>
+    public interface IMediaRepository : IRepository<Media>
     {
-        Task<ProfileImage> GetByPublicId(Guid id);
+        Task<Media> GetByPublicId(Guid id);
     }
 }
