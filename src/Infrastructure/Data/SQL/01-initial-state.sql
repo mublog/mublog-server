@@ -10,7 +10,7 @@ CREATE TABLE profiles
     display_name     character varying(30)       NOT NULL,
     profile_image_id integer                     NOT NULL,
     user_state       integer                     NOT NULL DEFAULT 0,
-    CONSTRAINT pk_profile_id PRIMARY KEY (id)
+    CONSTRAINT pk_profiles_id PRIMARY KEY (id)
 );
 
 CREATE TABLE posts
@@ -39,30 +39,18 @@ CREATE TABLE comments
     CONSTRAINT fk_comments_owner_id FOREIGN KEY (owner_id) REFERENCES profiles (id) ON DELETE CASCADE
 );
 
-CREATE TABLE profile_images
-(
-    id           integer                     NOT NULL GENERATED ALWAYS AS IDENTITY,
-    date_created timestamp without time zone NOT NULL,
-    date_updated timestamp without time zone NOT NULL,
-    public_id    uuid                        NOT NULL,
-    media_type   integer                     NOT NULL,
-    owner_id     integer                     NOT NULL,
-    CONSTRAINT pk_profile_images_id PRIMARY KEY (id),
-    CONSTRAINT fk_profiles_id FOREIGN KEY (owner_id) REFERENCES profiles (id) ON DELETE SET NULL
-);
-
-CREATE TABLE post_images
+CREATE TABLE mediae
 (
     id           integer                     NOT NULL GENERATED ALWAYS AS IDENTITY,
     data_created timestamp without time zone NOT NULL,
     date_updated timestamp without time zone NOT NULL,
-    post_id      integer                     NOT NULL,
+    post_id      integer,
     public_id    uuid                        NOT NULL,
     media_type   integer                     NOT NULL,
     owner_id     integer                     NOT NULL,
-    CONSTRAINT pk_post_image_id PRIMARY KEY (id),
-    CONSTRAINT fk_posts_post_id FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE SET NULL,
-    CONSTRAINT fk_post_image_id FOREIGN KEY (owner_id) REFERENCES profiles (id) ON DELETE SET NULL
+    CONSTRAINT pk_mediae_id PRIMARY KEY (id),
+    CONSTRAINT fk_mediae_post_id FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE SET NULL,
+    CONSTRAINT fk_mediae_owner_id FOREIGN KEY (owner_id) REFERENCES profiles (id) ON DELETE SET NULL
 );
 
 CREATE TABLE accounts
@@ -82,8 +70,8 @@ CREATE TABLE posts_liked_by_profiles
     liked_posts_id integer NOT NULL,
     likes_id       integer NOT NULL,
     CONSTRAINT pk_posts_liked_by_profiles PRIMARY KEY (liked_posts_id, likes_id),
-    CONSTRAINT fk_post_profile_posts_liked_posts_id FOREIGN KEY (liked_posts_id) REFERENCES posts (id) ON DELETE CASCADE,
-    CONSTRAINT fk_post_profile_profiles_likes_id FOREIGN KEY (likes_id) REFERENCES profiles (id) ON DELETE CASCADE
+    CONSTRAINT fk_posts_liked_by_profiles_liked_posts_id FOREIGN KEY (liked_posts_id) REFERENCES posts (id) ON DELETE CASCADE,
+    CONSTRAINT fk_posts_liked_by_profiles_likes_id FOREIGN KEY (likes_id) REFERENCES profiles (id) ON DELETE CASCADE
 );
 
 CREATE TABLE profiles_following_profile
@@ -96,8 +84,7 @@ CREATE TABLE profiles_following_profile
 );
 
 
-ALTER TABLE profiles
-    ADD CONSTRAINT fk_profile_image_id FOREIGN KEY (profile_image_id) REFERENCES post_images (id);
+ALTER TABLE profiles ADD CONSTRAINT fk_profile_image_id FOREIGN KEY (profile_image_id) REFERENCES mediae (id);
 
 
 CREATE UNIQUE INDEX ix_profiles_username ON profiles (username);
@@ -106,9 +93,8 @@ CREATE INDEX ix_posts_owner_id ON posts (owner_id);
 
 CREATE INDEX ix_comments_parent_post_id ON comments (parent_post_id);
 
-CREATE UNIQUE INDEX ix_profiles_images_owner_id ON profile_images (owner_id);
-
-CREATE INDEX ix_post_images_post_id ON post_images (post_id);
+CREATE INDEX ix_mediae_owner_id ON mediae (owner_id);
+CREATE INDEX ix_mediae_post_id ON mediae (post_id);
 
 CREATE INDEX ix_accounts_profile_id ON accounts (profile_id);
 
