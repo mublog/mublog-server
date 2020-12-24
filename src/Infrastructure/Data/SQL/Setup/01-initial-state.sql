@@ -119,5 +119,3 @@ CREATE INDEX ix_post_profiles_likes_id ON posts_liked_by_profiles (likes_id);
 
 
 COMMIT;
-
-

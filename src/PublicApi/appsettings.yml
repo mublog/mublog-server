@@ -10,7 +10,7 @@ allowedHosts: "*"
 
 # DB Connection Strings
 connectionStrings:
-  defaultConnection: "Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;Password=myPassword;"
+  defaultConnection: "Server=127.0.0.1;Port=5432;Database=mublog;User Id=mublog_user;Password=YOUR_PASSWORD;"
 
 # Serilog Configuration
 # Configuration for logging with Serilog
