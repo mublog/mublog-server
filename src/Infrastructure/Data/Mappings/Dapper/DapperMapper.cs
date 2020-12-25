@@ -4,7 +4,7 @@ namespace Mublog.Server.Infrastructure.Data.Mappings.Dapper
 {
     public static class DapperMapper
     {
-        public static void Activate()
+        public static void Initialize()
         {
             FluentMapper.Initialize(options =>
             {

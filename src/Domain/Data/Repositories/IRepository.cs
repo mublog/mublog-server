@@ -8,7 +8,6 @@ namespace Mublog.Server.Domain.Data.Repositories
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        IQueryable<T> Query();
         PagedList<T> GetPaged(QueryParameters queryParameters);
         Task<T> FindByIdAsync(int id);
         Task<bool> AddAsync(T entity);

@@ -7,7 +7,6 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <NoWarn>$(NoWarn);1591</NoWarn>
         <Product>µblog</Product>
-      <UserSecretsId>b02ca0dd-7b0d-4ee9-9ce3-cb782ad66bb4</UserSecretsId>
       <Authors>µblog</Authors>
       <RepositoryUrl>https://github.com/mublog/mublog-server</RepositoryUrl>
       <RepositoryType>git</RepositoryType>

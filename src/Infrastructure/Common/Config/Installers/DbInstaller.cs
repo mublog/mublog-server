@@ -13,7 +13,7 @@ namespace Mublog.Server.Infrastructure.Common.Config.Installers
         {
             services.AddAutoMapper(typeof(Mappings));
             
-            DapperMapper.Activate();
+            DapperMapper.Initialize();
         }
     }
 }
