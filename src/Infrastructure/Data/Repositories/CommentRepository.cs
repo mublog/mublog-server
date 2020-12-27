@@ -24,7 +24,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> AddAsync(Comment entity)
+        public async Task<long> AddAsync(Comment entity)
         {
             throw new System.NotImplementedException();
         }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Mublog.Server.Domain.Data.Entities;
 using NpgsqlTypes;
 
-namespace Mublog.Server.Infrastructure.Common.Helpers
+namespace Mublog.Server.Infrastructure.Data.TransferEntities
 {
-    public class PGPostEntity
+    public class TransferPost
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public NpgsqlDateTime CreatedDate { get; set; }
         public NpgsqlDateTime UpdatedDate { get; set; }
         public int PublicId { get; set; }

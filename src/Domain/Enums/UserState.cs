@@ -2,8 +2,8 @@ namespace Mublog.Server.Domain.Enums
 {
     public enum UserState
     {
-        Active,
-        Deactivated,
-        UnderReview
+        Active = 0,
+        Deactivated = 1,
+        UnderReview = 2
     }
 }

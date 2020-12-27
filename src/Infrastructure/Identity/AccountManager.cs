@@ -1,14 +1,20 @@
 using System;
+using System.Data;
 using System.Threading.Tasks;
 using Mublog.Server.Domain.Data.Entities;
+using Mublog.Server.Infrastructure.Data.Repositories;
 
 namespace Mublog.Server.Infrastructure.Identity
 {
-    public class AccountManager : IAccountManager
+    public class AccountManager : BaseRepository, IAccountManager
     {
+        public AccountManager(IDbConnection connection) : base(connection)
+        {
+        }
+        
         public async Task<bool> Create(Account account, string password)
         {
-            var sql = $"";
+            var sql = "INSERT INTO accounts (data_created, date_updated, email, password, profile_id) VALUES ((password, gen_salt('bf)), SELECT new_profile_id);";
 
             throw new NotImplementedException();
         }

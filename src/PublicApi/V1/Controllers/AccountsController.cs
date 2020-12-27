@@ -52,7 +52,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 return Unauthorized(ResponseWrapper.Error("Invalid Credentials"));
             }
             
-            var token = _jwtService.GetTokenString(account.Username, account.ProfileId, account.Id, account.Email);
+            var token = _jwtService.GetTokenString(account.Profile.Username, account.ProfileId, (int)account.Id, account.Email);
 
             return Ok(ResponseWrapper.Success(new {accessToken = token}));
         }
@@ -91,14 +91,13 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             var user = new Account
             {
-                Username = request.Username,
                 Email = request.Email,
             };
 
-            var profileSuccess = await _profileRepo.AddAsync(profile);
+            var id = await _profileRepo.AddAsync(profile);
             var result = await _accountManager.Create(user, request.Password);
 
-            if (!profileSuccess)
+            if (id == default)
             {
                 await _accountManager.Remove(user);
                 return StatusCode(500, ResponseWrapper.Error("Error creating profile"));
@@ -127,7 +126,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 return BadRequest(ResponseWrapper.Error($"Account for {currentUser} does not exist."));
             }
 
-            var token = _jwtService.GetTokenString(user.Username, user.ProfileId, user.Id, user.Email);
+            var token = _jwtService.GetTokenString(user.Profile.Username, user.ProfileId, user.Id, user.Email);
 
             return Ok(ResponseWrapper.Success(new {accessToken = token}));
         }

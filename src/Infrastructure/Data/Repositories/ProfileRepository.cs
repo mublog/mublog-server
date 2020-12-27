@@ -25,22 +25,24 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> AddAsync(Profile entity)
+        public async Task<long> AddAsync(Profile profile)
+        {
+            var sql = "INSERT INTO profiles (date_created, date_updated, username, display_name) VALUES (@CreatedDate, @UpdatedDate, @Username, @DisplayName) RETURNING id;";
+
+            throw new System.NotImplementedException();
+        }
+
+        public async Task<bool> Update(Profile profile)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> Update(Profile entity)
+        public async Task<bool> Remove(Profile profile)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> Remove(Profile entity)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<bool> RemoveRange(IEnumerable<Profile> entities)
+        public async Task<bool> RemoveRange(IEnumerable<Profile> profiles)
         {
             throw new System.NotImplementedException();
         }

@@ -10,7 +10,7 @@ namespace Mublog.Server.Domain.Data.Repositories
     {
         Task<PagedList<T>> GetPaged(QueryParameters queryParameters);
         Task<T> FindByIdAsync(int id);
-        Task<bool> AddAsync(T entity);
+        Task<long> AddAsync(T entity);
         Task<bool> Update(T entity);
         Task<bool> Remove(T entity);
         Task<bool> RemoveRange(IEnumerable<T> entities);

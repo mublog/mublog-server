@@ -134,9 +134,9 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         {
             var post = _mapper.Map<Post>(request);
             post.OwnerId = _currentUserService.Get().ProfileId;
-            var success = await _postRepo.AddAsync(post);
+            var id = await _postRepo.AddAsync(post);
 
-            if (!success)
+            if (id == default)
             {
                 return StatusCode(500, ResponseWrapper.Error("Error adding post to database"));
             }

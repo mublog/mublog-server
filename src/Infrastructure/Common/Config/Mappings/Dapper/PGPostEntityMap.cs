@@ -1,9 +1,10 @@
 using Dapper.FluentMap.Mapping;
 using Mublog.Server.Infrastructure.Common.Helpers;
+using Mublog.Server.Infrastructure.Data.TransferEntities;
 
 namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
 {
-    public class PGPostEntityMap : EntityMap<PGPostEntity>
+    public class PGPostEntityMap : EntityMap<TransferPost>
     {
         public PGPostEntityMap()
         {

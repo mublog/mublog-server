@@ -26,7 +26,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<bool> AddAsync(Media entity)
+        public async Task<long> AddAsync(Media entity)
         {
             throw new NotImplementedException();
         }

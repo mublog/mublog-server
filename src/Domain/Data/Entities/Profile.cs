@@ -7,7 +7,7 @@ namespace Mublog.Server.Domain.Data.Entities
     {
         public string Username { get; set; }
         public string DisplayName { get; set; }
-        public int ProfileImageId { get; set; }
+        public long ProfileImageId { get; set; }
         public Media ProfileImage { get; set; }
         public UserState UserState { get; set; }
         public ICollection<Post> Posts { get; set; }
