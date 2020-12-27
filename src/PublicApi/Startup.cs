@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mublog.Server.Infrastructure.Common.Config;
 using Mublog.Server.Infrastructure.Common.Config.Installers;
+using Mublog.Server.Infrastructure.Common.Helpers;
 using Mublog.Server.PublicApi.Common.Config.Installers;
 using Serilog;
 

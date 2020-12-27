@@ -1,6 +1,6 @@
 using Dapper.FluentMap;
 
-namespace Mublog.Server.Infrastructure.Data.Mappings.Dapper
+namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
 {
     public static class DapperMapper
     {
@@ -12,6 +12,7 @@ namespace Mublog.Server.Infrastructure.Data.Mappings.Dapper
                 options.AddMap(new CommentMap());
                 options.AddMap(new MediaMap());
                 options.AddMap(new PostMap());
+                options.AddMap(new PGPostEntityMap());
                 options.AddMap(new ProfileMap());
             });
         }

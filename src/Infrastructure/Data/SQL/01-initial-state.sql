@@ -8,7 +8,7 @@ CREATE TABLE profiles
     date_updated     timestamp without time zone NOT NULL,
     username         character varying(20)       NOT NULL,
     display_name     character varying(30)       NOT NULL,
-    profile_image_id integer                     NOT NULL,
+    profile_image_id integer,
     user_state       integer                     NOT NULL DEFAULT 0,
     CONSTRAINT pk_profiles_id PRIMARY KEY (id)
 );

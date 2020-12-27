@@ -1,6 +1,6 @@
 using System;
 
-namespace Mublog.Server.Infrastructure.Common.Config
+namespace Mublog.Server.Infrastructure.Common.Helpers
 {
     public class DbConnectionStringBuilder // : IDbConnectionStringBuilder
     {

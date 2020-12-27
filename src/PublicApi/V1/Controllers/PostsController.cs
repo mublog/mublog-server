@@ -75,8 +75,8 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 {
                     Id = p.PublicId,
                     TextContent = p.Content,
-                    DatePosted = p.CreatedDate.ToUnixTimeStamp(),
-                    DateEdited = p.CreatedDate.ToUnixTimeStamp(),
+                    DatePosted = p.CreatedDate.ToUnixTimestamp(),
+                    DateEdited = p.CreatedDate.ToUnixTimestamp(),
                     LikeAmount = p.Likes.Count,
                     Liked = p.Liked,
                     User = new PostUserResponseDto
@@ -110,9 +110,9 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             {
                 Id = post.PublicId,
                 TextContent = post.Content,
-                DatePosted = post.CreatedDate.ToUnixTimeStamp(),
-                DateEdited = post.UpdatedDate.ToUnixTimeStamp(),
-                LikeAmount = post.Likes.Count,
+                DatePosted = post.CreatedDate.ToUnixTimestamp(),
+                DateEdited = post.UpdatedDate.ToUnixTimestamp(),
+                LikeAmount = 0,
                 Liked = post.Liked,
                 User = new PostUserResponseDto
                 {
@@ -126,13 +126,14 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        // [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreatePost([FromBody] PostCreateRequestDto request)
         {
             var post = _mapper.Map<Post>(request);
-            post.Owner = await _currentUserService.GetProfile();
+            // post.Owner = await _currentUserService.GetProfile();
+            post.OwnerId = 1;
             var success = await _postRepo.AddAsync(post);
 
             if (!success)
@@ -181,8 +182,8 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             {
                 Id = post.PublicId,
                 TextContent = post.Content,
-                DatePosted = post.CreatedDate.ToUnixTimeStamp(),
-                DateEdited = post.UpdatedDate.ToUnixTimeStamp(),
+                DatePosted = post.CreatedDate.ToUnixTimestamp(),
+                DateEdited = post.UpdatedDate.ToUnixTimestamp(),
                 LikeAmount = post.Likes.Count,
                 Liked = post.Liked,
                 User = new PostUserResponseDto

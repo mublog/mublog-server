@@ -1,7 +1,7 @@
 using Dapper.FluentMap.Mapping;
 using Mublog.Server.Domain.Data.Entities;
 
-namespace Mublog.Server.Infrastructure.Data.Mappings.Dapper
+namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
 {
     public class PostMap : EntityMap<Post>
     {

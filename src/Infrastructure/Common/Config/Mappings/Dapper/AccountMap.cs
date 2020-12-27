@@ -1,7 +1,7 @@
 using Dapper.FluentMap.Mapping;
 using Mublog.Server.Infrastructure.Identity;
 
-namespace Mublog.Server.Infrastructure.Data.Mappings.Dapper
+namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
 {
     public class AccountMap : EntityMap<Account>
     {

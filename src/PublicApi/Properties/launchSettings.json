@@ -25,9 +25,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "POSTGRES_HOST": "localhost",
-        "POSTGRES_DB": "mublog_testing",
-        "POSTGRES_USER": "mublog_tester",
-        "POSTGRES_PASSWORD": "test"
+        "POSTGRES_DB": "mublog",
+        "POSTGRES_USER": "mublog_user",
+        "POSTGRES_PASSWORD": "YOUR_PASSWORD"
       }
     }
   }
