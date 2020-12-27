@@ -65,23 +65,21 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             {
                 return BadRequest(ResponseWrapper.Error("Invalid request"));
             }
-
-            request.Username = request.Username.ToLower();
-
-            // TODO Create user service
-
-            var existingUsername = await _accountManager.FindByUsername(request.Username);
-            var existingMail = await _accountManager.FindByEmail(request.Email);
-
-            if (existingUsername != null)
-            {
-                return BadRequest(ResponseWrapper.Success($"Username {request.Username} is already taken"));
-            }
-
-            if (existingMail != null)
-            {
-                return BadRequest(ResponseWrapper.Success($"Email {request.Email} is already in use."));
-            }
+            
+            
+            
+            // var existingUsername = await _accountManager.FindByUsername(request.Username);
+            // var existingMail = await _accountManager.FindByEmail(request.Email);
+            //
+            // if (existingUsername != null)
+            // {
+            //     return BadRequest(ResponseWrapper.Success($"Username {request.Username} is already taken"));
+            // }
+            //
+            // if (existingMail != null)
+            // {
+            //     return BadRequest(ResponseWrapper.Success($"Email {request.Email} is already in use."));
+            // }
 
             var profile = new Profile
             {
@@ -89,12 +87,16 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 DisplayName = request.DisplayName
             };
 
+            
+
+            var id = await _profileRepo.AddAsync(profile);
+            
             var user = new Account
             {
                 Email = request.Email,
+                Profile = new Profile{ Id = id }
             };
-
-            var id = await _profileRepo.AddAsync(profile);
+            
             var result = await _accountManager.Create(user, request.Password);
 
             if (id == default)

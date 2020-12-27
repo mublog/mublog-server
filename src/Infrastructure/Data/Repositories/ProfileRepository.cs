@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using Dapper;
 using Mublog.Server.Domain.Common.Helpers;
 using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
@@ -29,7 +30,9 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         {
             var sql = "INSERT INTO profiles (date_created, date_updated, username, display_name) VALUES (@CreatedDate, @UpdatedDate, @Username, @DisplayName) RETURNING id;";
 
-            throw new System.NotImplementedException();
+            var id = await Connection.QueryFirstOrDefaultAsync<long>(sql, profile);
+
+            return id;
         }
 
         public async Task<bool> Update(Profile profile)

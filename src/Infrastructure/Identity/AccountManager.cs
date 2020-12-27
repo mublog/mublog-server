@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Threading.Tasks;
+using Dapper;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Infrastructure.Data.Repositories;
 
@@ -14,9 +15,11 @@ namespace Mublog.Server.Infrastructure.Identity
         
         public async Task<bool> Create(Account account, string password)
         {
-            var sql = "INSERT INTO accounts (data_created, date_updated, email, password, profile_id) VALUES ((password, gen_salt('bf)), SELECT new_profile_id);";
+            var sql = "INSERT INTO accounts (data_created, date_updated, email, password, profile_id) VALUES (@Date, @Date, @Email, crypt(@Password, gen_salt('bf')), @ProfileId) RETURNING id;";
 
-            throw new NotImplementedException();
+            var id = await Connection.QueryFirstOrDefaultAsync<long>(sql, new  { Date = DateTime.UtcNow, Email = account.Email, Password = password, ProfileId = account.Profile.Id });
+
+            return id != default;
         }
 
         public async Task<bool> Remove(Account account)
