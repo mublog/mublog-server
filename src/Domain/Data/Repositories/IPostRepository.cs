@@ -6,9 +6,9 @@ namespace Mublog.Server.Domain.Data.Repositories
 {
     public interface IPostRepository : IRepository<Post>
     {
-        PagedList<PostWithLike> GetPagedWithLikes(PostQueryParameters queryParameters, Profile user = null);
-        Task<PostWithLike> GetByPublicId(int id, string username = null);
-        Task<bool> AddLike(Post post, Profile user);
-        Task<bool> RemoveLike(Post post, Profile user);
+        Task<PagedList<Post>> GetPaged(PostQueryParameters queryParameters, Profile profile = null);
+        Task<Post> FindByPublicId(int publicId, Profile profile = null);
+        Task<bool> AddLike(Post post, Profile profile);
+        Task<bool> RemoveLike(Post post, Profile profile);
     }
 }

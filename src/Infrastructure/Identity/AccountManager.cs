@@ -6,19 +6,19 @@ namespace Mublog.Server.Infrastructure.Identity
 {
     public class AccountManager : IAccountManager
     {
-        public async Task<bool> AddAccount(Account account, string password)
+        public async Task<bool> Create(Account account, string password)
         {
             var sql = $"";
 
             throw new NotImplementedException();
         }
 
-        public async Task<bool> DeleteAccount(Account account)
+        public async Task<bool> Remove(Account account)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> UpdateAccount(Account account)
+        public async Task<bool> Update(Account account)
         {
             throw new System.NotImplementedException();
         }
@@ -43,14 +43,14 @@ namespace Mublog.Server.Infrastructure.Identity
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> CheckPasswordCorrect(Account account, string password)
+        public async Task<bool> ValidatePasswordCorrect(Account account, string password)
         {
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> ChangePassword(Account account, string newPassword)
+        public async Task<bool> ChangePassword(Account account, string currentPassword, string newPassword)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

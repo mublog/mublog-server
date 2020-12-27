@@ -68,10 +68,10 @@ CREATE TABLE accounts
 CREATE TABLE posts_liked_by_profiles
 (
     liked_posts_id integer NOT NULL,
-    likes_id       integer NOT NULL,
-    CONSTRAINT pk_posts_liked_by_profiles PRIMARY KEY (liked_posts_id, likes_id),
+    liking_profile_id       integer NOT NULL,
+    CONSTRAINT pk_posts_liked_by_profiles PRIMARY KEY (liked_posts_id, liking_profile_id),
     CONSTRAINT fk_posts_liked_by_profiles_liked_posts_id FOREIGN KEY (liked_posts_id) REFERENCES posts (id) ON DELETE CASCADE,
-    CONSTRAINT fk_posts_liked_by_profiles_likes_id FOREIGN KEY (likes_id) REFERENCES profiles (id) ON DELETE CASCADE
+    CONSTRAINT fk_posts_liked_by_profiles_likes_id FOREIGN KEY (liking_profile_id) REFERENCES profiles (id) ON DELETE CASCADE
 );
 
 CREATE TABLE profiles_following_profile
@@ -89,7 +89,8 @@ ALTER TABLE profiles ADD CONSTRAINT fk_profile_image_id FOREIGN KEY (profile_ima
 
 CREATE UNIQUE INDEX ix_profiles_username ON profiles (username);
 
-CREATE INDEX ix_posts_owner_id ON posts (owner_id);
+-- CREATE INDEX ix_posts_owner_id ON posts (owner_id);
+CREATE INDEX ix_posts_public_id ON posts (public_id);
 
 CREATE INDEX ix_comments_parent_post_id ON comments (parent_post_id);
 
@@ -101,7 +102,8 @@ CREATE INDEX ix_accounts_profile_id ON accounts (profile_id);
 CREATE INDEX ix_profiles_following_profile_follower_id ON profiles_following_profile (follower_id);
 CREATE INDEX ix_profiles_following_profile_following_id ON profiles_following_profile (following_id);
 
-CREATE INDEX ix_post_profiles_likes_id ON posts_liked_by_profiles (likes_id);
+CREATE INDEX ix_post_profiles_likes_id ON posts_liked_by_profiles (liking_profile_id);
+CREATE INDEX ix_post_profiles_liked_posts_id ON posts_liked_by_profiles (liked_posts_id);
 
 
 COMMIT;

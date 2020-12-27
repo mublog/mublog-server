@@ -20,7 +20,7 @@ namespace Mublog.Server.Infrastructure.Services
             _configuration = configuration;
         }
         
-        public JwtSecurityToken GetToken(string username, string email = "",  IEnumerable<Claim> additionalClaims = null)
+        public JwtSecurityToken GetToken(string username, int profileId, int accountId, string email = "",  IEnumerable<Claim> additionalClaims = null)
         {
             var claims = new List<Claim>();
             
@@ -31,6 +31,8 @@ namespace Mublog.Server.Infrastructure.Services
             
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, email));
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, username));
+            claims.Add(new Claim("profileId", profileId.ToString()));
+            claims.Add(new Claim("accountId", accountId.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
             var key = _securityKey;
@@ -53,9 +55,9 @@ namespace Mublog.Server.Infrastructure.Services
             return token;
         }
 
-        public string GetTokenString(string username, string email = "",  IEnumerable<Claim> additionalClaims = null)
+        public string GetTokenString(string username, int profileId, int accountId, string email = "",  IEnumerable<Claim> additionalClaims = null)
         {
-            var token = GetToken(username, email, additionalClaims);
+            var token = GetToken(username, profileId, accountId, email, additionalClaims);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

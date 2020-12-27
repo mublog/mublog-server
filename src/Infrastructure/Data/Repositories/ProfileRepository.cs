@@ -15,7 +15,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         {
         }
 
-        public PagedList<Profile> GetPaged(QueryParameters queryParameters)
+        public Task<PagedList<Profile>> GetPaged(QueryParameters queryParameters)
         {
             throw new System.NotImplementedException();
         }
@@ -45,7 +45,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<Profile> GetByUsername(string username)
+        public async Task<Profile> FindByUsername(string username)
         {
             throw new System.NotImplementedException();
         }

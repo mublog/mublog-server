@@ -30,7 +30,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         {
             username = username.ToLower();
             
-            var profile = await _profileRepo.GetByUsername(username);
+            var profile = await _profileRepo.FindByUsername(username);
 
             if (profile == null)
             {

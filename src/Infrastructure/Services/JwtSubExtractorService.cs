@@ -29,33 +29,36 @@ namespace Mublog.Server.Infrastructure.Services
             _accountManager = accountManager;
         }
 
-        public string GetUsername()
+        public CurrentUser Get()
         {
-            var user = _httpContextAccessor.HttpContext?.User;
-            var username = string.Empty;
+            var token = _httpContextAccessor.HttpContext?.User;
 
-            if (user != null && user.HasClaim(c =>
-                c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))
-                username = user.Claims.FirstOrDefault(c =>
+            var user = new CurrentUser();
+
+            if (token == null || !token.HasClaim(c =>
+                c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")) return null;
+            {
+                user.Username = token.Claims.FirstOrDefault(c =>
                     c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+                user.AccountId = int.Parse(token.Claims.FirstOrDefault(c => c.Type == "accountId")?.Value ?? "0");
+                user.ProfileId = int.Parse(token.Claims.FirstOrDefault(c => c.Type == "profileId")?.Value ?? "0");
+            }
 
-            return username;
+            return user;
         }
 
         public async Task<Account> GetAccount()
         {
-            var username = GetUsername();
+            var user = Get();
 
-            var account = await _accountManager.FindByUsername(username);
-
-            return account;
+            return await _accountManager.FindById(user.AccountId);
         }
 
         public async Task<Profile> GetProfile()
         {
-            var username = GetUsername();
+            var user = Get();
 
-            return await _profileRepo.GetByUsername(username);
+            return await _profileRepo.FindByIdAsync(user.ProfileId);
         }
     }
 }

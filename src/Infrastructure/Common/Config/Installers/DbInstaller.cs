@@ -37,7 +37,6 @@ namespace Mublog.Server.Infrastructure.Common.Config.Installers
 
         private void Configure()
         {
-            // NpgsqlConnection.GlobalTypeMapper.UseNodaTime();
             DapperMapper.Initialize();
         }
     }

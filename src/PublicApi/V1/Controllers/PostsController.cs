@@ -1,10 +1,10 @@
-using System;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
 using Mublog.Server.Infrastructure.Common.Helpers;
@@ -34,7 +34,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         public PostsController(
             IPostRepository postRepo,
             IProfileRepository profileRepo,
-            AutoMapper.IMapper mapper, 
+            AutoMapper.IMapper mapper,
             ICurrentUserService currentUserService)
         {
             _postRepo = postRepo;
@@ -45,46 +45,45 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPosts([FromQuery] ExternalPostQueryParameters externalQueryParams = null)
+        public async Task<IActionResult> GetPosts([FromQuery] PostQueryParameters queryParams = null)
         {
-            externalQueryParams ??= new ExternalPostQueryParameters();
+            var user = _currentUserService.Get();
 
-            Profile profile = null;
-            
-            if (externalQueryParams.Username != null)
+            queryParams ??= new PostQueryParameters();
+
+            var posts = await _postRepo.GetPaged(queryParams, _currentUserService.Get()?.ToProfile);
+
+            if (posts.Count == 0)
             {
-                profile = await _profileRepo.GetByUsername(externalQueryParams.Username);
+                return NotFound(ResponseWrapper.Error("No posts were found."));
             }
             
-            var queryParams = externalQueryParams.GetInternalParams(profile);
-
-            var user = await _currentUserService.GetProfile();
-
-            var postsWithLikes = _postRepo.GetPagedWithLikes(queryParams, user);
-
             var metaData = new
             {
-                postsWithLikes.TotalCount,
-                postsWithLikes.PageSize,
-                postsWithLikes.CurrentPage,
-                postsWithLikes.HasNext,
-                postsWithLikes.HasPrevious
+                posts.TotalCount,
+                posts.PageSize,
+                posts.CurrentPage,
+                posts.HasNext,
+                posts.HasPrevious
             };
 
-            var response = postsWithLikes.Select(p => new PostResponseDto
+            var response = posts.Select(p =>
                 {
-                    Id = p.PublicId,
-                    TextContent = p.Content,
-                    DatePosted = p.CreatedDate.ToUnixTimestamp(),
-                    DateEdited = p.CreatedDate.ToUnixTimestamp(),
-                    LikeAmount = p.Likes.Count,
-                    Liked = p.Liked,
-                    User = new PostUserResponseDto
+                    return new PostResponseDto
                     {
-                        Alias = p.Owner?.Username ?? "unknown",
-                        DisplayName = p.Owner?.DisplayName ?? "Unknown",
-                        ProfileImageUrl = ""
-                    }
+                        Id = p.PublicId,
+                        TextContent = p.Content,
+                        DatePosted = p.CreatedDate.ToUnixTimestamp(),
+                        DateEdited = p.PostEditedDate.ToUnixTimestamp(),
+                        LikeAmount = p.LikesCount,
+                        Liked = user != null && p.Likes.Any(pfl => pfl?.Id == user.ProfileId),
+                        User = new PostUserResponseDto
+                        {
+                            Alias = p.Owner?.Username ?? "unknown",
+                            DisplayName = p.Owner?.DisplayName ?? "Unknown",
+                            ProfileImageUrl = ""
+                        }
+                    };
                 })
                 .ToList();
 
@@ -98,22 +97,24 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetByPublicId([FromRoute] int id)
         {
-            var username = _currentUserService.GetUsername();
-            var post = await _postRepo.GetByPublicId(id, username);
+            var user = _currentUserService.Get();
+
+            var post = await _postRepo.FindByPublicId(id, user?.ToProfile);
 
             if (post == null)
             {
                 return NotFound(ResponseWrapper.Error($"Post with id {id} could not be found."));
             }
-            
+
+
             var response = new PostResponseDto
             {
                 Id = post.PublicId,
                 TextContent = post.Content,
                 DatePosted = post.CreatedDate.ToUnixTimestamp(),
                 DateEdited = post.UpdatedDate.ToUnixTimestamp(),
-                LikeAmount = 0,
-                Liked = post.Liked,
+                LikeAmount = post.LikesCount,
+                Liked = user != null && post.Likes.Any(p => p?.Id == user.ProfileId),
                 User = new PostUserResponseDto
                 {
                     Alias = post.Owner?.Username ?? "unknown",
@@ -122,18 +123,17 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 }
             };
 
-            return Ok(ResponseWrapper.Success(response, "Success"));
+            return Ok(ResponseWrapper.Success(response));
         }
 
         [HttpPost]
-        // [Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreatePost([FromBody] PostCreateRequestDto request)
         {
             var post = _mapper.Map<Post>(request);
-            // post.Owner = await _currentUserService.GetProfile();
-            post.OwnerId = 1;
+            post.OwnerId = _currentUserService.Get().ProfileId;
             var success = await _postRepo.AddAsync(post);
 
             if (!success)
@@ -151,25 +151,26 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update([FromBody] PostUpdateRequestDto request, [FromRoute] int id)
         {
+            var user = _currentUserService.Get();
+
             if (request.Id != id)
             {
                 return BadRequest(ResponseWrapper.Error($"ID {id} in route did not match ID {request.Id} in body"));
             }
 
-            var post = await _postRepo.GetByPublicId(id);
+            var post = await _postRepo.FindByPublicId(id);
 
             if (post == null)
             {
                 return NotFound(ResponseWrapper.Error($"Could not find post with ID {id}"));
             }
 
-            if (post.Owner.Username != _currentUserService.GetUsername())
+            if (post.Owner.Username != user.Username)
             {
                 return Unauthorized(ResponseWrapper.Error("This post does not belong to you."));
             }
-            
+
             post.Content = request.Content;
-            post.PostEditedDate = DateTime.UtcNow;
 
             var success = await _postRepo.Update(post);
 
@@ -177,19 +178,19 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             {
                 return StatusCode(500, ResponseWrapper.Error($"An error occured pushing update to DB."));
             }
-            
+
             var response = new PostResponseDto
             {
                 Id = post.PublicId,
                 TextContent = post.Content,
                 DatePosted = post.CreatedDate.ToUnixTimestamp(),
                 DateEdited = post.UpdatedDate.ToUnixTimestamp(),
-                LikeAmount = post.Likes.Count,
-                Liked = post.Liked,
+                LikeAmount = post.LikesCount,
+                Liked = post.Likes.Any(p => p?.Id == user?.ProfileId),
                 User = new PostUserResponseDto
                 {
-                    Alias = post.Owner?.Username,
-                    DisplayName = post.Owner?.DisplayName,
+                    Alias = post.Owner?.Username ?? "unknown",
+                    DisplayName = post.Owner?.DisplayName ?? "Unknown",
                     ProfileImageUrl = ""
                 }
             };
@@ -204,18 +205,18 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var post = (Post) await _postRepo.GetByPublicId(id);
+            var post = await _postRepo.FindByPublicId(id);
 
             if (post == null)
             {
                 return NotFound(ResponseWrapper.Error($"Could not find post with ID {id}"));
             }
-            
-            if (post.Owner.Username != _currentUserService.GetUsername())
+
+            if (post.OwnerId != _currentUserService.Get().ProfileId)
             {
                 return Unauthorized(ResponseWrapper.Error("This post does not belong to you."));
             }
-            
+
             var success = await _postRepo.Remove(post);
 
             if (!success)
@@ -233,16 +234,23 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> LikePost([FromRoute] int id)
         {
-            var post = await _postRepo.GetByPublicId(id);
+            var user = _currentUserService.Get();
+
+            var post = await _postRepo.FindByPublicId(id, user.ToProfile);
 
             if (post == null)
             {
                 return NotFound(ResponseWrapper.Error($"Could not find post with ID {id}"));
             }
 
-            var user = await _currentUserService.GetProfile();
+            if (post.Likes.Any(p => p.Id == user?.ProfileId))
+            {
+                return BadRequest(ResponseWrapper.Error("The post is already liked by you."));
+            }
 
-            var success = await _postRepo.AddLike(post, user);
+            var profile = _currentUserService.Get().ToProfile;
+
+            var success = await _postRepo.AddLike(post, profile);
 
             if (!success)
             {
@@ -259,16 +267,21 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> RemoveLike([FromRoute] int id)
         {
-            var post = await _postRepo.GetByPublicId(id);
+            var user = _currentUserService.Get();
+
+            var post = await _postRepo.FindByPublicId(id, _currentUserService.Get().ToProfile);
 
             if (post == null)
             {
                 return NotFound(ResponseWrapper.Error($"Could not find post with ID {id}"));
             }
 
-            var user = await _currentUserService.GetProfile();
+            if (post.Likes.Any(p => p.Id != user?.ProfileId))
+            {
+                return BadRequest(ResponseWrapper.Error("The post did not have a like from you."));
+            }
 
-            var success = await _postRepo.RemoveLike(post, user);
+            var success = await _postRepo.RemoveLike(post, user.ToProfile);
 
             if (!success)
             {

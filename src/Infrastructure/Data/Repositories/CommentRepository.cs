@@ -14,7 +14,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         {
         }
 
-        public PagedList<Comment> GetPaged(QueryParameters queryParameters)
+        public Task<PagedList<Comment>> GetPaged(QueryParameters queryParameters)
         {
             throw new System.NotImplementedException();
         }
@@ -44,7 +44,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<ICollection<Comment>> GetByPost(int postId)
+        public async Task<ICollection<Comment>> FindByPost(int postId)
         {
             throw new System.NotImplementedException();
         }

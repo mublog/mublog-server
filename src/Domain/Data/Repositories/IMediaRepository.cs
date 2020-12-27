@@ -6,6 +6,6 @@ namespace Mublog.Server.Domain.Data.Repositories
 {
     public interface IMediaRepository : IRepository<Media>
     {
-        Task<Media> GetByPublicId(Guid id);
+        Task<Media> FindByPublicId(Guid id);
     }
 }

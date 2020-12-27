@@ -6,6 +6,6 @@ namespace Mublog.Server.Domain.Data.Repositories
 {
     public interface ICommentRepository : IRepository<Comment>
     {
-        Task<ICollection<Comment>> GetByPost(int postId);
+        Task<ICollection<Comment>> FindByPost(int postId);
     }
 }

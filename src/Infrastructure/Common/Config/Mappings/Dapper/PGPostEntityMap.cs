@@ -14,6 +14,11 @@ namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
             Map(p => p.Content).ToColumn("content");
             Map(p => p.OwnerId).ToColumn("owner_id");
             Map(p => p.PostEditedDate).ToColumn("date_post_edited");
+            Map(p => p.Username).ToColumn("username");
+            Map(p => p.DisplayName).ToColumn("display_name");
+            Map(p => p.ProfileImagePublicId).ToColumn("profile_image_id");
+            Map(p => p.Liked).ToColumn("liked");
+            Map(p => p.LikesCount).ToColumn("likes_amount");
         }
     }
 }

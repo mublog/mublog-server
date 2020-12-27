@@ -1,5 +1,4 @@
-using Mublog.Server.Domain.Common.Helpers;
-using Mublog.Server.Domain.Data.Entities;
+
 
 namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Automapper
 {
@@ -7,7 +6,6 @@ namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Automapper
     {
         public Mappings()
         {
-            CreateMap<Post, PostWithLike>().ReverseMap();
         }
     }
 }

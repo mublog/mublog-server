@@ -16,7 +16,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         {
         }
         
-        public PagedList<Media> GetPaged(QueryParameters queryParameters)
+        public Task<PagedList<Media>> GetPaged(QueryParameters queryParameters)
         {
             throw new NotImplementedException();
         }
@@ -46,7 +46,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<Media> GetByPublicId(Guid id)
+        public async Task<Media> FindByPublicId(Guid id)
         {
             throw new NotImplementedException();
         }
