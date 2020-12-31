@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Infrastructure.Data.Repositories;
+using Mublog.Server.Infrastructure.Data.TransferEntities;
 
 namespace Mublog.Server.Infrastructure.Identity
 {
@@ -34,22 +35,38 @@ namespace Mublog.Server.Infrastructure.Identity
 
         public async Task<Account> FindByUsername(string username)
         {
-            throw new System.NotImplementedException();
+            var sql = "SELECT ac.id, ac.data_created, ac.date_updated, ac.email, pfl.username, pfl.id AS profile_id, pfl.display_name, m.public_id AS profile_image_public_id FROM accounts AS ac LEFT JOIN profiles pfl on ac.profile_id = pfl.id LEFT JOIN mediae m on pfl.id = m.owner_id WHERE pfl.username = @Username LIMIT 1;";
+
+            var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {Username = username});
+
+            return transfer.ToAccount();
         }
 
         public async Task<Account> FindByEmail(string email)
         {
-            throw new System.NotImplementedException();
+            var sql = "SELECT ac.id, ac.data_created, ac.date_updated, ac.email, pfl.username, pfl.id AS profile_id, pfl.display_name, m.public_id AS profile_image_public_id FROM accounts AS ac LEFT JOIN profiles pfl on ac.profile_id = pfl.id LEFT JOIN mediae m on pfl.id = m.owner_id WHERE ac.email = @Email LIMIT 1; ";
+
+            var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {Email = email});
+
+            return transfer.ToAccount();
         }
 
         public async Task<Account> FindById(int id)
         {
-            throw new System.NotImplementedException();
+            var sql = "SELECT ac.id, ac.data_created, ac.date_updated, ac.email, pfl.username, pfl.id AS profile_id, pfl.display_name, m.public_id AS profile_image_public_id FROM accounts AS ac LEFT JOIN profiles pfl on ac.profile_id = pfl.id LEFT JOIN mediae m on pfl.id = m.owner_id WHERE ac.id = @Id LIMIT 1; ";
+
+            var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {Id = id});
+
+            return transfer.ToAccount();
         }
 
         public async Task<Account> FindByProfile(Profile profile)
         {
-            throw new System.NotImplementedException();
+            var sql = "SELECT ac.id, ac.data_created, ac.date_updated, ac.email, pfl.username, pfl.id AS profile_id, pfl.display_name, m.public_id AS profile_image_public_id FROM accounts AS ac LEFT JOIN profiles pfl on ac.profile_id = pfl.id LEFT JOIN mediae m on pfl.id = m.owner_id WHERE pfl.id = @ProfileId LIMIT 1; ";
+
+            var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {ProfileId = profile.Id});
+
+            return transfer.ToAccount();
         }
 
         public async Task<bool> ValidatePasswordCorrect(Account account, string password)

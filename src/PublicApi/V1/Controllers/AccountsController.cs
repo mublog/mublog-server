@@ -68,18 +68,18 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             
             
             
-            // var existingUsername = await _accountManager.FindByUsername(request.Username);
-            // var existingMail = await _accountManager.FindByEmail(request.Email);
-            //
-            // if (existingUsername != null)
-            // {
-            //     return BadRequest(ResponseWrapper.Success($"Username {request.Username} is already taken"));
-            // }
-            //
-            // if (existingMail != null)
-            // {
-            //     return BadRequest(ResponseWrapper.Success($"Email {request.Email} is already in use."));
-            // }
+            var existingUsername = await _accountManager.FindByUsername(request.Username);
+            var existingMail = await _accountManager.FindByEmail(request.Email);
+            
+            if (existingUsername != null)
+            {
+                return BadRequest(ResponseWrapper.Success($"Username {request.Username} is already taken"));
+            }
+            
+            if (existingMail != null)
+            {
+                return BadRequest(ResponseWrapper.Success($"Email {request.Email} is already in use."));
+            }
 
             var profile = new Profile
             {

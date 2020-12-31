@@ -12,7 +12,7 @@ namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
                 options.AddMap(new CommentMap());
                 options.AddMap(new MediaMap());
                 options.AddMap(new PostMap());
-                options.AddMap(new PGPostEntityMap());
+                options.AddMap(new TransferPostMap());
                 options.AddMap(new ProfileMap());
             });
         }

@@ -1,12 +1,11 @@
 using Dapper.FluentMap.Mapping;
-using Mublog.Server.Infrastructure.Common.Helpers;
 using Mublog.Server.Infrastructure.Data.TransferEntities;
 
 namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
 {
-    public class PGPostEntityMap : EntityMap<TransferPost>
+    public class TransferPostMap : EntityMap<TransferPost>
     {
-        public PGPostEntityMap()
+        public TransferPostMap()
         {
             Map(p => p.Id).ToColumn("id");
             Map(p => p.CreatedDate).ToColumn("date_created");
