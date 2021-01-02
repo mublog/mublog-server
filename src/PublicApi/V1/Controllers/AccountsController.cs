@@ -187,7 +187,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         {
             var account = await _currentUserService.GetAccount();
 
-            var success = await _accountManager.ChangePassword(account, request.CurrentPassword1, request.NewPassword);
+            var success = await _accountManager.ChangePassword(account, request.NewPassword);
 
             if (!success)
             {

@@ -8,7 +8,6 @@ using Mublog.Server.Domain.Common.Helpers;
 using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
-using Mublog.Server.Infrastructure.Common.Helpers;
 using Mublog.Server.Infrastructure.Data.TransferEntities;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
@@ -32,11 +31,11 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         {
             var sql = "SELECT pst.date_created, pst.public_id, pst.content, pst.date_post_edited, pst.date_updated, pst.owner_id, pfl.username, pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount ";
             if (profile != null && profile.Id != default) sql += ", exists(SELECT * FROM posts_liked_by_profiles AS plp LEFT JOIN posts p on p.id = plp.liked_posts_id WHERE plp.liking_profile_id = @ProfileId AND p.public_id = pst.public_id) AS liked ";
-            sql += "FROM posts AS pst LEFT JOIN profiles AS pfl ON pst.owner_id = pfl.id LEFT JOIN mediae m on pfl.profile_image_id = m.id ";
+            sql += "FROM posts AS pst LEFT OUTER JOIN profiles AS pfl ON pst.owner_id = pfl.id LEFT OUTER JOIN mediae m on pfl.profile_image_id = m.id ";
             if (queryParameters.Username != default) sql += "WHERE pfl.username = @Username ";
             sql += "ORDER BY pst.public_id DESC LIMIT @PageSize OFFSET @PageOffset; ";
             sql += "SELECT count(*) FROM posts AS pst ";
-            if (queryParameters.Username != default) sql += "INNER JOIN profiles pfl on pst.owner_id = pfl.id WHERE pfl.username = @Username";
+            if (queryParameters.Username != default) sql += "LEFT OUTER JOIN profiles pfl on pst.owner_id = pfl.id WHERE pfl.username = @Username";
             sql += ";";
 
             var offset = (queryParameters.Page - 1) * queryParameters.Size;
@@ -54,7 +53,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             return pagedList;
         }
 
-        public async Task<Post> FindByIdAsync(int id)
+        public async Task<Post> FindByIdAsync(long id)
         {
             var sql = "SELECT * FROM posts WHERE id = @Id LIMIT 1;";
 
@@ -104,7 +103,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             var sql = "SELECT pst.id, pst.date_created, pst.date_updated, pst.public_id, pst.content, pst.owner_id, pst.date_post_edited, pfl.username,pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount ";
 
             if (profile != null && profile.Id != default)
-                sql += "exists(SELECT * FROM posts_liked_by_profiles AS plp LEFT JOIN posts pst on pst.id = plp.liked_posts_id WHERE plp.liking_profile_id = @ProfileId AND pst.public_id = @PublicId) AS liked ";
+                sql += "exists(SELECT * FROM posts_liked_by_profiles AS plp LEFT OUTER JOIN posts pst on pst.id = plp.liked_posts_id WHERE plp.liking_profile_id = @ProfileId AND pst.public_id = @PublicId) AS liked ";
 
             sql += "FROM posts AS pst LEFT JOIN profiles pfl on pfl.id = pst.owner_id LEFT OUTER JOIN mediae m on pfl.profile_image_id = m.id WHERE pst.public_id = @PublicId LIMIT 1;";
 

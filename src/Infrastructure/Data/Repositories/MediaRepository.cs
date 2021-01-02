@@ -21,7 +21,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<Media> FindByIdAsync(int id)
+        public async Task<Media> FindByIdAsync(long id)
         {
             throw new NotImplementedException();
         }

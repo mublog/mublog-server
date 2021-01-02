@@ -1,11 +1,11 @@
 using Dapper.FluentMap.Mapping;
-using Mublog.Server.Domain.Data.Entities;
+using Mublog.Server.Infrastructure.Data.TransferEntities;
 
 namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
 {
-    public class ProfileMap : EntityMap<Profile>
+    public class TransferProfileMap : EntityMap<TransferProfile>
     {
-        public ProfileMap()
+        public TransferProfileMap()
         {
             Map(p => p.Id).ToColumn("id");
             Map(p => p.CreatedDate).ToColumn("date_created");
@@ -14,6 +14,7 @@ namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
             Map(p => p.DisplayName).ToColumn("display_name");
             Map(p => p.ProfileImageId).ToColumn("profile_image_id");
             Map(p => p.UserState).ToColumn("user_state");
+            Map(p => p.ProfileImagePublicId).ToColumn("profile_image_public_id");
         }
     }
 }

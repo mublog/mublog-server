@@ -25,12 +25,11 @@ namespace Mublog.Server.Infrastructure.Identity
 
         public async Task<bool> Remove(Account account)
         {
-            throw new NotImplementedException();
-        }
+            var sql = "DELETE FROM accounts WHERE id = @Id;";
 
-        public async Task<bool> Update(Account account)
-        {
-            throw new System.NotImplementedException();
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {Id = account.Id});
+
+            return rowsAffected >= 1;
         }
 
         public async Task<Account> FindByUsername(string username)
@@ -39,7 +38,7 @@ namespace Mublog.Server.Infrastructure.Identity
 
             var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {Username = username});
 
-            return transfer.ToAccount();
+            return transfer?.ToAccount();
         }
 
         public async Task<Account> FindByEmail(string email)
@@ -48,7 +47,7 @@ namespace Mublog.Server.Infrastructure.Identity
 
             var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {Email = email});
 
-            return transfer.ToAccount();
+            return transfer?.ToAccount();
         }
 
         public async Task<Account> FindById(int id)
@@ -57,7 +56,7 @@ namespace Mublog.Server.Infrastructure.Identity
 
             var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {Id = id});
 
-            return transfer.ToAccount();
+            return transfer?.ToAccount();
         }
 
         public async Task<Account> FindByProfile(Profile profile)
@@ -66,17 +65,34 @@ namespace Mublog.Server.Infrastructure.Identity
 
             var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {ProfileId = profile.Id});
 
-            return transfer.ToAccount();
+            return transfer?.ToAccount();
         }
 
         public async Task<bool> ValidatePasswordCorrect(Account account, string password)
         {
-            throw new System.NotImplementedException();
+            var sql = "SELECT ac.id FROM accounts AS ac WHERE ac.id = @Id AND ac.password = crypt(@Password, ac.password) LIMIT 1;";
+
+            var user = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new { Id = account.Id, Password = password});
+
+            return user != default;
         }
 
-        public async Task<bool> ChangePassword(Account account, string currentPassword, string newPassword)
+        public async Task<bool> ChangePassword(Account account, string newPassword)
         {
-            throw new NotImplementedException();
+            var sql = "UPDATE accounts SET (password, date_updated) = (password = crypt(@Password, gen_salt('bf')), date_updated = @Date) WHERE id =  @Id;";
+
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {Password = newPassword, Date = DateTime.UtcNow, Id = account.Id});
+
+            return rowsAffected >= 1;
+        }
+
+        public async Task<bool> ChangeEmail(Account account, string newEmail)
+        {
+            var sql = "UPDATE accounts SET (email, date_updated) = (email = @Email, date_updated = @Date) WHERE id =  @Id;";
+
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {Email = newEmail, Date = DateTime.UtcNow, Id = account.Id});
+
+            return rowsAffected >= 1;
         }
     }
 }

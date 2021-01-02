@@ -6,6 +6,7 @@ using Mublog.Server.Domain.Common.Helpers;
 using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
+using Mublog.Server.Infrastructure.Data.TransferEntities;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
@@ -20,9 +21,13 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<Profile> FindByIdAsync(int id)
+        public async Task<Profile> FindByIdAsync(long id)
         {
-            throw new System.NotImplementedException();
+            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles AS pfl LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE pfl.id = @Id LIMIT 1;";
+
+            var transferProfile = await Connection.QueryFirstOrDefaultAsync<TransferProfile>(sql, new {Id = id});
+
+            return transferProfile?.ToProfile();
         }
 
         public async Task<long> AddAsync(Profile profile)
@@ -51,7 +56,11 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<Profile> FindByUsername(string username)
         {
-            throw new System.NotImplementedException();
+            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles AS pfl LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE username = @Username LIMIT 1;";
+
+            var transferProfile = await Connection.QueryFirstOrDefaultAsync<TransferProfile>(sql, new {Username = username.ToLower()});
+
+            return transferProfile?.ToProfile();
         }
     }
 }

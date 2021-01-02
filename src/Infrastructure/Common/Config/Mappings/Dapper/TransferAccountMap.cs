@@ -15,7 +15,6 @@ namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
             Map(a => a.ProfileId).ToColumn("profile_id");
             Map(a => a.Username).ToColumn("username");
             Map(a => a.DisplayName).ToColumn("display_name");
-            Map(a => a.ProfileId).ToColumn("profile_id");
             Map(a => a.ProfileImagePublicId).ToColumn("profile_image_public_id");
         }
     }
