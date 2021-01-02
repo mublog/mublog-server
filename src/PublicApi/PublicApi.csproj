@@ -39,6 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="media" />
       <Folder Include="wwwroot" />
     </ItemGroup>
     

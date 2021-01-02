@@ -62,6 +62,8 @@ namespace Mublog.Server.PublicApi
             app.UseDefaultFiles();
             app.UseStaticFiles();
             
+            // TODO serve files from /media Under url /media 
+
             app.UseAuthentication();
 
             app.UseAuthorization();

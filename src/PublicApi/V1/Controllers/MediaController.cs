@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mublog.Server.Domain.Data.Entities;
+using Mublog.Server.Domain.Data.Repositories;
+using Mublog.Server.Infrastructure.Services.Interfaces;
 using Mublog.Server.PublicApi.Common.Helpers;
 
 namespace Mublog.Server.PublicApi.V1.Controllers
@@ -21,13 +24,36 @@ namespace Mublog.Server.PublicApi.V1.Controllers
     public class MediaController : ControllerBase
     {
 
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IMediaRepository _mediaRepo;
+
+        public MediaController(ICurrentUserService currentUserService, IMediaRepository mediaRepo)
+        {
+            _currentUserService = currentUserService;
+            _mediaRepo = mediaRepo;
+        }
+
+
         [HttpPost, RequestSizeLimit(5242880)]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Upload()
         {
+            // TODO add media entry to db
+            // var profile = new Profile { Id = 1, Username = "max"};
+            // var profile = await _currentUserService.GetProfile();
+            // var media = new Media
+            // {
+            //
+            // };
+            // var id = await _mediaRepo.AddAsync(media);
+            // var success = id != default;
+            
+            
             var guid = new Guid();
+            
+            // TODO rename file and put into /media folder
             
             try
             {
@@ -50,6 +76,8 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             {
                 return StatusCode(500, ResponseWrapper.Error(ex.Message));
             }
+
+            return Ok(ResponseWrapper.Success(new {guid = guid}));
         }
         
     

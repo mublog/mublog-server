@@ -79,6 +79,8 @@ namespace Mublog.Server.Infrastructure.Identity
 
         public async Task<bool> ChangePassword(Account account, string newPassword)
         {
+            // TODO check method
+            
             var sql = "UPDATE accounts SET (password, date_updated) = (password = crypt(@Password, gen_salt('bf')), date_updated = @Date) WHERE id =  @Id;";
 
             var rowsAffected = await Connection.ExecuteAsync(sql, new {Password = newPassword, Date = DateTime.UtcNow, Id = account.Id});
