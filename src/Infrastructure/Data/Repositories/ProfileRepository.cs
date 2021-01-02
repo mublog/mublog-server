@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Mublog.Server.Domain.Common.Helpers;
@@ -12,6 +13,8 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 {
     public class ProfileRepository : BaseRepository, IProfileRepository
     {
+        // TODO implement change display name
+        
         public ProfileRepository(IDbConnection connection) : base(connection)
         {
         }
@@ -46,6 +49,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<bool> Remove(Profile profile)
         {
+            // TODO
             throw new System.NotImplementedException();
         }
 
@@ -61,6 +65,46 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             var transferProfile = await Connection.QueryFirstOrDefaultAsync<TransferProfile>(sql, new {Username = username.ToLower()});
 
             return transferProfile?.ToProfile();
+        }
+
+        public async Task<ICollection<Profile>> GetFollowers(Profile profile)
+        {
+            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles_following_profile LEFT OUTER JOIN profiles pfl on pfl.id = profiles_following_profile.follower_id LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE following_id = @ProfileId;";
+
+            var transferProfiles = await Connection.QueryAsync<TransferProfile>(sql, new {ProfileId = profile.Id});
+
+            var profiles = transferProfiles.Select(tp => tp.ToProfile()).ToList();
+
+            return profiles;
+        }
+
+        public async Task<ICollection<Profile>> GetFollowing(Profile profile)
+        {
+            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles_following_profile LEFT OUTER JOIN profiles pfl on pfl.id = profiles_following_profile.follower_id LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE follower_id = @ProfileId;";
+
+            var transferProfiles = await Connection.QueryAsync<TransferProfile>(sql, new {ProfileId = profile.Id});
+
+            var profiles = transferProfiles.Select(tp => tp.ToProfile()).ToList();
+
+            return profiles;
+        }
+
+        public async Task<bool> AddFollowing(Profile followingProfile, Profile followerProfile)
+        {
+            var sql = "INSERT INTO profiles_following_profile (following_id, follower_id) VALUES (@FollowingId, @FollowerId);";
+
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {FollowingId = followingProfile.Id, FollowerId = followerProfile.Id});
+
+            return rowsAffected >= 1;
+        }
+
+        public async Task<bool> RemoveFollowing(Profile followingProfile, Profile followerProfile)
+        {
+            var sql = "DELETE FROM profiles_following_profile WHERE follower_id = @FollowerId AND following_id = @FollowingId;";
+
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {FollowingId = followingProfile.Id, FollowerId = followerProfile.Id});
+
+            return rowsAffected >= 1;
         }
     }
 }

@@ -138,10 +138,10 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             if (id == default)
             {
-                return StatusCode(500, ResponseWrapper.Error("Error adding post to database"));
+                return StatusCode(500, ResponseWrapper.Error("Error adding post to database."));
             }
 
-            return Ok(ResponseWrapper.Success("Successfully created post"));
+            return Ok(ResponseWrapper.Success("Successfully created post."));
         }
 
         [HttpPatch("{id:int}")]

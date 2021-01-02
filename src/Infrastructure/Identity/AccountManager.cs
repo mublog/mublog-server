@@ -34,7 +34,7 @@ namespace Mublog.Server.Infrastructure.Identity
 
         public async Task<Account> FindByUsername(string username)
         {
-            var sql = "SELECT ac.id, ac.data_created, ac.date_updated, ac.email, pfl.username, pfl.id AS profile_id, pfl.display_name, m.public_id AS profile_image_public_id FROM accounts AS ac LEFT JOIN profiles pfl on ac.profile_id = pfl.id LEFT JOIN mediae m on pfl.id = m.owner_id WHERE pfl.username = @Username LIMIT 1;";
+            var sql = "SELECT ac.id, ac.data_created, ac.date_updated, ac.email, pfl.username, pfl.id AS profile_id, pfl.display_name, m.public_id AS profile_image_public_id FROM accounts AS ac LEFT OUTER JOIN profiles pfl on ac.profile_id = pfl.id LEFT OUTER JOIN mediae m on pfl.id = m.owner_id WHERE pfl.username = @Username LIMIT 1;";
 
             var transfer = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {Username = username});
 

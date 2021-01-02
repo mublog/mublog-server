@@ -166,17 +166,17 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> ChangeEmail([FromBody] ChangeEmailRequestDto request)
         {
-            return BadRequest("Method not implemented yet");
+            var account = await _currentUserService.GetAccount();
 
-            var currentUser = _currentUserService.Get();
-            var profile = await _currentUserService.GetProfile();
+            var success = await _accountManager.ChangeEmail(account, request.Email.ToLower());
 
-            if (profile == null)
+            if (!success)
             {
-                return BadRequest($"Account for {currentUser} does not exist.");
+                return StatusCode(500,
+                    ResponseWrapper.Error("An error occured while trying to change your email address."));
             }
-
-            // var result = await _userManager.ChangeEmailAsync(user, request.Email)
+            
+            return Ok(ResponseWrapper.Success("Successfully changed your email address."));
         }
 
         [HttpPatch("password")]

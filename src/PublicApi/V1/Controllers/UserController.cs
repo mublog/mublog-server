@@ -76,7 +76,16 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetFollowers([FromRoute] string username)
         {
-            return BadRequest(ResponseWrapper.Error("Method not implemented yet"));
+            var profile = await _profileRepo.FindByUsername(username.ToLower());
+
+            if (profile == null)
+            {
+                return NotFound(ResponseWrapper.Error($"User {username.ToLower()} was not found."));
+            }
+
+            var followers = await _profileRepo.GetFollowers(profile);
+
+            return Ok(ResponseWrapper.Success(followers));
         }
         
         [HttpGet("{username}/following")]
@@ -84,7 +93,18 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetFollowing([FromRoute] string username)
         {
-            return BadRequest(ResponseWrapper.Error("Method not implemented yet"));
+            username = username.ToLower();
+             
+            var profile = await _profileRepo.FindByUsername(username);
+
+            if (profile == null)
+            {
+                return NotFound(ResponseWrapper.Error($"User {username} was not found."));
+            }
+
+            var following = await _profileRepo.GetFollowing(profile);
+
+            return Ok(ResponseWrapper.Success(following));
         }
     }
 }

@@ -19,7 +19,8 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<Comment> FindByIdAsync(long id)
+        public async Task<Comment> FindByIdAsync(long
+            id)
         {
             throw new System.NotImplementedException();
         }

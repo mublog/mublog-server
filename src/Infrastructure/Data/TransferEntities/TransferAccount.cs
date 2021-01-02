@@ -37,6 +37,7 @@ namespace Mublog.Server.Infrastructure.Data.TransferEntities
                 CreatedDate = CreatedDate.ToDateTime(),
                 UpdatedDate = UpdatedDate.ToDateTime(),
                 Email = Email,
+                ProfileId = ProfileId,
                 Profile = profile
             };
         }
