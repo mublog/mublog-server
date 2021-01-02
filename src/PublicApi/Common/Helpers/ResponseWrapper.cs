@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Mublog.Server.PublicApi.Common.Helpers
@@ -18,12 +19,12 @@ namespace Mublog.Server.PublicApi.Common.Helpers
                 message
             };
 
-            return Success<object>(null, messages);
+            return Success<object>(Array.Empty<string>(), messages);
         }
 
         public static ResponseWrapper<object> Success(IEnumerable<string> messages = null)
         {
-            return Success<object>(null, messages);
+            return Success<object>(Array.Empty<string>(), messages);
         }
 
         public static ResponseWrapper<T> Success<T>(T data, string message)
@@ -67,7 +68,7 @@ namespace Mublog.Server.PublicApi.Common.Helpers
         {
             return new ResponseWrapper<object>
             {
-                Data = null,
+                Data = Array.Empty<string>(),
                 Messages = errors,
                 IsError = true
             };
