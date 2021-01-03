@@ -48,7 +48,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             queryParams ??= new PostQueryParameters();
 
-            var posts = await _postRepo.GetPaged(queryParams, user.ToProfile);
+            var posts = await _postRepo.GetPaged(queryParams, user?.ToProfile);
 
             if (posts.Count == 0)
             {
