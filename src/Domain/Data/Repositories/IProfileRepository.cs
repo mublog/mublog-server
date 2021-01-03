@@ -6,7 +6,7 @@ namespace Mublog.Server.Domain.Data.Repositories
 {
     public interface IProfileRepository : IRepository<Profile>
     {
-        Task<Profile> FindByUsername(string username);
+        Task<Profile> FindByUsername(string username, Profile currentUser = null);
         Task<ICollection<Profile>> GetFollowers(Profile profile);
         Task<ICollection<Profile>> GetFollowing(Profile profile);
         Task<bool> AddFollowing(Profile followingProfile, Profile followerProfile);

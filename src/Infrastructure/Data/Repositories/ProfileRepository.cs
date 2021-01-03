@@ -21,7 +21,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<Profile> FindById(long id)
         {
-            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.description, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id, (SELECT count(*) FROM profiles_following_profile AS pfp WHERE pfp.following_id = @Id) AS follower_count, (SELECT count(*) FROM profiles_following_profile AS pfp WHERE pfp.follower_id = @Id) AS following_count ";
+            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.description, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id, (SELECT count(*) FROM profiles_following_profile AS pfp WHERE pfp.following_id = @Id) AS follower_count, (SELECT count(*) FROM profiles_following_profile AS pfp WHERE pfp.follower_id = @Id) AS following_count FROM profiles AS pfl LEFT OUTER JOIN mediae m ON m.id = pfl.profile_image_id WHERE pfl.id = @Id LIMIT 1;";
 
             var transferProfile = await Connection.QueryFirstOrDefaultAsync<TransferProfile>(sql, new {Id = id});
 
@@ -48,11 +48,18 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             return rowsAffected >= 1;
         }
         
-        public async Task<Profile> FindByUsername(string username)
+        public async Task<Profile> FindByUsername(string username, Profile currentUser = null)
         {
-            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.description, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles AS pfl LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE username = @Username LIMIT 1;";
+            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.description, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id, (SELECT count(*) FROM profiles_following_profile AS pfp INNER JOIN profiles pfl on pfl.id = pfp.follower_id WHERE pfl.username = @Username) AS follower_count, (SELECT count(*) FROM profiles_following_profile AS pfp INNER JOIN profiles pfl on pfl.id = pfp.following_id WHERE pfl.username = @Username) AS following_count ";
 
-            var transferProfile = await Connection.QueryFirstOrDefaultAsync<TransferProfile>(sql, new {Username = username.ToLower()});
+            if (currentUser != null)
+            {
+                sql += ", exists(SELECT * FROM profiles_following_profile AS pfp INNER JOIN profiles pfl on pfl.id = pfp.following_id WHERE pfl.username = @Username AND follower_id = @CurrentUserId) AS following ";
+            }
+            
+            sql += "FROM profiles AS pfl LEFT OUTER JOIN mediae m ON m.id = pfl.profile_image_id WHERE pfl.username = @Username LIMIT 1;";
+
+            var transferProfile = await Connection.QueryFirstOrDefaultAsync<TransferProfile>(sql, new {Username = username.ToLower(), CurrentUserId = currentUser?.Id});
 
             return transferProfile?.ToProfile();
         }

@@ -16,6 +16,9 @@ namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
             Map(p => p.ProfileImageId).ToColumn("profile_image_id");
             Map(p => p.UserState).ToColumn("user_state");
             Map(p => p.ProfileImagePublicId).ToColumn("profile_image_public_id");
+            Map(p => p.FollowerCount).ToColumn("follower_count");
+            Map(p => p.FollowingCount).ToColumn("following_count");
+            Map(p => p.FollowStatus).ToColumn("following");
         }
     }
 }

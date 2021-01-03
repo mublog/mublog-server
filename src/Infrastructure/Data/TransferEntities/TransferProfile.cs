@@ -16,6 +16,11 @@ namespace Mublog.Server.Infrastructure.Data.TransferEntities
         public long ProfileImageId { get; set; }
         public Guid ProfileImagePublicId { get; set; }
         public UserState UserState { get; set; }
+        public long FollowerCount { get; set; }
+        public long FollowingCount { get; set; }
+        public bool FollowStatus { get; set; }
+
+
 
         
         public Profile ToProfile()
@@ -36,7 +41,10 @@ namespace Mublog.Server.Infrastructure.Data.TransferEntities
                 Description = Description,
                 ProfileImageId = ProfileImageId,
                 ProfileImage = new Media{Id = ProfileImageId, PublicId = ProfileImagePublicId},
-                UserState = UserState
+                UserState = UserState,
+                FollowerCount = FollowerCount,
+                FollowingCount = FollowingCount,
+                FollowStatus = FollowStatus
             };
             
             return profile;

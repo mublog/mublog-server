@@ -33,8 +33,9 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         public async Task<IActionResult> GetUser([FromRoute] string username)
         {
             username = username.ToLower();
+            var currentUser = _currentUserService.Get();
             
-            var profile = await _profileRepo.FindByUsername(username);
+            var profile = await _profileRepo.FindByUsername(username, currentUser?.ToProfile);
 
             if (profile == null)
             {
@@ -48,9 +49,9 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 Description = profile.Description,
                 ProfileImageId = profile.ProfileImage?.PublicId.ToString() ?? "",
                 HeaderImageId = "",
-                FollowersCount = 0,
-                FollowingCount = 0,
-                FollowingStatus = false
+                FollowersCount = profile.FollowerCount,
+                FollowingCount = profile.FollowingCount,
+                FollowingStatus = profile.FollowStatus
             };
 
             return Ok(ResponseWrapper.Success(response));

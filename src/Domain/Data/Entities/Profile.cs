@@ -15,6 +15,9 @@ namespace Mublog.Server.Domain.Data.Entities
         public ICollection<Post> LikedPosts { get; set; }
         public ICollection<Media> Mediae { get; set; }
         public ICollection<Profile> Followers { get; set; }
+        public long FollowerCount { get; set; }
         public ICollection<Profile> Following { get; set; }
+        public long FollowingCount { get; set; }
+        public bool FollowStatus { get; set; }    // Should not be in Domain 
     }
 }

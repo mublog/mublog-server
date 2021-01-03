@@ -7,8 +7,8 @@ namespace Mublog.Server.PublicApi.V1.DTOs.Users
         public string Description { get; set; }
         public string ProfileImageId { get; set; }
         public string HeaderImageId { get; set; }
-        public int FollowersCount { get; set; }
-        public int FollowingCount { get; set; }
+        public long FollowersCount { get; set; }
+        public long FollowingCount { get; set; }
         public bool FollowingStatus { get; set; }
     }
 }
