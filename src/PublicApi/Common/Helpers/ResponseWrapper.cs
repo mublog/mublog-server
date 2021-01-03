@@ -12,6 +12,8 @@ namespace Mublog.Server.PublicApi.Common.Helpers
 
     public static class ResponseWrapper
     {
+        public static ResponseWrapper<object> Success() => Success("Success");
+        
         public static ResponseWrapper<object> Success(string message)
         {
             var messages = new[]

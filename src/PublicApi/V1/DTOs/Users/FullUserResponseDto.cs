@@ -1,6 +1,6 @@
 namespace Mublog.Server.PublicApi.V1.DTOs.Users
 {
-    public class UserResponseDto
+    public class FullUserResponseDto
     {
         public string Username { get; set; }
         public string DisplayName { get; set; }
@@ -9,5 +9,6 @@ namespace Mublog.Server.PublicApi.V1.DTOs.Users
         public string HeaderImageId { get; set; }
         public int FollowersCount { get; set; }
         public int FollowingCount { get; set; }
+        public bool FollowingStatus { get; set; }
     }
 }

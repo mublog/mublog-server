@@ -82,7 +82,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<ICollection<Profile>> GetFollowing(Profile profile)
         {
-            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles_following_profile LEFT OUTER JOIN profiles pfl on pfl.id = profiles_following_profile.follower_id LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE follower_id = @ProfileId;";
+            var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles_following_profile LEFT OUTER JOIN profiles pfl on pfl.id = profiles_following_profile.following_id LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE follower_id = @ProfileId;";
 
             var transferProfiles = await Connection.QueryAsync<TransferProfile>(sql, new {ProfileId = profile.Id});
 

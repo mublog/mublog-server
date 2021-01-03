@@ -9,7 +9,7 @@ namespace Mublog.Server.PublicApi.Common.Config
         public Mappings()
         {
             CreateMap<PostCreateRequestDto, Post>();
-            CreateMap<Profile, UserResponseDto>();
+            CreateMap<Profile, FullUserResponseDto>();
             CreateMap<Profile, PostUserResponseDto>();
             CreateMap<Post, PostResponseDto>();
         }
