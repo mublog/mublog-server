@@ -117,6 +117,11 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         {
             username = username.ToLower();
 
+            if (_currentUserService.Get().Username == username)
+            {
+                return BadRequest(ResponseWrapper.Error("You cannot follow yourself."));
+            }
+
             var profile = await _profileRepo.FindByUsername(username);
 
             if (profile == null)
