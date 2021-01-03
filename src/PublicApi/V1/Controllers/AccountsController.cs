@@ -158,6 +158,32 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             return Ok(ResponseWrapper.Success("Display Name was successfully updated."));
         }
+        
+        [HttpPatch("description")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> ChangeDescription([FromBody] ChangeDescriptionRequestDto request)
+        {
+            var currentUser = _currentUserService.Get();
+            var profile = await _currentUserService.GetProfile();
+
+            if (profile == null)
+            {
+                return BadRequest(ResponseWrapper.Error($"Account for {currentUser} does not exist."));
+            }
+
+            profile.Description = request.Description;
+
+            var success = await _profileRepo.ChangeDescription(profile);
+
+            if (!success)
+            {
+                return StatusCode(500, ResponseWrapper.Error("An error occured while pushing the changed to the database."));
+            }
+
+            return Ok(ResponseWrapper.Success("Description was successfully updated."));
+        }
 
         [HttpPatch("email")]
         [Authorize]

@@ -1,6 +1,8 @@
 START TRANSACTION;
 
 
+CREATE EXTENSION pgcrypto;
+
 CREATE TABLE profiles
 (
     id               integer                     NOT NULL GENERATED ALWAYS AS IDENTITY,
@@ -8,6 +10,7 @@ CREATE TABLE profiles
     date_updated     timestamp without time zone NOT NULL,
     username         character varying(20)       NOT NULL,
     display_name     character varying(30)       NOT NULL,
+    description      text,
     profile_image_id integer,
     user_state       integer                     NOT NULL DEFAULT 0,
     CONSTRAINT pk_profiles_id PRIMARY KEY (id)
@@ -60,15 +63,15 @@ CREATE TABLE accounts
     date_updated timestamp without time zone NOT NULL,
     email        character varying(254)      NOT NULL,
     password     text                        NOT NULL,
-    profile_id  integer NOT NULL,
+    profile_id   integer                     NOT NULL,
     CONSTRAINT pk_accounts_id PRIMARY KEY (id),
-    CONSTRAINT fk_accounts_profile_id FOREIGN KEY (profile_id) REFERENCES profiles (id) ON DELETE CASCADE 
+    CONSTRAINT fk_accounts_profile_id FOREIGN KEY (profile_id) REFERENCES profiles (id) ON DELETE CASCADE
 );
 
 CREATE TABLE posts_liked_by_profiles
 (
-    liked_posts_id integer NOT NULL,
-    liking_profile_id       integer NOT NULL,
+    liked_posts_id    integer NOT NULL,
+    liking_profile_id integer NOT NULL,
     CONSTRAINT pk_posts_liked_by_profiles PRIMARY KEY (liked_posts_id, liking_profile_id),
     CONSTRAINT fk_posts_liked_by_profiles_liked_posts_id FOREIGN KEY (liked_posts_id) REFERENCES posts (id) ON DELETE CASCADE,
     CONSTRAINT fk_posts_liked_by_profiles_likes_id FOREIGN KEY (liking_profile_id) REFERENCES profiles (id) ON DELETE CASCADE
@@ -84,7 +87,8 @@ CREATE TABLE profiles_following_profile
 );
 
 
-ALTER TABLE profiles ADD CONSTRAINT fk_profile_image_id FOREIGN KEY (profile_image_id) REFERENCES mediae (id);
+ALTER TABLE profiles
+    ADD CONSTRAINT fk_profile_image_id FOREIGN KEY (profile_image_id) REFERENCES mediae (id);
 
 
 CREATE UNIQUE INDEX ix_profiles_username ON profiles (username);

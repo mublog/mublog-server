@@ -12,5 +12,6 @@ namespace Mublog.Server.Domain.Data.Repositories
         Task<bool> AddFollowing(Profile followingProfile, Profile followerProfile);
         Task<bool> RemoveFollowing(Profile followingProfile, Profile followerProfile);
         Task<bool> ChangeDisplayName(Profile profile);
+        Task<bool> ChangeDescription(Profile profile);
     }
 }

@@ -45,8 +45,8 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             {
                 Username = profile.Username,
                 DisplayName = profile.DisplayName,
-                Description = "",
-                ProfileImageId = "",
+                Description = profile.Description,
+                ProfileImageId = profile.ProfileImage?.PublicId.ToString() ?? "",
                 HeaderImageId = "",
                 FollowersCount = 0,
                 FollowingCount = 0,
@@ -71,6 +71,11 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             if (followingProfile == null)
             {
                 return NotFound(ResponseWrapper.Error($"User {username} does not exist."));
+            }
+
+            if (currentUser.Username == username)
+            {
+                return BadRequest(ResponseWrapper.Error("You cannot follow yourself."));
             }
 
             var success = await _profileRepo.AddFollowing(followingProfile, currentUser.ToProfile);
@@ -116,11 +121,6 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         public async Task<IActionResult> GetFollowers([FromRoute] string username)
         {
             username = username.ToLower();
-
-            if (_currentUserService.Get().Username == username)
-            {
-                return BadRequest(ResponseWrapper.Error("You cannot follow yourself."));
-            }
 
             var profile = await _profileRepo.FindByUsername(username);
 

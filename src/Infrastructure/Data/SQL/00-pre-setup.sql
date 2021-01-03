@@ -4,5 +4,3 @@ CREATE ROLE mublog_user
 
 CREATE DATABASE mublog
     OWNER mublog_user;
-
-CREATE EXTENSION pgcrypto;
