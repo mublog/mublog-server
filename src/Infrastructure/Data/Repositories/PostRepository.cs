@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Logging;
-using MiniProfiler.Integrations;
 using Mublog.Server.Domain.Common.Helpers;
 using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
 using Mublog.Server.Infrastructure.Data.TransferEntities;
-using StackExchange.Profiling.Data;
+
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
@@ -41,7 +39,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             var offset = (queryParameters.Page - 1) * queryParameters.Size;
 
              var results = await Connection.QueryMultipleAsync
-                 (sql, new {Username= queryParameters.Username, ProfileId = profile?.Id, PageSize = queryParameters.Size, PageOffset = offset});
+                 (sql, new {queryParameters.Username, ProfileId = profile?.Id, PageSize = queryParameters.Size, PageOffset = offset});
              
             var pgPosts = await results.ReadAsync<TransferPost>();
             var totalRows = await results.ReadFirstOrDefaultAsync<long>();
@@ -80,11 +78,6 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             var rowsAffected = await Connection.ExecuteAsync(sql, post);
 
             return rowsAffected >= 1;
-        }
-
-        public async Task<bool> RemoveRange(IEnumerable<Post> entities)
-        {
-            throw new System.NotImplementedException();
         }
 
         public async Task<Post> FindByPublicId(int publicId, Profile profile = null)

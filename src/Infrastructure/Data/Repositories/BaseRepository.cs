@@ -1,6 +1,5 @@
 using System;
 using System.Data;
-using Mublog.Server.Domain.Data.Entities;
 
 namespace Mublog.Server.Infrastructure.Data.Repositories
 {
@@ -14,9 +13,10 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             Connection = connection;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Connection?.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

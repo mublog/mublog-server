@@ -40,11 +40,6 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             throw new System.NotImplementedException();
         }
 
-        public async Task<bool> RemoveRange(IEnumerable<Comment> entities)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<ICollection<Comment>> FindByPost(int postId)
         {
             throw new System.NotImplementedException();

@@ -27,18 +27,15 @@ namespace Mublog.Server.PublicApi.V1.Controllers
     public class PostsController : ControllerBase
     {
         private readonly IPostRepository _postRepo;
-        private readonly IProfileRepository _profileRepo;
         private readonly AutoMapper.IMapper _mapper;
         private readonly ICurrentUserService _currentUserService;
 
         public PostsController(
             IPostRepository postRepo,
-            IProfileRepository profileRepo,
             AutoMapper.IMapper mapper,
             ICurrentUserService currentUserService)
         {
             _postRepo = postRepo;
-            _profileRepo = profileRepo;
             _mapper = mapper;
             _currentUserService = currentUserService;
         }

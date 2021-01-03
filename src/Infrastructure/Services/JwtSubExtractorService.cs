@@ -1,11 +1,8 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
 using Microsoft.AspNetCore.Http;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
-using Mublog.Server.Infrastructure.Common.Helpers;
 using Mublog.Server.Infrastructure.Identity;
 using Mublog.Server.Infrastructure.Services.Interfaces;
 

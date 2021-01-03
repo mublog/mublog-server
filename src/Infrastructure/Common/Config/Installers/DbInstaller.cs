@@ -2,13 +2,11 @@ using System.Data;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MiniProfiler.Integrations;
 using Mublog.Server.Application.Common.Interfaces;
 using Mublog.Server.Domain.Data.Repositories;
 using Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper;
 using Mublog.Server.Infrastructure.Data.Repositories;
 using Npgsql;
-using StackExchange.Profiling.Data;
 
 
 namespace Mublog.Server.Infrastructure.Common.Config.Installers
@@ -24,7 +22,7 @@ namespace Mublog.Server.Infrastructure.Common.Config.Installers
             // services.AddSingleton<IDbProfiler>(cp);
             // services.AddTransient<IDbConnection>((sp) => new ProfiledDbConnection(new NpgsqlConnection(connectionString), cp));
             
-            services.AddTransient<IDbConnection>((sp) => new NpgsqlConnection(connectionString));
+            services.AddTransient<IDbConnection>((_) => new NpgsqlConnection(connectionString));
             
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IMediaRepository, MediaRepository>();

@@ -18,7 +18,7 @@ namespace Mublog.Server.Infrastructure.Identity
         {
             var sql = "INSERT INTO accounts (data_created, date_updated, email, password, profile_id) VALUES (@Date, @Date, @Email, crypt(@Password, gen_salt('bf')), @ProfileId) RETURNING id;";
 
-            var id = await Connection.QueryFirstOrDefaultAsync<long>(sql, new  { Date = DateTime.UtcNow, Email = account.Email, Password = password, ProfileId = account.Profile.Id });
+            var id = await Connection.QueryFirstOrDefaultAsync<long>(sql, new  { Date = DateTime.UtcNow, account.Email, Password = password, ProfileId = account.Profile.Id });
 
             return id != default;
         }
@@ -27,7 +27,7 @@ namespace Mublog.Server.Infrastructure.Identity
         {
             var sql = "DELETE FROM accounts WHERE id = @Id;";
 
-            var rowsAffected = await Connection.ExecuteAsync(sql, new {Id = account.Id});
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {account.Id});
 
             return rowsAffected >= 1;
         }
@@ -72,7 +72,7 @@ namespace Mublog.Server.Infrastructure.Identity
         {
             var sql = "SELECT ac.id FROM accounts AS ac WHERE ac.id = @Id AND ac.password = crypt(@Password, ac.password) LIMIT 1;";
 
-            var user = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new { Id = account.Id, Password = password});
+            var user = await Connection.QueryFirstOrDefaultAsync<TransferAccount>(sql, new {account.Id, Password = password});
 
             return user != default;
         }
@@ -83,7 +83,7 @@ namespace Mublog.Server.Infrastructure.Identity
             
             var sql = "UPDATE accounts SET (password, date_updated) = (password = crypt(@Password, gen_salt('bf')), date_updated = @Date) WHERE id =  @Id;";
 
-            var rowsAffected = await Connection.ExecuteAsync(sql, new {Password = newPassword, Date = DateTime.UtcNow, Id = account.Id});
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {Password = newPassword, Date = DateTime.UtcNow, account.Id});
 
             return rowsAffected >= 1;
         }
@@ -92,7 +92,7 @@ namespace Mublog.Server.Infrastructure.Identity
         {
             var sql = "UPDATE accounts SET (email, date_updated) = (email = @Email, date_updated = @Date) WHERE id =  @Id;";
 
-            var rowsAffected = await Connection.ExecuteAsync(sql, new {Email = newEmail, Date = DateTime.UtcNow, Id = account.Id});
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {Email = newEmail, Date = DateTime.UtcNow, account.Id});
 
             return rowsAffected >= 1;
         }
