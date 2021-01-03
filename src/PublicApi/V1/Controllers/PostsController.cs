@@ -51,7 +51,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             queryParams ??= new PostQueryParameters();
 
-            var posts = await _postRepo.GetPaged(queryParams, _currentUserService.Get()?.ToProfile);
+            var posts = await _postRepo.GetPaged(queryParams, user.ToProfile);
 
             if (posts.Count == 0)
             {
@@ -81,7 +81,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                         {
                             Alias = p.Owner?.Username ?? "unknown",
                             DisplayName = p.Owner?.DisplayName ?? "Unknown",
-                            ProfileImageUrl = ""
+                            ProfileImageUrl = p.Owner?.ProfileImage?.PublicId.ToString() ?? ""
                         }
                     };
                 })
@@ -172,7 +172,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             post.Content = request.Content;
 
-            var success = await _postRepo.Update(post);
+            var success = await _postRepo.ChangeContent(post);
 
             if (!success)
             {

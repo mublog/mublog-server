@@ -10,5 +10,6 @@ namespace Mublog.Server.Domain.Data.Repositories
         Task<Post> FindByPublicId(int publicId, Profile profile = null);
         Task<bool> AddLike(Post post, Profile profile);
         Task<bool> RemoveLike(Post post, Profile profile);
+        Task<bool> ChangeContent(Post post);
     }
 }

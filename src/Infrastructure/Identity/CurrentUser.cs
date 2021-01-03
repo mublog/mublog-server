@@ -10,8 +10,8 @@ namespace Mublog.Server.Infrastructure.Identity
 
         public override string ToString() => Username;
 
-        public Profile ToProfile => new Profile { Id = ProfileId };
+        public Profile ToProfile => new Profile { Id = ProfileId, Username = Username};
 
-        public Account ToAccount => new Account { Id = AccountId };
+        public Account ToAccount => new Account { Id = AccountId, ProfileId = ProfileId, Profile = ToProfile};
     }
 }

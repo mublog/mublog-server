@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -35,6 +36,8 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<long> AddAsync(Profile profile)
         {
+            profile.ApplyTimestamps();
+            
             var sql = "INSERT INTO profiles (date_created, date_updated, username, display_name) VALUES (@CreatedDate, @UpdatedDate, @Username, @DisplayName) RETURNING id;";
 
             var id = await Connection.QueryFirstOrDefaultAsync<long>(sql, profile);
@@ -103,6 +106,17 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             var sql = "DELETE FROM profiles_following_profile WHERE follower_id = @FollowerId AND following_id = @FollowingId;";
 
             var rowsAffected = await Connection.ExecuteAsync(sql, new {FollowingId = followingProfile.Id, FollowerId = followerProfile.Id});
+
+            return rowsAffected >= 1;
+        }
+
+        public async Task<bool> ChangeDisplayName(Profile profile)
+        {
+            var sql = "UPDATE profiles SET date_updated = @UpdatedDate, display_name = @DisplayName WHERE id = @Id;";
+
+            profile.ApplyTimestamps();
+            
+            var rowsAffected = await Connection.ExecuteAsync(sql, profile);
 
             return rowsAffected >= 1;
         }

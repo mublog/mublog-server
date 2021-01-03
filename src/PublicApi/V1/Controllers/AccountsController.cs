@@ -1,3 +1,4 @@
+using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -149,12 +150,11 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             profile.DisplayName = request.DisplayName;
 
-            var success = await _profileRepo.Update(profile);
+            var success = await _profileRepo.ChangeDisplayName(profile);
 
             if (!success)
             {
-                return StatusCode(500,
-                    ResponseWrapper.Error("An error occured while pushing the changed to the database."));
+                return StatusCode(500, ResponseWrapper.Error("An error occured while pushing the changed to the database."));
             }
 
             return Ok(ResponseWrapper.Success("Display Name was successfully updated."));
@@ -172,8 +172,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             if (!success)
             {
-                return StatusCode(500,
-                    ResponseWrapper.Error("An error occured while trying to change your email address."));
+                return StatusCode(500, ResponseWrapper.Error("An error occured while trying to change your email address."));
             }
             
             return Ok(ResponseWrapper.Success("Successfully changed your email address."));
@@ -219,8 +218,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             if (!profileSuccess)
             {
-                return StatusCode(500,
-                    ResponseWrapper.Error("An error occured when trying to remove the profile from the database"));
+                return StatusCode(500, ResponseWrapper.Error("An error occured when trying to remove the profile from the database"));
             }
 
             if (!accountSuccess)

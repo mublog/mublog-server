@@ -20,12 +20,11 @@ namespace Mublog.Server.Infrastructure.Common.Config.Installers
             Configure();
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             
-            var cp = new CustomDbProfiler();
-            services.AddSingleton<IDbProfiler>(cp);
-            services.AddTransient<IDbConnection>((sp) => new ProfiledDbConnection(new NpgsqlConnection(connectionString), cp));
-
-
-            // services.AddTransient<IDbConnection>((sp) => new NpgsqlConnection(connectionString));
+            // var cp = new CustomDbProfiler();
+            // services.AddSingleton<IDbProfiler>(cp);
+            // services.AddTransient<IDbConnection>((sp) => new ProfiledDbConnection(new NpgsqlConnection(connectionString), cp));
+            
+            services.AddTransient<IDbConnection>((sp) => new NpgsqlConnection(connectionString));
             
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IMediaRepository, MediaRepository>();

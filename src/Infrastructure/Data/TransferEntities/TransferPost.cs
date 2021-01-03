@@ -49,9 +49,12 @@ namespace Mublog.Server.Infrastructure.Data.TransferEntities
                 LikesCount = (int)LikesCount
             };
 
-            if (profile != null || post.Id != default)
+            post.Likes = new List<Profile>();
+
+            
+            if (profile != null && post.Id != default && Liked)
             {
-                post.Likes = new List<Profile> {profile};
+                post.Likes.Add(profile);
             }
 
             return post;
