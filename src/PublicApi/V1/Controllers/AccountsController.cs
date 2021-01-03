@@ -89,7 +89,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
             
 
-            var id = await _profileRepo.AddAsync(profile);
+            var id = await _profileRepo.Create(profile);
             
             var user = new Account
             {

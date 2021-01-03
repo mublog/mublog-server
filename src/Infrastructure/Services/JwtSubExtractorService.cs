@@ -55,7 +55,7 @@ namespace Mublog.Server.Infrastructure.Services
         {
             var user = Get();
 
-            return await _profileRepo.FindByIdAsync(user.ProfileId);
+            return await _profileRepo.FindById(user.ProfileId);
         }
     }
 }

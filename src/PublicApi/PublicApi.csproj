@@ -40,6 +40,7 @@
 
     <ItemGroup>
       <Folder Include="media" />
+      <Folder Include="V1\DTOs\Mediae" />
       <Folder Include="wwwroot" />
     </ItemGroup>
     

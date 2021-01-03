@@ -8,9 +8,9 @@ namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
         {
             FluentMapper.Initialize(options =>
             {
-                options.AddMap(new CommentMap());
                 options.AddMap(new MediaMap());
                 options.AddMap(new TransferAccountMap());
+                options.AddMap(new TransferCommentMap());
                 options.AddMap(new TransferPostMap());
                 options.AddMap(new TransferProfileMap());
             });

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Mublog.Server.Domain.Common.Helpers;
-using Mublog.Server.Domain.Data;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Domain.Data.Repositories;
 using Mublog.Server.Infrastructure.Data.TransferEntities;
@@ -18,13 +17,9 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         public ProfileRepository(IDbConnection connection) : base(connection)
         {
         }
+        
 
-        public Task<PagedList<Profile>> GetPaged(QueryParameters queryParameters)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<Profile> FindByIdAsync(long id)
+        public async Task<Profile> FindById(long id)
         {
             var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles AS pfl LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE pfl.id = @Id LIMIT 1;";
 
@@ -33,7 +28,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             return transferProfile?.ToProfile();
         }
 
-        public async Task<long> AddAsync(Profile profile)
+        public async Task<long> Create(Profile profile)
         {
             profile.ApplyTimestamps();
             
@@ -44,22 +39,12 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             return id;
         }
 
-        public async Task<bool> Update(Profile profile)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<bool> Remove(Profile profile)
         {
             // TODO
             throw new System.NotImplementedException();
         }
-
-        public async Task<bool> RemoveRange(IEnumerable<Profile> profiles)
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         public async Task<Profile> FindByUsername(string username)
         {
             var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id FROM profiles AS pfl LEFT OUTER JOIN mediae m on m.id = pfl.profile_image_id WHERE username = @Username LIMIT 1;";
@@ -75,9 +60,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
             var transferProfiles = await Connection.QueryAsync<TransferProfile>(sql, new {ProfileId = profile.Id});
 
-            var profiles = transferProfiles.Select(tp => tp.ToProfile()).ToList();
-
-            return profiles;
+            return transferProfiles.Select(tp => tp.ToProfile()).ToList();
         }
 
         public async Task<ICollection<Profile>> GetFollowing(Profile profile)
@@ -86,9 +69,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
             var transferProfiles = await Connection.QueryAsync<TransferProfile>(sql, new {ProfileId = profile.Id});
 
-            var profiles = transferProfiles.Select(tp => tp.ToProfile()).ToList();
-
-            return profiles;
+            return transferProfiles.Select(tp => tp.ToProfile()).ToList();
         }
 
         public async Task<bool> AddFollowing(Profile followingProfile, Profile followerProfile)

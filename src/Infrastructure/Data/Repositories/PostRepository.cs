@@ -46,21 +46,19 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
             var posts = pgPosts.Select(p => p.ToPost(profile)).ToList();
 
-            var pagedList = new PagedList<Post>(posts, (int) totalRows, queryParameters.Page, queryParameters.Size);
-
-            return pagedList;
+            return new PagedList<Post>(posts, (int) totalRows, queryParameters.Page, queryParameters.Size);
         }
 
-        public async Task<Post> FindByIdAsync(long id)
+        public async Task<Post> FindById(long id)
         {
-            var sql = "SELECT * FROM posts WHERE id = @Id LIMIT 1;";
-
-            var post = await Connection.QueryFirstAsync<Post>(sql, new {Id = id});
-
-            return post;
+            var sql = "SELECT pst.id, pst.date_created, pst.date_updated, pst.public_id, pst.content, pst.owner_id, pst.date_post_edited, pfl.username,pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount FROM posts AS pst LEFT JOIN profiles pfl on pfl.id = pst.owner_id LEFT OUTER JOIN mediae m on pfl.profile_image_id = m.id WHERE pst.id = @Id LIMIT 1;";
+            
+            var post = await Connection.QueryFirstOrDefaultAsync<TransferPost>(sql, new {Id = id});
+            
+            return post.ToPost();
         }
 
-        public async Task<long> AddAsync(Post post)
+        public async Task<long> Create(Post post)
         {
             post.ApplyPostTimestamps();
 
@@ -80,7 +78,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
             return rowsAffected >= 1;
         }
 
-        public async Task<Post> FindByPublicId(int publicId, Profile profile = null)
+        public async Task<Post> FindByPublicId(long publicId, Profile profile = null)
         {
             var sql = "SELECT pst.id, pst.date_created, pst.date_updated, pst.public_id, pst.content, pst.owner_id, pst.date_post_edited, pfl.username,pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount ";
 
@@ -94,9 +92,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
             if (post == null) return null;
 
-            var postWithLike = post.ToPost(profile);
-
-            return postWithLike;
+            return post.ToPost(profile);
         }
 
         public async Task<bool> AddLike(Post post, Profile profile)
