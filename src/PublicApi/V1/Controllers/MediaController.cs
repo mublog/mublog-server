@@ -30,6 +30,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         private readonly IMediaRepository _mediaRepo;
         private readonly DirectoryInfo _mediaDirectory = new DirectoryInfo(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "media"));
 
+        
         public MediaController(ICurrentUserService currentUserService, IMediaRepository mediaRepo)
         {
             _currentUserService = currentUserService;
@@ -46,7 +47,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            if (!_TryGetMediaType(file, out var mediaType))
+            if (!TryParseMediaType(file, out var mediaType))
                 return StatusCode(422, ResponseWrapper.Error("This file type is not allowed"));
 
             if (file.Length <= 0)
@@ -56,7 +57,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             
             try
             {
-                this._SaveFile(guid.ToString(), file);
+                await SaveFile(guid.ToString(), file);
             }
             catch (Exception ex)
             {
@@ -64,10 +65,10 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             }
 
 
-            var profile = await this._currentUserService.GetProfile();
+            var profile = _currentUserService.Get().ToProfile;
             //todo: media isn't linked to a post atm
             var media = new Media { PublicId = guid, MediaType = mediaType, OwnerId = profile.Id, Owner = profile };
-            var id = await this._mediaRepo.Create(media);
+            var id = await _mediaRepo.Create(media);
 
             if (id == default)
                 return StatusCode(500, ResponseWrapper.Error("Could not create media"));
@@ -81,8 +82,8 @@ namespace Mublog.Server.PublicApi.V1.Controllers
         /// </summary>
         /// <param name="file">The File</param>
         /// <param name="mediaType">The MediaType of the file, if one was found</param>
-        /// <returns>wether the file is of a support MediaType</returns>
-        private static bool _TryGetMediaType(IFormFile file, out MediaType mediaType)
+        /// <returns>Returns true if media type could be parsed</returns>
+        private static bool TryParseMediaType(IFormFile file, out MediaType mediaType)
         {
             mediaType = MediaType.Jpg;
             var fileType = file.ContentType.ToLower();      
@@ -99,44 +100,46 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             return false;
         }
 
-        private async void _SaveFile(string name, IFormFile file)
-        {
-            var filePath = Path.Combine(this._mediaDirectory.FullName, name);
 
-            await using var stream = new FileStream(filePath, FileMode.Create);
-            await file.CopyToAsync(stream);
-        }
-
-        private bool _TryGetFile(string name, out FileInfo fileInfo)
-        {
-            var filePath = Path.Combine(this._mediaDirectory.FullName, name);
-            fileInfo = new FileInfo(filePath);
-
-            return fileInfo.Exists;
-        }
-
-    
-        //[HttpGet("{guid}")]
-        [HttpGet]
-        [Authorize]
+        [HttpGet("{guidString}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetInfoByGuid(Guid guid)
+        public async Task<IActionResult> GetInfoByGuid([FromRoute] string guidString)
         {
+            Guid guid;
 
-            //todo: doesnt search in repo atm
-            //var media = await this._mediaRepo.FindByPublicId(guid);
-            if (!this._TryGetFile(guid.ToString(), out var file))
+            if (!Guid.TryParse(guidString, out guid))
+            {
+                return BadRequest(ResponseWrapper.Error("The guid from route is invalid"));
+            }
+            
+            if (!TryGetFile(guid.ToString(), out var file))
                 return StatusCode(404, ResponseWrapper.Error("File does not exist"));
 
-            return Ok(ResponseWrapper.Success(PhysicalFile(file.FullName, "image/png")));
+            return PhysicalFile(file.FullName, "image/png");
         }
         
         [HttpDelete("{guid}")]
         public async Task<IActionResult> DeleteImage([FromRoute] string guid)
         {
             throw new NotImplementedException();
+        }
+        
+        private async Task SaveFile(string name, IFormFile file)
+        {
+            var filePath = Path.Combine(_mediaDirectory.FullName, name);
+
+            await using var stream = new FileStream(filePath, FileMode.Create);
+            await file.CopyToAsync(stream);
+        }
+
+        private bool TryGetFile(string name, out FileInfo fileInfo)
+        {
+            var filePath = Path.Combine(_mediaDirectory.FullName, name);
+            fileInfo = new FileInfo(filePath);
+
+            return fileInfo.Exists;
         }
     }
 }

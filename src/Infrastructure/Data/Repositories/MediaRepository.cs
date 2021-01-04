@@ -23,8 +23,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
         {
             media.ApplyTimestamps();
             //todo: whats difference between id and public id?
-            var sql = "INSERT INTO mediae (data_created, date_updated, post_id, public_id, media_type, owner_id) " +
-                           "VALUES (@CreatedDate, @UpdatedDate, 1, @PublicId, @MediaType, @OwnerId) RETURNING id;";
+            var sql = "INSERT INTO mediae (data_created, date_updated, public_id, media_type, owner_id) VALUES (@CreatedDate, @UpdatedDate, @PublicId, @MediaType, @OwnerId) RETURNING id;";
 
             var id = await Connection.QueryFirstOrDefaultAsync<long>(sql, media);
 
