@@ -47,7 +47,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<ICollection<Comment>> FindByPost(Post parentPost)
         {
-            var sql = "SELECT c.id, c.date_created, c.date_updated, c.content, c.parent_post_id, c.owner_id, pfl.display_name, pfl.username, m.id AS profile_image_id, m.public_id AS profile_image_public_id FROM comments AS c LEFT JOIN profiles pfl on pfl.id = c.owner_id LEFT OUTER JOIN mediae m on pfl.profile_image_id = m.id WHERE c.parent_post_id = @PostId;";
+            var sql = "SELECT c.id, c.date_created, c.date_updated, c.content, c.parent_post_id, c.owner_id, pfl.display_name, pfl.username, m.id AS profile_image_id, m.public_id AS profile_image_public_id FROM comments AS c LEFT JOIN profiles pfl on pfl.id = c.owner_id LEFT OUTER JOIN mediae m on pfl.profile_image_id = m.id WHERE c.parent_post_id = @PostId ORDER BY c.date_created DESC;";
 
             var transferComments = await Connection.QueryAsync<TransferComment>(sql, new {PostId = parentPost.Id});
             
