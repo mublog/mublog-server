@@ -51,7 +51,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<Post> FindById(long id)
         {
-            var sql = "SELECT pst.id, pst.date_created, pst.date_updated, pst.public_id, pst.content, pst.owner_id, pst.date_post_edited, pfl.username,pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount FROM posts AS pst LEFT JOIN profiles pfl on pfl.id = pst.owner_id LEFT OUTER JOIN mediae m on pfl.profile_image_id = m.id WHERE pst.id = @Id LIMIT 1;";
+            var sql = "SELECT pst.id, pst.date_created, pst.date_updated, pst.public_id, pst.content, pst.owner_id, pst.date_post_edited, pfl.username,pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount, (SELECT count(*) FROM comments WHERE parent_post_id = pst.id) AS comments_count FROM posts AS pst LEFT JOIN profiles pfl on pfl.id = pst.owner_id LEFT OUTER JOIN mediae m on pfl.profile_image_id = m.id WHERE pst.id = @Id LIMIT 1;";
             
             var post = await Connection.QueryFirstOrDefaultAsync<TransferPost>(sql, new {Id = id});
             
@@ -80,7 +80,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<Post> FindByPublicId(long publicId, Profile profile = null)
         {
-            var sql = "SELECT pst.id, pst.date_created, pst.date_updated, pst.public_id, pst.content, pst.owner_id, pst.date_post_edited, pfl.username,pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount ";
+            var sql = "SELECT pst.id, pst.date_created, pst.date_updated, pst.public_id, pst.content, pst.owner_id, pst.date_post_edited, pfl.username,pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount, (SELECT count(*) FROM comments WHERE parent_post_id = pst.id) AS comments_count ";
 
             if (profile != null && profile.Id != default)
                 sql += ", exists(SELECT * FROM posts_liked_by_profiles AS plp LEFT OUTER JOIN posts pst on pst.id = plp.liked_posts_id WHERE plp.liking_profile_id = @ProfileId AND pst.public_id = @PublicId) AS liked ";
