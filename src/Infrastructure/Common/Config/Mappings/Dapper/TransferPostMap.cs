@@ -19,6 +19,7 @@ namespace Mublog.Server.Infrastructure.Common.Config.Mappings.Dapper
             Map(p => p.ProfileImagePublicId).ToColumn("profile_image_id");
             Map(p => p.Liked).ToColumn("liked");
             Map(p => p.LikesCount).ToColumn("likes_amount");
+            Map(p => p.CommentsCount).ToColumn("comments_count");
         }
     }
 }

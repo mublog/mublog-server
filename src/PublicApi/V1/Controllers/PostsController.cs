@@ -77,6 +77,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                         DatePosted = p.CreatedDate.ToUnixTimestamp(),
                         DateEdited = p.PostEditedDate.ToUnixTimestamp(),
                         LikeAmount = p.LikesCount,
+                        CommentsAmount = p.CommentsCount,
                         Liked = user != null && p.Likes.Any(pfl => pfl?.Id == user.ProfileId),
                         User = new PostUserResponseDto
                         {
@@ -115,6 +116,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 DatePosted = post.CreatedDate.ToUnixTimestamp(),
                 DateEdited = post.UpdatedDate.ToUnixTimestamp(),
                 LikeAmount = post.LikesCount,
+                CommentsAmount = post.CommentsCount,
                 Liked = user != null && post.Likes.Any(p => p?.Id == user.ProfileId),
                 User = new PostUserResponseDto
                 {
@@ -187,6 +189,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
                 DatePosted = post.CreatedDate.ToUnixTimestamp(),
                 DateEdited = post.UpdatedDate.ToUnixTimestamp(),
                 LikeAmount = post.LikesCount,
+                CommentsAmount = post.CommentsCount,
                 Liked = post.Likes.Any(p => p?.Id == user?.ProfileId),
                 User = new PostUserResponseDto
                 {

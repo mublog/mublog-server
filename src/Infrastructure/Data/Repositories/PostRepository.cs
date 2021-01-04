@@ -27,7 +27,7 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<PagedList<Post>> GetPaged(PostQueryParameters queryParameters, Profile profile)
         {
-            var sql = "SELECT pst.id, pst.date_created, pst.public_id, pst.content, pst.date_post_edited, pst.date_updated, pst.owner_id, pfl.username, pfl.display_name, m.public_id AS profile_image_id, (SELECT COUNT(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount ";
+            var sql = "SELECT pst.id, pst.date_created, pst.public_id, pst.content, pst.date_post_edited, pst.date_updated, pst.owner_id, pfl.username, pfl.display_name, m.public_id AS profile_image_id, (SELECT count(*) FROM posts_liked_by_profiles AS plp WHERE plp.liked_posts_id = pst.id) AS likes_amount, (SELECT count(*) FROM comments WHERE parent_post_id = pst.id) AS comments_count ";
             if (profile != null && profile.Id != default) sql += ", exists(SELECT * FROM posts_liked_by_profiles AS plp LEFT JOIN posts p on p.id = plp.liked_posts_id WHERE plp.liking_profile_id = @ProfileId AND p.public_id = pst.public_id) AS liked ";
             sql += "FROM posts AS pst LEFT OUTER JOIN profiles AS pfl ON pst.owner_id = pfl.id LEFT OUTER JOIN mediae m on pfl.profile_image_id = m.id ";
             if (queryParameters.Username != default) sql += "WHERE pfl.username = @Username ";

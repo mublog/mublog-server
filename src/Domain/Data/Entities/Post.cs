@@ -13,6 +13,7 @@ namespace Mublog.Server.Domain.Data.Entities
         public ICollection<Comment> Comments { get; set; }
         public ICollection<Media> Mediae { get; set; }
         public ICollection<Profile> Likes { get; set; }
-        public int LikesCount { get; set; }
+        public long LikesCount { get; set; }
+        public long CommentsCount { get; set; }
     }
 }

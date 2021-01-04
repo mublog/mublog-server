@@ -20,6 +20,7 @@ namespace Mublog.Server.Infrastructure.Data.TransferEntities
         public bool Liked { get; set; }
         public IEnumerable<long> Likes { get; set; }
         public long LikesCount { get; set; }
+        public long CommentsCount { get; set; }
 
         public Post ToPost(Profile profile = null)
         {
@@ -46,7 +47,8 @@ namespace Mublog.Server.Infrastructure.Data.TransferEntities
                 OwnerId = OwnerId,
                 Owner = owner,
                 PostEditedDate = PostEditedDate.ToDateTime(),
-                LikesCount = (int)LikesCount
+                LikesCount = LikesCount,
+                CommentsCount = CommentsCount
             };
 
             post.Likes = new List<Profile>();
