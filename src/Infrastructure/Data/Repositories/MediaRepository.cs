@@ -38,6 +38,8 @@ namespace Mublog.Server.Infrastructure.Data.Repositories
 
         public async Task<Media> FindByPublicId(Guid id)
         {
+            throw new NotImplementedException();
+
             var sql = "SELECT pfl.id, pfl.date_created, pfl.date_updated, pfl.username, pfl.display_name, pfl.description, pfl.profile_image_id, pfl.user_state, m.public_id AS profile_image_public_id, (SELECT count(*) FROM profiles_following_profile AS pfp WHERE pfp.following_id = @Id) AS follower_count, (SELECT count(*) FROM profiles_following_profile AS pfp WHERE pfp.follower_id = @Id) AS following_count FROM profiles AS pfl LEFT OUTER JOIN mediae m ON m.id = pfl.profile_image_id WHERE pfl.id = @Id LIMIT 1;";
 
             var media = await Connection.QueryFirstOrDefaultAsync<Media>(sql, new { Id = id });

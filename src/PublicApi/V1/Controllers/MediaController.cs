@@ -70,7 +70,7 @@ namespace Mublog.Server.PublicApi.V1.Controllers
             var id = await this._mediaRepo.Create(media);
 
             if (id == default)
-                return StatusCode(500, ResponseWrapper.Error("wrong id, dunno"));
+                return StatusCode(500, ResponseWrapper.Error("Could not create media"));
 
             return Ok(ResponseWrapper.Success(new {guid = guid}));
         }
@@ -117,26 +117,20 @@ namespace Mublog.Server.PublicApi.V1.Controllers
 
     
         //[HttpGet("{guid}")]
-        [HttpGet("download")]
+        [HttpGet]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetInfoByGuid(Guid guid)
         {
-            //if (!Guid.TryParse(guidString, out var guid))
-            //    return StatusCode(500, ResponseWrapper.Error("wrong id, dunno"));
 
             //todo: doesnt search in repo atm
             //var media = await this._mediaRepo.FindByPublicId(guid);
             if (!this._TryGetFile(guid.ToString(), out var file))
-                return StatusCode(500, ResponseWrapper.Error("File not found"));
+                return StatusCode(404, ResponseWrapper.Error("File does not exist"));
 
-            //todo: get correct filetype
-            //var physicalFile = PhysicalFile(file.FullName, "png");
-            //var data = file.OpenRead();
-            var bytes = System.IO.File.ReadAllBytes(file.FullName);
-            return Ok(ResponseWrapper.Success(File(bytes, "image/png")));
+            return Ok(ResponseWrapper.Success(PhysicalFile(file.FullName, "image/png")));
         }
         
         [HttpDelete("{guid}")]
