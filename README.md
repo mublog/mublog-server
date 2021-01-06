@@ -1,7 +1,8 @@
-<img src="https://github.com/mublog/mublog-server/blob/master/docs/mu-logo.svg?raw=true" alt="mublog-logo" width="448" />
-
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mublog/mublog-server/.NET)
 ![GitHub milestone](https://img.shields.io/github/milestones/progress/mublog/mublog-server/1)
+
+<img src="https://github.com/mublog/mublog-server/blob/master/docs/mu-logo.svg?raw=true" alt="mublog-logo" width="448" />
+
 # µblog Server
 
 The back-end of µblog written with ASP.NET Core.
