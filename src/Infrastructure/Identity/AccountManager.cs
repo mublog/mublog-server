@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Threading.Tasks;
 using Dapper;
+using Mublog.Server.Domain.Common.Helpers;
 using Mublog.Server.Domain.Data.Entities;
 using Mublog.Server.Infrastructure.Data.Repositories;
 using Mublog.Server.Infrastructure.Data.TransferEntities;
@@ -79,18 +80,18 @@ namespace Mublog.Server.Infrastructure.Identity
 
         public async Task<bool> ChangePassword(Account account, string newPassword)
         {
-            // TODO check method
+            account.ApplyTimestamps();
             
-            var sql = "UPDATE accounts SET (password, date_updated) = (password = crypt(@Password, gen_salt('bf')), date_updated = @Date) WHERE id =  @Id;";
+            var sql = "UPDATE accounts SET password = crypt(@Password, gen_salt('bf')), date_updated = @UpdatedDate WHERE id =  @Id;";
 
-            var rowsAffected = await Connection.ExecuteAsync(sql, new {Password = newPassword, Date = DateTime.UtcNow, account.Id});
+            var rowsAffected = await Connection.ExecuteAsync(sql, new {Password = newPassword, account.UpdatedDate, account.Id});
 
             return rowsAffected >= 1;
         }
 
         public async Task<bool> ChangeEmail(Account account, string newEmail)
         {
-            var sql = "UPDATE accounts SET (email, date_updated) = (email = @Email, date_updated = @Date) WHERE id =  @Id;";
+            var sql = "UPDATE accounts SET email = @Email, date_updated = @Date WHERE id =  @Id;";
 
             var rowsAffected = await Connection.ExecuteAsync(sql, new {Email = newEmail, Date = DateTime.UtcNow, account.Id});
 
