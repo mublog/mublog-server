@@ -53,7 +53,7 @@ The recommended way of deploying µblog is via Docker. The docker file is includ
 4. `docker build . -t mublog:latest`
 5. `docker volume create mublog-data`
 6. `docker volume create mublog-www`
-7. compile the [front-end](https://github.com/mublog/mublog-web) and put the file into the docker volume `mublog-www`
+7. compile the [front-end](https://github.com/mublog/mublog-web) and put the files into the docker volume `mublog-www`
 8. `docker run --name mublog -d --restart=unless-stopped -v mublog-data:/data -v mublog-www:/app/wwwroot mublog`
 
 It is recommended that you run an NGINX reverse proxy for higher security with HTTPS, [read about it here](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx).
