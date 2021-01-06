@@ -50,7 +50,7 @@ The recommended way of deploying µblog is via Docker. The docker file is includ
 4. `docker volume create mublog-data`
 5. `docker volume create mublog-www`
 6. compile the [front-end](https://github.com/mublog/mublog-web) and put the file into the docker volume `mublog-www`
-7. ``docker run --name mublog -d --restart=unless-stopped -v mublog-data:/data -v mublog-www:/app/wwwroot mublog`
+7. `docker run --name mublog -d --restart=unless-stopped -v mublog-data:/data -v mublog-www:/app/wwwroot mublog`
 
 ## Future
 
