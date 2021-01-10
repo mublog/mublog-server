@@ -3,6 +3,11 @@
 
 <img src="https://github.com/mublog/mublog-server/blob/master/docs/mu-logo.svg?raw=true" alt="mublog-logo" width="448" />
 
+# Archived Notice
+µblog was a school project to create a working prototype of a microblogging website.
+No further development is currently planned
+<br/>
+
 # µblog Server
 
 The back-end of µblog written with ASP.NET Core.
