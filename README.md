@@ -3,7 +3,7 @@
 
 <img src="https://github.com/mublog/mublog-server/blob/master/docs/mu-logo.svg?raw=true" alt="mublog-logo" width="448" />
 
-# Archived Notice
+# Archival Notice
 µblog was a school project to create a working prototype of a microblogging website.
 No further development is currently planned
 <br/>
